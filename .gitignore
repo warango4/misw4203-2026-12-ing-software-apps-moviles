@@ -1,0 +1,13 @@
+# Entorno local
+local.properties
+
+# Gradle/Android build artifacts
+.gradle/
+**/build/
+
+# Archivos de IDE
+.idea/
+*.iml
+
+# Configuración local de daemon de Gradle
+gradle/gradle-daemon-jvm.properties
