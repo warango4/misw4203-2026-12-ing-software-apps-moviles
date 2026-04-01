@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/FirstFragment">
+    <fragment
+        android:id="@+id/FirstFragment"
+        android:name="com.misw.vinilos.FirstFragment"
+        android:label="First Fragment"
+        tools:layout="@layout/fragment_first">
+        <action
+            android:id="@+id/action_FirstFragment_to_AlbumListFragment"
+            app:destination="@id/AlbumListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/AlbumListFragment"
+        android:name="com.misw.vinilos.ui.albums.AlbumListFragment"
+        android:label="Catálogo de Álbumes"
+        tools:layout="@layout/fragment_album_list" />
+</navigation>
