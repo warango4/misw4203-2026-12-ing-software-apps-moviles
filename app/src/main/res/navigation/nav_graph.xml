@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/AlbumListFragment"
         android:name="com.misw.vinilos.ui.albums.AlbumListFragment"
-        android:label="Catlogo de lbumes"
+        android:label="Catalogo de Albumes"
         tools:layout="@layout/fragment_album_list">
         <action
             android:id="@+id/action_AlbumListFragment_to_AlbumDetailFragment"
