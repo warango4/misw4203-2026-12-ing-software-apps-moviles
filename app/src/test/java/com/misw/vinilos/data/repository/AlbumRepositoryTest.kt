@@ -38,8 +38,34 @@ class AlbumRepositoryTest {
         }
     }
 
+    @Test
+    fun getAlbum_retornaDatosDelApi() = runTest {
+        val expected = Album(1, "A Love Supreme", "cover-url", "Jazz")
+        val api = FakeVinilosApiService(singleResult = expected)
+        val repository = AlbumRepository(api)
+
+        val result = repository.getAlbum(1)
+
+        assertEquals(expected, result)
+        assertEquals(1, api.calls)
+    }
+
+    @Test
+    fun getAlbum_propagaExcepcionDelApi() = runTest {
+        val api = FakeVinilosApiService(error = IllegalStateException("fallo api detallada"))
+        val repository = AlbumRepository(api)
+
+        try {
+            repository.getAlbum(1)
+            org.junit.Assert.fail("Se esperaba IllegalStateException")
+        } catch (error: IllegalStateException) {
+            assertEquals("fallo api detallada", error.message)
+        }
+    }
+
     private class FakeVinilosApiService(
         private val result: List<Album> = emptyList(),
+        private val singleResult: Album? = null,
         private val error: Throwable? = null
     ) : VinilosApiService {
 
@@ -50,6 +76,12 @@ class AlbumRepositoryTest {
             calls += 1
             error?.let { throw it }
             return result
+        }
+
+        override suspend fun getAlbum(id: Int): Album {
+            calls += 1
+            error?.let { throw it }
+            return singleResult ?: throw NotImplementedError()
         }
     }
 }

@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.misw.vinilos.databinding.FragmentAlbumListBinding
 
 class AlbumListFragment : Fragment() {
@@ -45,6 +46,8 @@ class AlbumListFragment : Fragment() {
             Log.d("AlbumListFragment", "Albums observed, size: ${albums.size}")
             binding.rvAlbums.adapter = AlbumAdapter(albums) { album ->
                 Log.d("AlbumListFragment", "Navigate to Detail for album: ${album.name}")
+                val bundle = android.os.Bundle().apply { putInt("albumId", album.id) }
+                findNavController().navigate(com.misw.vinilos.R.id.action_AlbumListFragment_to_AlbumDetailFragment, bundle)
             }
         }
         viewModel.error.observe(viewLifecycleOwner) { message ->

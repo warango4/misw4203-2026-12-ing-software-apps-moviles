@@ -61,5 +61,8 @@ class AlbumViewModelTest {
             error?.let { throw it }
             return result
         }
+        override suspend fun getAlbum(id: Int): Album {
+            throw NotImplementedError()
+        }
     }
 }

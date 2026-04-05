@@ -16,6 +16,20 @@
     <fragment
         android:id="@+id/AlbumListFragment"
         android:name="com.misw.vinilos.ui.albums.AlbumListFragment"
-        android:label="Catálogo de Álbumes"
-        tools:layout="@layout/fragment_album_list" />
+        android:label="Catlogo de lbumes"
+        tools:layout="@layout/fragment_album_list">
+        <action
+            android:id="@+id/action_AlbumListFragment_to_AlbumDetailFragment"
+            app:destination="@id/AlbumDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/AlbumDetailFragment"
+        android:name="com.misw.vinilos.ui.albumdetail.AlbumDetailFragment"
+        android:label="Detalle del álbum"
+        tools:layout="@layout/fragment_album_detail">
+        <argument
+            android:name="albumId"
+            app:argType="integer" />
+    </fragment>
 </navigation>
