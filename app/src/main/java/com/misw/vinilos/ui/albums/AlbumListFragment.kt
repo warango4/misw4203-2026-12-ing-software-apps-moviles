@@ -45,13 +45,17 @@ class AlbumListFragment : Fragment() {
         viewModel.albums.observe(viewLifecycleOwner) { albums ->
             Log.d("AlbumListFragment", "Albums observed, size: ${albums.size}")
             binding.rvAlbums.adapter = AlbumAdapter(albums) { album ->
-                Log.d("AlbumListFragment", "Navigate to Detail for album: ${album.name}")
-                val bundle = android.os.Bundle().apply { putInt("albumId", album.id) }
-                findNavController().navigate(com.misw.vinilos.R.id.action_AlbumListFragment_to_AlbumDetailFragment, bundle)
+                try {
+                    Log.d("AlbumListFragment", "Navigate to Detail for album: ${album.name}")
+                    val bundle = android.os.Bundle().apply { putInt("albumId", album.id) }
+                    findNavController().navigate(com.misw.vinilos.R.id.action_AlbumListFragment_to_AlbumDetailFragment, bundle)
+                } catch (e: Exception) {
+                    Log.e("AlbumListFragment", "Navigation error: ${e.message}", e)
+                }
             }
         }
         viewModel.error.observe(viewLifecycleOwner) { message ->
-            Log.e("AlbumListFragment", "Error observed: $message")
+            Log.e("AlbumListFragment", "Error observed from ViewModel: $message")
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
     }

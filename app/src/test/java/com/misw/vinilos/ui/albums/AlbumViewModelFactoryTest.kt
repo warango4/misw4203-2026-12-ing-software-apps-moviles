@@ -17,6 +17,10 @@ class AlbumViewModelFactoryTest {
     private val repository = AlbumRepository(object : VinilosApiService {
         override suspend fun getAlbums(): List<Album> = emptyList()
         override suspend fun getAlbum(id: Int): Album = throw NotImplementedError()
+        override suspend fun getMusicians() = emptyList<com.misw.vinilos.data.models.Performer>()
+        override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
+        override suspend fun getMusician(id: Int) = throw NotImplementedError()
+        override suspend fun getBand(id: Int) = throw NotImplementedError()
     })
 
     @Test
@@ -42,6 +46,10 @@ class AlbumViewModelFactoryTest {
         val fakeRepository = AlbumRepository(object : com.misw.vinilos.data.network.VinilosApiService {
             override suspend fun getAlbums(): List<com.misw.vinilos.data.models.Album> = emptyList()
             override suspend fun getAlbum(id: Int): com.misw.vinilos.data.models.Album = throw NotImplementedError()
+            override suspend fun getMusicians() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getMusician(id: Int) = throw NotImplementedError()
+            override suspend fun getBand(id: Int) = throw NotImplementedError()
         })
         val factory = AlbumViewModelFactory(fakeRepository)
 

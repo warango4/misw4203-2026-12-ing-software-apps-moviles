@@ -25,6 +25,10 @@ class FirstFragment : Fragment() {
             Log.d("FirstFragment", "Button to AlbumList clicked")
             findNavController().navigate(R.id.action_FirstFragment_to_AlbumListFragment)
         }
+        binding.buttonPerformers.setOnClickListener {
+            Log.d("FirstFragment", "Button to PerformerList clicked")
+            findNavController().navigate(R.id.action_FirstFragment_to_PerformerListFragment)
+        }
     }
     override fun onDestroyView() {
         super.onDestroyView()
