@@ -11,4 +11,11 @@ class AlbumRepository(private val api: VinilosApiService) {
         Log.d("AlbumRepository", "API returned ${result.size} albums")
         return result
     }
+
+    suspend fun getAlbum(id: Int): Album {
+        Log.d("AlbumRepository", "Calling API to get album $id")
+        val result = api.getAlbum(id)
+        Log.d("AlbumRepository", "API returned album ${result.name}")
+        return result
+    }
 }
