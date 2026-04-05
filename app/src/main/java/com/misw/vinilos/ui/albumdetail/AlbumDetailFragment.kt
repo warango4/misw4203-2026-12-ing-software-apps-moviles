@@ -48,6 +48,7 @@ class AlbumDetailFragment : Fragment() {
         }
         viewModel.error.observe(viewLifecycleOwner) { errorMsg ->
             if (errorMsg.isNotEmpty()) {
+                Log.e("AlbumDetailFragment", "Error observed from ViewModel: $errorMsg")
                 Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
             }
         }

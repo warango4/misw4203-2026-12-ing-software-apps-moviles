@@ -41,6 +41,10 @@ class AlbumDetailViewModelTest {
         val fakeApiService = object : com.misw.vinilos.data.network.VinilosApiService {
             override suspend fun getAlbums(): List<Album> = emptyList()
             override suspend fun getAlbum(id: Int): Album = expectedAlbum
+            override suspend fun getMusicians() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getMusician(id: Int) = throw NotImplementedError()
+            override suspend fun getBand(id: Int) = throw NotImplementedError()
         }
         val repository = AlbumRepository(fakeApiService)
 
@@ -60,6 +64,10 @@ class AlbumDetailViewModelTest {
         val fakeApiService = object : com.misw.vinilos.data.network.VinilosApiService {
             override suspend fun getAlbums(): List<Album> = emptyList()
             override suspend fun getAlbum(id: Int): Album = throw Exception("Network Error")
+            override suspend fun getMusicians() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getMusician(id: Int) = throw NotImplementedError()
+            override suspend fun getBand(id: Int) = throw NotImplementedError()
         }
         val repository = AlbumRepository(fakeApiService)
 
@@ -71,6 +79,60 @@ class AlbumDetailViewModelTest {
         advanceUntilIdle()
 
         assertTrue(viewModel.error.value?.isNotEmpty() == true)
+        assertEquals(false, viewModel.isLoading.value)
+    }
+
+    @Test
+    fun fetchAlbum_withTracks_success_updatesLiveData() = runTest {
+        val tracks = listOf(com.misw.vinilos.data.models.Track(1, "Track 1", "3:00"), com.misw.vinilos.data.models.Track(2, "Track 2", "4:00"))
+        val expectedAlbum = Album(
+            id = 200, name = "Album 2", cover = "url", genre = "Rock", tracks = tracks
+        )
+        val fakeApiService = object : com.misw.vinilos.data.network.VinilosApiService {
+            override suspend fun getAlbums(): List<Album> = emptyList()
+            override suspend fun getAlbum(id: Int): Album = expectedAlbum
+            override suspend fun getMusicians() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getMusician(id: Int) = throw NotImplementedError()
+            override suspend fun getBand(id: Int) = throw NotImplementedError()
+        }
+        val repository = AlbumRepository(fakeApiService)
+        val viewModel = AlbumDetailViewModel(repository, 200)
+
+        viewModel.album.observeForever {}
+        viewModel.isLoading.observeForever {}
+
+        advanceUntilIdle()
+
+        assertEquals(expectedAlbum, viewModel.album.value)
+        assertEquals(2, viewModel.album.value?.tracks?.size)
+        assertEquals(false, viewModel.isLoading.value)
+    }
+
+    @Test
+    fun fetchAlbum_initialState_isLoadingTrue() = runTest {
+        val expectedAlbum = Album(
+            id = 200, name = "Album Wait", cover = "url", genre = "Pop"
+        )
+        val fakeApiService = object : com.misw.vinilos.data.network.VinilosApiService {
+            override suspend fun getAlbums(): List<Album> = emptyList()
+            override suspend fun getAlbum(id: Int): Album = expectedAlbum
+            override suspend fun getMusicians() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getMusician(id: Int) = throw NotImplementedError()
+            override suspend fun getBand(id: Int) = throw NotImplementedError()
+        }
+        val repository = AlbumRepository(fakeApiService)
+
+        val viewModel = AlbumDetailViewModel(repository, 200)
+
+        // Observers allow us to track LiveData correctly
+        viewModel.album.observeForever {}
+        viewModel.isLoading.observeForever {}
+
+        // As it completes immediately synchronously within runTest in init
+        // After finishing it will be false. Before idle it might be true but without pause Dispatcher it resolves.
+        advanceUntilIdle()
         assertEquals(false, viewModel.isLoading.value)
     }
 }

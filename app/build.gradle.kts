@@ -14,6 +14,9 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        val baseUrl = project.findProperty("BASE_URL") as String? ?: "https://back-vynils-heroku.herokuapp.com/"
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -35,6 +38,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     testOptions {
         unitTests.isIncludeAndroidResources = true

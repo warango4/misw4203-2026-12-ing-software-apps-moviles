@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_AlbumListFragment"
             app:destination="@id/AlbumListFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_PerformerListFragment"
+            app:destination="@id/PerformerListFragment" />
     </fragment>
     <fragment
         android:id="@+id/AlbumListFragment"
@@ -31,5 +34,31 @@
         <argument
             android:name="albumId"
             app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/PerformerListFragment"
+        android:name="com.misw.vinilos.ui.performers.PerformerListFragment"
+        android:label="Catálogo de Artistas"
+        tools:layout="@layout/fragment_performer_list">
+        <action
+            android:id="@+id/action_PerformerListFragment_to_PerformerDetailFragment"
+            app:destination="@id/PerformerDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/PerformerDetailFragment"
+        android:name="com.misw.vinilos.ui.performers.PerformerDetailFragment"
+        android:label="Detalle de Artista"
+        tools:layout="@layout/fragment_performer_detail">
+        <argument
+            android:name="performerId"
+            app:argType="integer" />
+        <argument
+            android:name="isBand"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_PerformerDetailFragment_to_AlbumDetailFragment"
+            app:destination="@id/AlbumDetailFragment" />
     </fragment>
 </navigation>
