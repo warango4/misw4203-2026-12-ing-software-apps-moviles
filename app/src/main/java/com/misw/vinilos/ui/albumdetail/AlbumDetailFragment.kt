@@ -36,8 +36,12 @@ class AlbumDetailFragment : Fragment() {
             binding.albumName.text = album.name
             binding.albumGenre.text = album.genre
             binding.albumDescription.text = album.description
-            binding.albumReleaseDate.text = album.releaseDate
+
+            val artistName = album.performers?.firstOrNull()?.name ?: "Artista Desconocido"
+            val releaseYear = album.releaseDate?.take(4) ?: "Año Desconocido"
+            binding.albumReleaseDate.text = "$artistName - $releaseYear"
             binding.albumRecordLabel.text = album.recordLabel
+            binding.albumRecordLabel.visibility = View.GONE
             Glide.with(this)
                 .load(album.cover)
                 .into(binding.albumCover)

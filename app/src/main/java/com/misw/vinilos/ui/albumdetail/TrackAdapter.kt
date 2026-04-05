@@ -12,12 +12,13 @@ class TrackAdapter : ListAdapter<Track, TrackAdapter.TrackViewHolder>(TrackDiffC
         return TrackViewHolder(binding)
     }
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), position)
     }
     class TrackViewHolder(private val binding: ItemTrackBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(track: Track) {
-            binding.trackName.text = track.name
-            binding.trackDuration.text = track.duration
+        fun bind(track: Track, position: Int) {
+            binding.trackIdText.text = (position + 1).toString()
+            binding.trackNameText.text = track.name
+            binding.trackDurationText.text = track.duration
         }
     }
 }

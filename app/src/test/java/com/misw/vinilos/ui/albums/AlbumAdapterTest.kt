@@ -29,7 +29,8 @@ class AlbumAdapterTest {
         val album = Album(1, "Revolver", "", "Rock")
         var clickedAlbum: Album? = null
         val adapter = AlbumAdapter(listOf(album)) { clickedAlbum = it }
-        val parent = FrameLayout(RuntimeEnvironment.getApplication())
+        val context = androidx.appcompat.view.ContextThemeWrapper(RuntimeEnvironment.getApplication(), com.google.android.material.R.style.Theme_MaterialComponents_DayNight_NoActionBar)
+        val parent = FrameLayout(context)
 
         val holder = adapter.onCreateViewHolder(parent, 0)
         adapter.onBindViewHolder(holder, 0)

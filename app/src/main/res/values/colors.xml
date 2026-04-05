@@ -2,4 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="bg_dark">#121212</color>
+    <color name="card_bg_dark">#1E1E1E</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B3B3B3</color>
+    <color name="accent_purple">#624E88</color>
+    <color name="accent_yellow">#FFB800</color>
+    <color name="chip_bg_purple">#B39DDB</color>
+    <color name="chip_text_purple">#311B92</color>
+    <color name="chip_bg_yellow">#FFC107</color>
+    <color name="chip_text_yellow">#FF6F00</color>
 </resources>
