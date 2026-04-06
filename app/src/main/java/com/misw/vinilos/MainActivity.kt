@@ -19,13 +19,11 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
-        // Top-level destinations para BottomNavigation (sin botón Up)
         appBarConfiguration = AppBarConfiguration(
             setOf(R.id.AlbumListFragment, R.id.PerformerListFragment, R.id.CollectorsFragment)
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        // Conectar bottom nav con el NavController
         binding.bottomNavigation.setupWithNavController(navController)
         Log.d("MainActivity", "onCreate finished setting up Navigation")
     }

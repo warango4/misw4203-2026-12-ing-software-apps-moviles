@@ -53,7 +53,7 @@
     <!-- Placeholder para Collectors (se implementará más adelante) -->
     <fragment
         android:id="@+id/CollectorsFragment"
-        android:name="com.misw.vinilos.ui.collectors.CollectorsFragment"
-        android:label="Collectors"
-        tools:layout="@layout/fragment_collectors" />
+        android:name="com.misw.vinilos.ui.collectors.CollectorListFragment"
+        android:label="Coleccionistas"
+        tools:layout="@layout/fragment_collector_list" />
 </navigation>

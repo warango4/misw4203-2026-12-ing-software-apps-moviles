@@ -37,7 +37,6 @@ class AlbumListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("AlbumListFragment", "onViewCreated called")
 
-        // Mockup: grid de 2 columnas
         binding.rvAlbums.layoutManager = GridLayoutManager(requireContext(), 2)
         observeAlbums()
         Log.d("AlbumListFragment", "Calling fetchAlbums on ViewModel")

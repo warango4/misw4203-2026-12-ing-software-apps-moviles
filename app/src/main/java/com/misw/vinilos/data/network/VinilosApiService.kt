@@ -26,6 +26,9 @@ interface VinilosApiService {
     @GET("bands/{id}")
     suspend fun getBand(@Path("id") id: Int): Performer
 
+    @GET("collectors")
+    suspend fun getCollectors(): List<com.misw.vinilos.data.models.Collector>
+
     companion object {
         fun create(): VinilosApiService =
             Retrofit.Builder()

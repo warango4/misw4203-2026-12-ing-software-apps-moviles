@@ -45,16 +45,13 @@ class AlbumDetailViewModelTest {
             override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
             override suspend fun getMusician(id: Int) = throw NotImplementedError()
             override suspend fun getBand(id: Int) = throw NotImplementedError()
+        override suspend fun getCollectors(): List<com.misw.vinilos.data.models.Collector> = emptyList()
         }
         val repository = AlbumRepository(fakeApiService)
-
         val viewModel = AlbumDetailViewModel(repository, 100)
-
         viewModel.album.observeForever {}
         viewModel.isLoading.observeForever {}
-
         advanceUntilIdle()
-
         assertEquals(expectedAlbum, viewModel.album.value)
         assertEquals(false, viewModel.isLoading.value)
     }
@@ -68,16 +65,13 @@ class AlbumDetailViewModelTest {
             override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
             override suspend fun getMusician(id: Int) = throw NotImplementedError()
             override suspend fun getBand(id: Int) = throw NotImplementedError()
+        override suspend fun getCollectors(): List<com.misw.vinilos.data.models.Collector> = emptyList()
         }
         val repository = AlbumRepository(fakeApiService)
-
         val viewModel = AlbumDetailViewModel(repository, 100)
-
         viewModel.error.observeForever {}
         viewModel.isLoading.observeForever {}
-
         advanceUntilIdle()
-
         assertTrue(viewModel.error.value?.isNotEmpty() == true)
         assertEquals(false, viewModel.isLoading.value)
     }
@@ -95,15 +89,14 @@ class AlbumDetailViewModelTest {
             override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
             override suspend fun getMusician(id: Int) = throw NotImplementedError()
             override suspend fun getBand(id: Int) = throw NotImplementedError()
+        override suspend fun getCollectors(): List<com.misw.vinilos.data.models.Collector> = emptyList()
         }
         val repository = AlbumRepository(fakeApiService)
         val viewModel = AlbumDetailViewModel(repository, 200)
 
         viewModel.album.observeForever {}
         viewModel.isLoading.observeForever {}
-
         advanceUntilIdle()
-
         assertEquals(expectedAlbum, viewModel.album.value)
         assertEquals(2, viewModel.album.value?.tracks?.size)
         assertEquals(false, viewModel.isLoading.value)
@@ -121,17 +114,12 @@ class AlbumDetailViewModelTest {
             override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
             override suspend fun getMusician(id: Int) = throw NotImplementedError()
             override suspend fun getBand(id: Int) = throw NotImplementedError()
+        override suspend fun getCollectors(): List<com.misw.vinilos.data.models.Collector> = emptyList()
         }
         val repository = AlbumRepository(fakeApiService)
-
         val viewModel = AlbumDetailViewModel(repository, 200)
-
-        // Observers allow us to track LiveData correctly
         viewModel.album.observeForever {}
         viewModel.isLoading.observeForever {}
-
-        // As it completes immediately synchronously within runTest in init
-        // After finishing it will be false. Before idle it might be true but without pause Dispatcher it resolves.
         advanceUntilIdle()
         assertEquals(false, viewModel.isLoading.value)
     }

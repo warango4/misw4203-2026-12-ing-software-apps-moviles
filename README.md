@@ -185,3 +185,24 @@ curl -X GET "https://back-vynils-heroku.herokuapp.com/bands/2" \
   "performerPrizes": []
 }
 ```
+
+### HU05 - Consultar listado de coleccionistas
+Muestra el listado de coleccionistas disponibles.
+* **Path:** `GET /collectors`
+
+```bash
+curl -X GET "https://back-vynils-heroku.herokuapp.com/collectors" \
+     -H "Accept: application/json"
+```
+
+**Ejemplo Response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "Manolo Bellon",
+    "telephone": "3502457896",
+    "email": "manollo@caracol.com.co"
+  }
+]
+```

@@ -19,6 +19,7 @@ class AlbumViewModelFactoryTest {
         override suspend fun getAlbum(id: Int): Album = throw NotImplementedError()
         override suspend fun getMusicians() = emptyList<com.misw.vinilos.data.models.Performer>()
         override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getCollectors() = throw NotImplementedError()
         override suspend fun getMusician(id: Int) = throw NotImplementedError()
         override suspend fun getBand(id: Int) = throw NotImplementedError()
     })
@@ -26,9 +27,7 @@ class AlbumViewModelFactoryTest {
     @Test
     fun create_retornaAlbumViewModelCuandoSePideEsaClase() {
         val factory = AlbumViewModelFactory(repository)
-
         val viewModel = factory.create(AlbumViewModel::class.java)
-
         assertEquals(AlbumViewModel::class.java, viewModel::class.java)
     }
 
@@ -38,7 +37,6 @@ class AlbumViewModelFactoryTest {
 
         factory.create(UnsupportedViewModel::class.java)
     }
-
     class UnsupportedViewModel : ViewModel()
 
     @Test
@@ -48,13 +46,12 @@ class AlbumViewModelFactoryTest {
             override suspend fun getAlbum(id: Int): com.misw.vinilos.data.models.Album = throw NotImplementedError()
             override suspend fun getMusicians() = emptyList<com.misw.vinilos.data.models.Performer>()
             override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getCollectors() = throw NotImplementedError()
             override suspend fun getMusician(id: Int) = throw NotImplementedError()
             override suspend fun getBand(id: Int) = throw NotImplementedError()
         })
         val factory = AlbumViewModelFactory(fakeRepository)
-
         val viewModel = factory.create(AlbumViewModel::class.java)
-
         assertEquals(AlbumViewModel::class.java, viewModel::class.java)
     }
 }

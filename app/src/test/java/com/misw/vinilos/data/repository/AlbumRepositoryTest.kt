@@ -88,5 +88,6 @@ class AlbumRepositoryTest {
         override suspend fun getBands(): List<com.misw.vinilos.data.models.Performer> = emptyList()
         override suspend fun getMusician(id: Int): com.misw.vinilos.data.models.Performer = throw NotImplementedError()
         override suspend fun getBand(id: Int): com.misw.vinilos.data.models.Performer = throw NotImplementedError()
+        override suspend fun getCollectors(): List<com.misw.vinilos.data.models.Collector> = emptyList()
     }
 }

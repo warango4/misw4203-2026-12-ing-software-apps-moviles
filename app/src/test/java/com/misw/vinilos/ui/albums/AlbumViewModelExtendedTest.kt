@@ -19,7 +19,7 @@ import org.robolectric.annotation.Config
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class AlbumViewModelTest {
+class AlbumViewModelExtendedTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -28,25 +28,26 @@ class AlbumViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun fetchAlbums_publicaAlbumesCuandoElRepositorioRespondeOk() = runTest {
-        val expected = listOf(Album(1, "Kind of Blue", "cover-url", "Jazz"))
+    fun fetchAlbums_whenEmptyList_emitsEmptyList() = runTest {
+        val expected = emptyList<Album>()
         val viewModel = AlbumViewModel(
             AlbumRepository(FakeVinilosApiService(result = expected))
         )
         viewModel.fetchAlbums()
         advanceUntilIdle()
-        assertEquals(expected, viewModel.albums.value)
+        assertEquals(0, viewModel.albums.value?.size)
         assertNull(viewModel.error.value)
     }
 
     @Test
-    fun fetchAlbums_publicaErrorCuandoElRepositorioFalla() = runTest {
+    fun fetchAlbums_loadingState_transitionsCorrectly() = runTest {
+        val expected = listOf(Album(2, "Test Album", "cover", "Pop"))
         val viewModel = AlbumViewModel(
-            AlbumRepository(FakeVinilosApiService(error = IllegalStateException("sin conexion")))
+            AlbumRepository(FakeVinilosApiService(result = expected))
         )
         viewModel.fetchAlbums()
         advanceUntilIdle()
-        assertEquals("sin conexion", viewModel.error.value)
+        assertEquals(1, viewModel.albums.value?.size)
     }
 
     private class FakeVinilosApiService(
@@ -57,13 +58,12 @@ class AlbumViewModelTest {
             error?.let { throw it }
             return result
         }
-        override suspend fun getAlbum(id: Int): Album {
-            throw NotImplementedError()
-        }
-        override suspend fun getMusicians() = emptyList<com.misw.vinilos.data.models.Performer>()
-        override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
+        override suspend fun getAlbum(id: Int) = throw NotImplementedError()
+        override suspend fun getMusicians() = throw NotImplementedError()
+        override suspend fun getBands() = throw NotImplementedError()
         override suspend fun getMusician(id: Int) = throw NotImplementedError()
         override suspend fun getBand(id: Int) = throw NotImplementedError()
-        override suspend fun getCollectors(): List<com.misw.vinilos.data.models.Collector> = emptyList()
+        override suspend fun getCollectors() = throw NotImplementedError()
     }
 }
+

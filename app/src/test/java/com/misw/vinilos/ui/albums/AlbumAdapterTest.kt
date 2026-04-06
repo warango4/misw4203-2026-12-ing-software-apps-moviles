@@ -20,7 +20,6 @@ class AlbumAdapterTest {
             Album(2, "Album 2", "", "Pop")
         )
         val adapter = AlbumAdapter(albums) { }
-
         assertEquals(2, adapter.itemCount)
     }
 
@@ -29,8 +28,8 @@ class AlbumAdapterTest {
         val album = Album(1, "Revolver", "", "Rock")
         var clickedAlbum: Album? = null
         val adapter = AlbumAdapter(listOf(album)) { clickedAlbum = it }
-        val parent = FrameLayout(RuntimeEnvironment.getApplication())
-
+        val context = androidx.appcompat.view.ContextThemeWrapper(RuntimeEnvironment.getApplication(), com.misw.vinilos.R.style.Theme_Vinilos)
+        val parent = FrameLayout(context)
         val holder = adapter.onCreateViewHolder(parent, 0)
         adapter.onBindViewHolder(holder, 0)
 

@@ -82,5 +82,6 @@ class PerformerRepositoryTest {
         }
         override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
         override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
+        override suspend fun getCollectors(): List<com.misw.vinilos.data.models.Collector> = emptyList()
     }
 }

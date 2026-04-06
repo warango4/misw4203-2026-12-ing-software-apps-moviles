@@ -51,6 +51,7 @@ class PerformerRepositoryTest2 {
             error?.let { throw it }
             return musicianResult ?: throw NotImplementedError()
         }
+        override suspend fun getCollectors(): List<com.misw.vinilos.data.models.Collector> = emptyList()
         override suspend fun getBand(id: Int): Performer {
             error?.let { throw it }
             return bandResult ?: throw NotImplementedError()

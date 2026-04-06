@@ -27,7 +27,6 @@ class PerformerDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Evita que el toolbar quede sin título mientras carga la data
         requireActivity().title = ""
 
         val performerId = arguments?.getInt("performerId") ?: throw IllegalArgumentException("performerId required")
@@ -49,7 +48,6 @@ class PerformerDetailFragment : Fragment() {
         viewModel.performer.observe(viewLifecycleOwner) { performer ->
             Log.d("PerformerDetailFragment", "Cargando detalle de: ${performer.name}")
 
-            // Título dinámico en el toolbar (reemplaza el label fijo del nav_graph)
             requireActivity().title = performer.name
 
             binding.performerName.text = performer.name
