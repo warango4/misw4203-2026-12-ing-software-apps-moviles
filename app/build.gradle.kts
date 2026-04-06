@@ -59,6 +59,7 @@ dependencies {
     testImplementation("org.robolectric:robolectric:4.13")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
 
     // Retrofit - llamadas HTTP
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
