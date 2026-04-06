@@ -11,3 +11,4 @@ local.properties
 
 # Configuración local de daemon de Gradle
 gradle/gradle-daemon-jvm.properties
+/app/imagesMockup/
