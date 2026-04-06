@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.misw.vinilos.databinding.FragmentAlbumListBinding
 
 class AlbumListFragment : Fragment() {
@@ -35,6 +36,9 @@ class AlbumListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("AlbumListFragment", "onViewCreated called")
+
+        // Mockup: grid de 2 columnas
+        binding.rvAlbums.layoutManager = GridLayoutManager(requireContext(), 2)
         observeAlbums()
         Log.d("AlbumListFragment", "Calling fetchAlbums on ViewModel")
         viewModel.fetchAlbums()

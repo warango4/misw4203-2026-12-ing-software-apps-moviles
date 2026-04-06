@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.misw.vinilos.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
@@ -17,8 +18,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+
+        // Top-level destinations para BottomNavigation (sin botón Up)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.AlbumListFragment, R.id.PerformerListFragment, R.id.CollectorsFragment)
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        // Conectar bottom nav con el NavController
+        binding.bottomNavigation.setupWithNavController(navController)
         Log.d("MainActivity", "onCreate finished setting up Navigation")
     }
     override fun onSupportNavigateUp(): Boolean {

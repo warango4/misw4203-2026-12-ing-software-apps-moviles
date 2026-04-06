@@ -4,97 +4,153 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/vin_bg"
+    android:fillViewport="true"
     tools:context=".ui.albumdetail.AlbumDetailFragment">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
+
+        <!-- Header image -->
         <ImageView
             android:id="@+id/albumCover"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/header_height"
             android:scaleType="centerCrop"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:src="@tools:sample/backgrounds/scenic" />
+
+        <!-- Overlay for readability -->
+        <View
+            android:id="@+id/headerOverlay"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/header_height"
+            android:background="@drawable/bg_header_overlay"
+            app:layout_constraintTop_toTopOf="@id/albumCover"
+            app:layout_constraintStart_toStartOf="@id/albumCover"
+            app:layout_constraintEnd_toEndOf="@id/albumCover" />
+
         <TextView
             android:id="@+id/albumName"
+            style="@style/TextAppearance.Vinilos.ScreenTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:layout_marginStart="@dimen/space_screen"
+            android:layout_marginEnd="@dimen/space_screen"
+            android:layout_marginBottom="@dimen/space_s"
+            app:layout_constraintBottom_toTopOf="@id/albumReleaseDate"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/albumCover"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Album Name" />
-        <TextView
-            android:id="@+id/albumGenre"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/albumCover"
-            app:layout_constraintTop_toBottomOf="@id/albumName"
-            tools:text="Genre" />
+            android:shadowColor="@android:color/black"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1.2"
+            tools:text="Acoustic Soul" />
+
         <TextView
             android:id="@+id/albumReleaseDate"
+            style="@style/TextAppearance.Vinilos.Meta"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/albumCover"
-            app:layout_constraintTop_toBottomOf="@id/albumGenre"
-            tools:text="2020-01-01" />
-        <TextView
-            android:id="@+id/albumRecordLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/albumCover"
-            app:layout_constraintTop_toBottomOf="@id/albumReleaseDate"
-            tools:text="Elektra" />
-        <TextView
-            android:id="@+id/albumDescription"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/space_screen"
+            android:layout_marginEnd="@dimen/space_screen"
+            android:layout_marginBottom="@dimen/space_m"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintBottom_toBottomOf="@id/albumCover"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:shadowColor="@android:color/black"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1.2"
+            tools:text="Sarah Jenkins • 2022" />
+
+        <!-- Content container -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contentContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/space_screen"
+            android:paddingEnd="@dimen/space_screen"
+            android:paddingTop="@dimen/space_l"
+            android:paddingBottom="@dimen/space_xl"
             app:layout_constraintTop_toBottomOf="@id/albumCover"
-            tools:text="Album description goes here..." />
-        <TextView
-            android:id="@+id/tracksTitleLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Tracks / Canciones"
-            android:textStyle="bold"
-            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/albumDescription" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/tracksRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tracksTitleLabel"
-            tools:listitem="@layout/item_track" />
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/albumGenre"
+                style="@style/TextAppearance.Vinilos.Genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_genre_pill"
+                android:textColor="@color/vin_bg"
+                tools:text="Indie Folk"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/albumRecordLabel"
+                style="@style/TextAppearance.Vinilos.Meta"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_xs"
+                tools:text="Independent"
+                app:layout_constraintTop_toBottomOf="@id/albumGenre"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/albumDescription"
+                style="@style/TextAppearance.Vinilos.BodyJustified"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m"
+                tools:targetApi="26"
+                android:justificationMode="inter_word"
+                tools:text="Stripped down and raw..."
+                app:layout_constraintTop_toBottomOf="@id/albumRecordLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/tracksTitleLabel"
+                style="@style/TextAppearance.Vinilos.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_l"
+                android:text="Tracks"
+                app:layout_constraintTop_toBottomOf="@id/albumDescription"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tracksRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_s"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/tracksTitleLabel"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:listitem="@layout/item_track" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

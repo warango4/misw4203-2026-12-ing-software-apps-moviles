@@ -13,7 +13,6 @@ import com.misw.vinilos.R
 import com.misw.vinilos.data.network.VinilosApiService
 import com.misw.vinilos.data.repository.PerformerRepository
 import com.misw.vinilos.databinding.FragmentPerformerDetailBinding
-import com.misw.vinilos.ui.albumdetail.TrackAdapter
 import com.misw.vinilos.ui.albums.AlbumAdapter
 class PerformerDetailFragment : Fragment() {
     private var _binding: FragmentPerformerDetailBinding? = null
@@ -27,6 +26,10 @@ class PerformerDetailFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Evita que el toolbar quede sin título mientras carga la data
+        requireActivity().title = ""
+
         val performerId = arguments?.getInt("performerId") ?: throw IllegalArgumentException("performerId required")
         val isBand = arguments?.getBoolean("isBand") ?: throw IllegalArgumentException("isBand flag required")
         val apiService = VinilosApiService.create()
@@ -36,7 +39,7 @@ class PerformerDetailFragment : Fragment() {
         val albumAdapter = AlbumAdapter(emptyList()) { album ->
             try {
                 Log.d("PerformerDetailFragment", "Navegando a detalle de Album ${album.name}")
-                val bundle = android.os.Bundle().apply { putInt("albumId", album.id) }
+                val bundle = Bundle().apply { putInt("albumId", album.id) }
                 findNavController().navigate(R.id.action_PerformerDetailFragment_to_AlbumDetailFragment, bundle)
             } catch (e: Exception) {
                Log.e("PerformerDetailFragment", "Issue routing to album detail", e)
@@ -45,6 +48,10 @@ class PerformerDetailFragment : Fragment() {
         binding.rvAlbums.adapter = albumAdapter
         viewModel.performer.observe(viewLifecycleOwner) { performer ->
             Log.d("PerformerDetailFragment", "Cargando detalle de: ${performer.name}")
+
+            // Título dinámico en el toolbar (reemplaza el label fijo del nav_graph)
+            requireActivity().title = performer.name
+
             binding.performerName.text = performer.name
             binding.performerDescription.text = performer.description
             Glide.with(this)
@@ -52,7 +59,7 @@ class PerformerDetailFragment : Fragment() {
                 .into(binding.performerImage)
             performer.albums?.let {
                 binding.rvAlbums.adapter = AlbumAdapter(it) { album ->
-                    val bundle = android.os.Bundle().apply { putInt("albumId", album.id) }
+                    val bundle = Bundle().apply { putInt("albumId", album.id) }
                     findNavController().navigate(R.id.action_PerformerDetailFragment_to_AlbumDetailFragment, bundle)
                 }
             }

@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Legacy -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Mockup Dark Theme -->
+    <color name="vin_bg">#FF0F1012</color>
+    <color name="vin_surface">#FF181A1F</color>
+    <color name="vin_surface_high">#FF20232A</color>
+    <color name="vin_outline">#FF2C2F38</color>
+
+    <color name="vin_on_surface">#FFFFFFFF</color>
+    <color name="vin_on_surface_muted">#FFB5B8C2</color>
+
+    <color name="vin_primary">#FFB58CFF</color>
+    <color name="vin_secondary">#FFFFC44D</color>
+
+    <!-- Selector para bottom nav (en res/color) -->
 </resources>

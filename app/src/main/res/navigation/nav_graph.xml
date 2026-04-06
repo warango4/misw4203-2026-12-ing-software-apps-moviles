@@ -3,23 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
-    <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.misw.vinilos.FirstFragment"
-        android:label="First Fragment"
-        tools:layout="@layout/fragment_first">
-        <action
-            android:id="@+id/action_FirstFragment_to_AlbumListFragment"
-            app:destination="@id/AlbumListFragment" />
-        <action
-            android:id="@+id/action_FirstFragment_to_PerformerListFragment"
-            app:destination="@id/PerformerListFragment" />
-    </fragment>
+    app:startDestination="@id/AlbumListFragment">
     <fragment
         android:id="@+id/AlbumListFragment"
         android:name="com.misw.vinilos.ui.albums.AlbumListFragment"
-        android:label="Catalogo de Albumes"
+        android:label="Albums"
         tools:layout="@layout/fragment_album_list">
         <action
             android:id="@+id/action_AlbumListFragment_to_AlbumDetailFragment"
@@ -29,7 +17,7 @@
     <fragment
         android:id="@+id/AlbumDetailFragment"
         android:name="com.misw.vinilos.ui.albumdetail.AlbumDetailFragment"
-        android:label="Detalle del álbum"
+        android:label=""
         tools:layout="@layout/fragment_album_detail">
         <argument
             android:name="albumId"
@@ -49,7 +37,7 @@
     <fragment
         android:id="@+id/PerformerDetailFragment"
         android:name="com.misw.vinilos.ui.performers.PerformerDetailFragment"
-        android:label="Detalle de Artista"
+        android:label=""
         tools:layout="@layout/fragment_performer_detail">
         <argument
             android:name="performerId"
@@ -61,4 +49,11 @@
             android:id="@+id/action_PerformerDetailFragment_to_AlbumDetailFragment"
             app:destination="@id/AlbumDetailFragment" />
     </fragment>
+
+    <!-- Placeholder para Collectors (se implementará más adelante) -->
+    <fragment
+        android:id="@+id/CollectorsFragment"
+        android:name="com.misw.vinilos.ui.collectors.CollectorsFragment"
+        android:label="Collectors"
+        tools:layout="@layout/fragment_collectors" />
 </navigation>
