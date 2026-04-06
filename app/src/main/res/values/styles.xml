@@ -16,8 +16,18 @@
         <item name="android:textColor">@color/vin_on_surface</item>
     </style>
 
+    <!-- BodyJustified: la justificación se setea en el XML con android:justificationMode (API 26+) -->
+    <style name="TextAppearance.Vinilos.BodyJustified" parent="TextAppearance.Vinilos.Body" />
+
     <style name="TextAppearance.Vinilos.Meta" parent="TextAppearance.MaterialComponents.Body2">
         <item name="android:textColor">@color/vin_on_surface_muted</item>
+    </style>
+
+    <!-- Album genre emphasized -->
+    <style name="TextAppearance.Vinilos.Genre" parent="TextAppearance.Vinilos.Meta">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/vin_on_surface</item>
     </style>
 
     <style name="TextAppearance.Vinilos.Accent" parent="TextAppearance.MaterialComponents.Body2">

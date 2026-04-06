@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/AlbumListFragment"
         android:name="com.misw.vinilos.ui.albums.AlbumListFragment"
-        android:label="Catalogo de Albumes"
+        android:label="Albums"
         tools:layout="@layout/fragment_album_list">
         <action
             android:id="@+id/action_AlbumListFragment_to_AlbumDetailFragment"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/AlbumDetailFragment"
         android:name="com.misw.vinilos.ui.albumdetail.AlbumDetailFragment"
-        android:label="Detalle del álbum"
+        android:label=""
         tools:layout="@layout/fragment_album_detail">
         <argument
             android:name="albumId"
@@ -37,7 +37,7 @@
     <fragment
         android:id="@+id/PerformerDetailFragment"
         android:name="com.misw.vinilos.ui.performers.PerformerDetailFragment"
-        android:label="Detalle de Artista"
+        android:label=""
         tools:layout="@layout/fragment_performer_detail">
         <argument
             android:name="performerId"

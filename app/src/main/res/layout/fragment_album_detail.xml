@@ -40,10 +40,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_screen"
             android:layout_marginEnd="@dimen/space_screen"
-            android:layout_marginTop="@dimen/space_l"
-            app:layout_constraintTop_toTopOf="@id/albumCover"
+            android:layout_marginBottom="@dimen/space_s"
+            app:layout_constraintBottom_toTopOf="@id/albumReleaseDate"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:shadowColor="@android:color/black"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1.2"
             tools:text="Acoustic Soul" />
 
         <TextView
@@ -53,10 +57,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_screen"
             android:layout_marginEnd="@dimen/space_screen"
-            android:layout_marginTop="@dimen/space_xs"
-            app:layout_constraintTop_toBottomOf="@id/albumName"
+            android:layout_marginBottom="@dimen/space_m"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintBottom_toBottomOf="@id/albumCover"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:shadowColor="@android:color/black"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1.2"
             tools:text="Sarah Jenkins • 2022" />
 
         <!-- Content container -->
@@ -74,13 +84,15 @@
 
             <TextView
                 android:id="@+id/albumGenre"
-                style="@style/TextAppearance.Vinilos.Meta"
-                android:layout_width="0dp"
+                style="@style/TextAppearance.Vinilos.Genre"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_genre_pill"
+                android:textColor="@color/vin_bg"
                 tools:text="Indie Folk"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                />
 
             <TextView
                 android:id="@+id/albumRecordLabel"
@@ -95,10 +107,12 @@
 
             <TextView
                 android:id="@+id/albumDescription"
-                style="@style/TextAppearance.Vinilos.Body"
+                style="@style/TextAppearance.Vinilos.BodyJustified"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_m"
+                tools:targetApi="26"
+                android:justificationMode="inter_word"
                 tools:text="Stripped down and raw..."
                 app:layout_constraintTop_toBottomOf="@id/albumRecordLabel"
                 app:layout_constraintStart_toStartOf="parent"
