@@ -8,10 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.misw.vinilos.databinding.FragmentAlbumDetailBinding
-import com.misw.vinilos.data.network.VinilosApiService
+import com.misw.vinilos.data.network.VinilosServiceAdapter
 import com.misw.vinilos.data.repository.AlbumRepository
 
 class AlbumDetailFragment : Fragment() {
@@ -31,7 +30,7 @@ class AlbumDetailFragment : Fragment() {
         requireActivity().title = ""
 
         val albumId = arguments?.getInt("albumId") ?: throw IllegalArgumentException("albumId required")
-        val apiService = VinilosApiService.create()
+        val apiService = VinilosServiceAdapter.createApiService()
         val repository = AlbumRepository(apiService)
         val factory = AlbumDetailViewModelFactory(repository, albumId)
         val viewModel: AlbumDetailViewModel by viewModels { factory }
