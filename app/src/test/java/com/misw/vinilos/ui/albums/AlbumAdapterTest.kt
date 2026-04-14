@@ -1,6 +1,8 @@
 package com.misw.vinilos.ui.albums
 
+import android.view.ContextThemeWrapper
 import android.widget.FrameLayout
+import com.misw.vinilos.R
 import com.misw.vinilos.data.models.Album
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -29,7 +31,8 @@ class AlbumAdapterTest {
         val album = Album(1, "Revolver", "", "Rock")
         var clickedAlbum: Album? = null
         val adapter = AlbumAdapter(listOf(album)) { clickedAlbum = it }
-        val parent = FrameLayout(RuntimeEnvironment.getApplication())
+        val themedContext = ContextThemeWrapper(RuntimeEnvironment.getApplication(), R.style.Theme_Vinilos)
+        val parent = FrameLayout(themedContext)
 
         val holder = adapter.onCreateViewHolder(parent, 0)
         adapter.onBindViewHolder(holder, 0)

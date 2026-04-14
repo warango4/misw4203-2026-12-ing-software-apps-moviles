@@ -10,13 +10,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.misw.vinilos.R
-import com.misw.vinilos.data.network.VinilosApiService
+import com.misw.vinilos.data.network.VinilosServiceAdapter
 import com.misw.vinilos.data.repository.PerformerRepository
 import com.misw.vinilos.databinding.FragmentPerformerDetailBinding
 import com.misw.vinilos.ui.albums.AlbumAdapter
 class PerformerDetailFragment : Fragment() {
     private var _binding: FragmentPerformerDetailBinding? = null
     private val binding get() = _binding!!
+    private lateinit var albumAdapter: AlbumAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,17 +33,17 @@ class PerformerDetailFragment : Fragment() {
 
         val performerId = arguments?.getInt("performerId") ?: throw IllegalArgumentException("performerId required")
         val isBand = arguments?.getBoolean("isBand") ?: throw IllegalArgumentException("isBand flag required")
-        val apiService = VinilosApiService.create()
+        val apiService = VinilosServiceAdapter.createApiService()
         val repository = PerformerRepository(apiService)
         val factory = PerformerDetailViewModelFactory(repository, performerId, isBand)
         val viewModel: PerformerDetailViewModel by viewModels { factory }
-        val albumAdapter = AlbumAdapter(emptyList()) { album ->
+        albumAdapter = AlbumAdapter(emptyList()) { album ->
             try {
                 Log.d("PerformerDetailFragment", "Navegando a detalle de Album ${album.name}")
                 val bundle = Bundle().apply { putInt("albumId", album.id) }
                 findNavController().navigate(R.id.action_PerformerDetailFragment_to_AlbumDetailFragment, bundle)
             } catch (e: Exception) {
-               Log.e("PerformerDetailFragment", "Issue routing to album detail", e)
+                Log.e("PerformerDetailFragment", "Issue routing to album detail", e)
             }
         }
         binding.rvAlbums.adapter = albumAdapter
@@ -57,11 +58,17 @@ class PerformerDetailFragment : Fragment() {
             Glide.with(this)
                 .load(performer.image)
                 .into(binding.performerImage)
-            performer.albums?.let {
-                binding.rvAlbums.adapter = AlbumAdapter(it) { album ->
-                    val bundle = Bundle().apply { putInt("albumId", album.id) }
-                    findNavController().navigate(R.id.action_PerformerDetailFragment_to_AlbumDetailFragment, bundle)
+            performer.albums?.let { albums ->
+                albumAdapter = AlbumAdapter(albums) { album ->
+                    try {
+                        Log.d("PerformerDetailFragment", "Navegando a detalle de Album ${album.name}")
+                        val bundle = Bundle().apply { putInt("albumId", album.id) }
+                        findNavController().navigate(R.id.action_PerformerDetailFragment_to_AlbumDetailFragment, bundle)
+                    } catch (e: Exception) {
+                        Log.e("PerformerDetailFragment", "Issue routing to album detail", e)
+                    }
                 }
+                binding.rvAlbums.adapter = albumAdapter
             }
         }
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
