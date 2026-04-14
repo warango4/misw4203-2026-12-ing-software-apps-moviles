@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.misw.vinilos.data.network.VinilosApiService
+import com.misw.vinilos.data.network.VinilosServiceAdapter
 import com.misw.vinilos.data.repository.PerformerRepository
 import com.misw.vinilos.databinding.FragmentPerformerListBinding
 class PerformerListFragment : Fragment() {
@@ -16,7 +16,7 @@ class PerformerListFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: PerformerViewModel by viewModels(
         factoryProducer = {
-            PerformerViewModelFactory(PerformerRepository(VinilosApiService.create()))
+            PerformerViewModelFactory(PerformerRepository(VinilosServiceAdapter.createApiService()))
         }
     )
     override fun onCreateView(

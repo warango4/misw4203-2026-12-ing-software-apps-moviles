@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.misw.vinilos.R
-import com.misw.vinilos.data.network.VinilosApiService
+import com.misw.vinilos.data.network.VinilosServiceAdapter
 import com.misw.vinilos.data.repository.PerformerRepository
 import com.misw.vinilos.databinding.FragmentPerformerDetailBinding
 import com.misw.vinilos.ui.albums.AlbumAdapter
@@ -31,7 +31,7 @@ class PerformerDetailFragment : Fragment() {
 
         val performerId = arguments?.getInt("performerId") ?: throw IllegalArgumentException("performerId required")
         val isBand = arguments?.getBoolean("isBand") ?: throw IllegalArgumentException("isBand flag required")
-        val apiService = VinilosApiService.create()
+        val apiService = VinilosServiceAdapter.createApiService()
         val repository = PerformerRepository(apiService)
         val factory = PerformerDetailViewModelFactory(repository, performerId, isBand)
         val viewModel: PerformerDetailViewModel by viewModels { factory }

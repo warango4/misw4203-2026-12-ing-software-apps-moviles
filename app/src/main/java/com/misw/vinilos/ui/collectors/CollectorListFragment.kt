@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.misw.vinilos.data.network.VinilosApiService
+import com.misw.vinilos.data.network.VinilosServiceAdapter
 import com.misw.vinilos.data.repository.CollectorRepository
 import com.misw.vinilos.databinding.FragmentCollectorListBinding
 
@@ -18,7 +18,7 @@ class CollectorListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: CollectorViewModel by viewModels {
-        CollectorViewModelFactory(CollectorRepository(VinilosApiService.create()))
+        CollectorViewModelFactory(CollectorRepository(VinilosServiceAdapter.createApiService()))
     }
 
     override fun onCreateView(

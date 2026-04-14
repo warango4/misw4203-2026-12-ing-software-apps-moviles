@@ -1,9 +1,8 @@
 package com.misw.vinilos.data.network
 
 import com.misw.vinilos.data.models.Album
+import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.models.Performer
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -27,14 +26,5 @@ interface VinilosApiService {
     suspend fun getBand(@Path("id") id: Int): Performer
 
     @GET("collectors")
-    suspend fun getCollectors(): List<com.misw.vinilos.data.models.Collector>
-
-    companion object {
-        fun create(): VinilosApiService =
-            Retrofit.Builder()
-                .baseUrl(com.misw.vinilos.BuildConfig.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(VinilosApiService::class.java)
-    }
+    suspend fun getCollectors(): List<Collector>
 }

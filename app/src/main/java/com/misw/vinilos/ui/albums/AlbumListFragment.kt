@@ -3,7 +3,7 @@ package com.misw.vinilos.ui.albums
 import android.util.Log
 import com.misw.vinilos.data.models.Album
 import com.misw.vinilos.data.repository.AlbumRepository
-import com.misw.vinilos.data.network.VinilosApiService
+import com.misw.vinilos.data.network.VinilosServiceAdapter
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,7 +23,7 @@ class AlbumListFragment : Fragment() {
 
     private val viewModel: AlbumViewModel by viewModels(
         factoryProducer = {
-            AlbumViewModelFactory(AlbumRepository(VinilosApiService.create()))
+            AlbumViewModelFactory(AlbumRepository(VinilosServiceAdapter.createApiService()))
         }
     )
 
