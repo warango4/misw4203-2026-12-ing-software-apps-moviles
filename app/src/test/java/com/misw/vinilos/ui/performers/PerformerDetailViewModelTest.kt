@@ -9,6 +9,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -81,6 +82,26 @@ class PerformerDetailViewModelTest {
         advanceUntilIdle()
         assertEquals(expectedMusician, viewModel.performer.value)
         assertEquals(false, viewModel.isLoading.value)
+    }
+
+    @Test
+    fun fetchPerformerDetail_band_success_performerNoEsNull() = runTest {
+        val expectedBand = Performer(id = 5, name = "Soda Stereo", image = "url", description = "Rock")
+        val fakeApiService = object : VinilosApiService {
+            override suspend fun getAlbums(): List<Album> = emptyList()
+            override suspend fun getAlbum(id: Int): Album = throw NotImplementedError()
+            override suspend fun getMusicians(): List<Performer> = emptyList()
+            override suspend fun getBands(): List<Performer> = emptyList()
+            override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
+            override suspend fun getBand(id: Int): Performer = expectedBand
+        }
+        val repository = PerformerRepository(fakeApiService)
+        val viewModel = PerformerDetailViewModel(repository, performerId = 5, isBand = true)
+        viewModel.performer.observeForever {}
+        advanceUntilIdle()
+
+        assert(viewModel.performer.value != null)
+        assertNull(viewModel.error.value)
     }
 
     @Test

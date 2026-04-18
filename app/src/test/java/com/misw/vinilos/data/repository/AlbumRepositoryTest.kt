@@ -51,6 +51,16 @@ class AlbumRepositoryTest {
     }
 
     @Test
+    fun getAlbums_listaVacia_retornaListaVacia() = runTest {
+        val api = FakeVinilosApiService(result = emptyList())
+        val repository = AlbumRepository(api)
+
+        val result = repository.getAlbums()
+
+        assertEquals(0, result.size)
+    }
+
+    @Test
     fun getAlbum_propagaExcepcionDelApi() = runTest {
         val api = FakeVinilosApiService(error = IllegalStateException("fallo api detallada"))
         val repository = AlbumRepository(api)

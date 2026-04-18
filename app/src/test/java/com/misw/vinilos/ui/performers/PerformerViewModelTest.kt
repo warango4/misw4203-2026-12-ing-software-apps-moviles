@@ -73,6 +73,30 @@ class PerformerViewModelTest {
     }
 
     @Test
+    fun fetchPerformers_combinaMusiciansYBands() = runTest {
+        val musician = Performer(id = 1, name = "Carlos Vives", image = "url", description = "Vallenato")
+        val band = Performer(id = 2, name = "Aterciopelados", image = "url", description = "Rock")
+        val fakeApiService = object : VinilosApiService {
+            override suspend fun getAlbums(): List<Album> = emptyList()
+            override suspend fun getAlbum(id: Int): Album = throw NotImplementedError()
+            override suspend fun getMusicians(): List<Performer> = listOf(musician)
+            override suspend fun getBands(): List<Performer> = listOf(band)
+            override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
+            override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
+        }
+        val repository = PerformerRepository(fakeApiService)
+        val viewModel = PerformerViewModel(repository)
+        viewModel.performers.observeForever {}
+
+        viewModel.fetchPerformers()
+        advanceUntilIdle()
+
+        assertEquals(2, viewModel.performers.value?.size)
+        assertEquals("Aterciopelados", viewModel.performers.value?.get(0)?.name)
+        assertEquals("Carlos Vives", viewModel.performers.value?.get(1)?.name)
+    }
+
+    @Test
     fun fetchPerformers_emptyResponse_updatesLiveDataWithEmptyList() = runTest {
         val fakeApiService = object : VinilosApiService {
             override suspend fun getAlbums(): List<Album> = emptyList()

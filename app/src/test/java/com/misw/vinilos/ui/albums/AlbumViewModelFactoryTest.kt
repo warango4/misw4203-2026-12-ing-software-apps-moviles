@@ -42,19 +42,12 @@ class AlbumViewModelFactoryTest {
     class UnsupportedViewModel : ViewModel()
 
     @Test
-    fun create_withAlbumViewModelClass_returnsAlbumViewModel() {
-        val fakeRepository = AlbumRepository(object : com.misw.vinilos.data.network.VinilosApiService {
-            override suspend fun getAlbums(): List<com.misw.vinilos.data.models.Album> = emptyList()
-            override suspend fun getAlbum(id: Int): com.misw.vinilos.data.models.Album = throw NotImplementedError()
-            override suspend fun getMusicians() = emptyList<com.misw.vinilos.data.models.Performer>()
-            override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
-            override suspend fun getMusician(id: Int) = throw NotImplementedError()
-            override suspend fun getBand(id: Int) = throw NotImplementedError()
-        })
-        val factory = AlbumViewModelFactory(fakeRepository)
+    fun create_instanciasDistintasSonIndependientes() {
+        val factory = AlbumViewModelFactory(repository)
 
-        val viewModel = factory.create(AlbumViewModel::class.java)
+        val vm1 = factory.create(AlbumViewModel::class.java)
+        val vm2 = factory.create(AlbumViewModel::class.java)
 
-        assertEquals(AlbumViewModel::class.java, viewModel::class.java)
+        assert(vm1 !== vm2) { "Factory debe crear instancias distintas" }
     }
 }
