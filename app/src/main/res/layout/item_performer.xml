@@ -58,7 +58,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@android:drawable/ic_media_next"
-            android:tint="@color/vin_on_surface_muted"
+            app:tint="@color/vin_on_surface_muted"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />

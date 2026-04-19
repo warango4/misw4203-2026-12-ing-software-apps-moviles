@@ -7,6 +7,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -80,6 +81,50 @@ class AlbumDetailViewModelTest {
 
         assertTrue(viewModel.error.value?.isNotEmpty() == true)
         assertEquals(false, viewModel.isLoading.value)
+    }
+
+    @Test
+    fun fetchAlbum_error_albumNoEsPublicado() = runTest {
+        val fakeApiService = object : com.misw.vinilos.data.network.VinilosApiService {
+            override suspend fun getAlbums(): List<Album> = emptyList()
+            override suspend fun getAlbum(id: Int): Album = throw Exception("Not Found")
+            override suspend fun getMusicians() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getMusician(id: Int) = throw NotImplementedError()
+            override suspend fun getBand(id: Int) = throw NotImplementedError()
+        }
+        val repository = AlbumRepository(fakeApiService)
+        val viewModel = AlbumDetailViewModel(repository, 999)
+
+        viewModel.album.observeForever {}
+        advanceUntilIdle()
+
+        assertNull(viewModel.album.value)
+    }
+
+    @Test
+    fun fetchAlbum_success_albumConPerformers() = runTest {
+        val performers = listOf(com.misw.vinilos.data.models.Performer(1, "Miles Davis", "url", "Jazz legend"))
+        val expectedAlbum = Album(
+            id = 300, name = "Kind of Blue", cover = "url", genre = "Jazz",
+            performers = performers
+        )
+        val fakeApiService = object : com.misw.vinilos.data.network.VinilosApiService {
+            override suspend fun getAlbums(): List<Album> = emptyList()
+            override suspend fun getAlbum(id: Int): Album = expectedAlbum
+            override suspend fun getMusicians() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
+            override suspend fun getMusician(id: Int) = throw NotImplementedError()
+            override suspend fun getBand(id: Int) = throw NotImplementedError()
+        }
+        val repository = AlbumRepository(fakeApiService)
+        val viewModel = AlbumDetailViewModel(repository, 300)
+
+        viewModel.album.observeForever {}
+        advanceUntilIdle()
+
+        assertEquals(1, viewModel.album.value?.performers?.size)
+        assertEquals("Miles Davis", viewModel.album.value?.performers?.get(0)?.name)
     }
 
     @Test

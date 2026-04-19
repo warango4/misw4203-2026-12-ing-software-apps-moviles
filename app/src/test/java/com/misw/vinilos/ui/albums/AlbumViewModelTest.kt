@@ -53,6 +53,32 @@ class AlbumViewModelTest {
         assertEquals("sin conexion", viewModel.error.value)
     }
 
+    @Test
+    fun fetchAlbums_listaVacia_publicaListaVacia() = runTest {
+        val viewModel = AlbumViewModel(
+            AlbumRepository(FakeVinilosApiService(result = emptyList()))
+        )
+
+        viewModel.fetchAlbums()
+        advanceUntilIdle()
+
+        assertEquals(emptyList<Album>(), viewModel.albums.value)
+        assertNull(viewModel.error.value)
+    }
+
+    @Test
+    fun fetchAlbums_errorNoPublicaAlbumes() = runTest {
+        val viewModel = AlbumViewModel(
+            AlbumRepository(FakeVinilosApiService(error = RuntimeException("fallo")))
+        )
+        viewModel.albums.observeForever {}
+
+        viewModel.fetchAlbums()
+        advanceUntilIdle()
+
+        assertNull(viewModel.albums.value)
+    }
+
     private class FakeVinilosApiService(
         private val result: List<Album> = emptyList(),
         private val error: Throwable? = null

@@ -1,0 +1,36 @@
+name: Merge main into develop
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  merge-main-into-develop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge main into develop
+        uses: tukasz/direct-merge-action@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          source-branch: main
+          target-branch: develop
+        continue-on-error: false
+        
+      - name: Handle merge failure
+        if: failure()
+        run: |
+          echo "❌ Automatic merge failed - likely due to conflicts"
+          echo "Please manually resolve conflicts and merge main into develop"
+          exit 1

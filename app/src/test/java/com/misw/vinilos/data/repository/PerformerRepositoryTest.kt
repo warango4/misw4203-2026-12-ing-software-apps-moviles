@@ -52,6 +52,20 @@ class PerformerRepositoryTest {
         }
     }
     @Test
+    fun getPerformers_onlyBands_returnsSortedBands() = runTest {
+        val bands = listOf(
+            Performer(2, "The Beatles", "url", "desc"),
+            Performer(1, "AC/DC", "url", "desc")
+        )
+        val api = FakePerformerApiService(bandsResult = bands)
+        val repository = PerformerRepository(api)
+        val result = repository.getPerformers()
+        assertEquals(2, result.size)
+        assertEquals("AC/DC", result[0].name)
+        assertEquals("The Beatles", result[1].name)
+    }
+
+    @Test
     fun getPerformers_onlyMusicians_returnsSortedMusicians() = runTest {
         val musicians = listOf(
             Performer(2, "Zendaya", "url", "desc"),
