@@ -51,7 +51,9 @@ class PerformerDetailE2ETest {
     fun e2e_hu04_02_artistaDetalle_muestraNombre() {
         onView(withId(R.id.performerName))
             .check(matches(isDisplayed()))
-            .check(matches(not(withText(""))))
+        // Evita flakiness por carga asíncrona (en CI puede estar vacío aún)
+        onView(withId(R.id.performerName))
+            .perform(EspressoWaits.waitForNonEmptyText(timeoutMs = 30_000))
     }
 
     @Test

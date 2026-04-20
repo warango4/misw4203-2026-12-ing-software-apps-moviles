@@ -1,6 +1,7 @@
 package com.misw.vinilos.utils
 
 import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.PerformException
 import androidx.test.espresso.UiController
@@ -88,6 +89,44 @@ object EspressoWaits {
                     .withActionDescription(description)
                     .withViewDescription(HumanReadables.describe(view))
                     .withCause(TimeoutException("View not found after $timeoutMs ms: $viewMatcher"))
+                    .build()
+            }
+        }
+    }
+
+    /**
+     * Espera hasta que el view (usualmente TextView) tenga texto no vacío.
+     * Útil cuando el contenido llega de red y el assert de not(withText("")) puede flakear.
+     */
+    fun waitForNonEmptyText(
+        timeoutMs: Long = 30_000,
+        intervalMs: Long = 250
+    ): ViewAction {
+        return object : ViewAction {
+            override fun getConstraints(): Matcher<View> = isDisplayed()
+
+            override fun getDescription(): String =
+                "Wait for non-empty text (timeout=$timeoutMs ms)"
+
+            override fun perform(uiController: UiController, view: View) {
+                val startTime = System.currentTimeMillis()
+                val endTime = startTime + timeoutMs
+
+                do {
+                    val text = when (view) {
+                        is TextView -> view.text?.toString().orEmpty()
+                        else -> view.contentDescription?.toString().orEmpty()
+                    }
+
+                    if (text.isNotBlank()) return
+
+                    uiController.loopMainThreadForAtLeast(intervalMs)
+                } while (System.currentTimeMillis() < endTime)
+
+                throw PerformException.Builder()
+                    .withActionDescription(description)
+                    .withViewDescription(HumanReadables.describe(view))
+                    .withCause(TimeoutException("Text still empty after $timeoutMs ms"))
                     .build()
             }
         }

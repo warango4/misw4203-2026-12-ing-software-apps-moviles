@@ -10,13 +10,11 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.misw.vinilos.MainActivity
 import com.misw.vinilos.R
 import com.misw.vinilos.utils.EspressoWaits
-import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.FixMethodOrder
 import org.junit.Rule
@@ -51,7 +49,9 @@ class AlbumDetailE2ETest {
     fun e2e_hu02_02_albumDetalle_muestraNombre() {
         onView(withId(R.id.albumName))
             .check(matches(isDisplayed()))
-            .check(matches(not(withText(""))))
+        // Evita flakiness por carga asíncrona (en CI puede estar vacío aún)
+        onView(withId(R.id.albumName))
+            .perform(EspressoWaits.waitForNonEmptyText(timeoutMs = 30_000))
     }
 
     @Test
@@ -68,8 +68,10 @@ class AlbumDetailE2ETest {
 
     @Test
     fun e2e_hu02_04_albumDetalle_muestraTracks() {
+        // En NestedScrollView, scrollTo() sobre un RecyclerView puede fallar; esperamos a que cargue su adapter
         onView(withId(R.id.tracksRecyclerView))
-            .perform(scrollTo())
+            .perform(EspressoWaits.waitForRecyclerViewItemCount(minItemCount = 1, timeoutMs = 30_000))
+        onView(withId(R.id.tracksRecyclerView))
             .check(matches(isDisplayed()))
             .check(matches(hasMinimumChildCount(1)))
     }
