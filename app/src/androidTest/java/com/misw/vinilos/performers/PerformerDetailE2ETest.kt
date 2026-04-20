@@ -3,19 +3,16 @@ package com.misw.vinilos.performers
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.misw.vinilos.MainActivity
 import com.misw.vinilos.R
 import com.misw.vinilos.utils.EspressoWaits
-import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.FixMethodOrder
 import org.junit.Rule
@@ -65,7 +62,8 @@ class PerformerDetailE2ETest {
     @Test
     fun e2e_hu04_04_artistaDetalle_muestraAlbumesAsociados() {
         onView(withId(R.id.rvAlbums))
-            .perform(scrollTo())
+            .perform(EspressoWaits.waitForRecyclerViewItemCount(minItemCount = 1, timeoutMs = 30_000))
+        onView(withId(R.id.rvAlbums))
             .check(matches(isDisplayed()))
             .check(matches(hasMinimumChildCount(1)))
     }
@@ -73,7 +71,6 @@ class PerformerDetailE2ETest {
     @Test
     fun e2e_hu04_05_artistaDetalle_clickEnAlbum_navegaAlDetalleDelAlbum() {
         onView(withId(R.id.rvAlbums))
-            .perform(scrollTo())
             .perform(EspressoWaits.waitForRecyclerViewItemCount(minItemCount = 1))
             .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView(withId(R.id.albumName))
