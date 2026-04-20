@@ -61,7 +61,6 @@ class PerformerDetailE2ETest {
     @Test
     fun e2e_hu04_04_artistaDetalle_muestraAlbumesAsociados() {
         onView(withId(R.id.rvAlbums))
-            .perform(scrollTo())
             .check(matches(isDisplayed()))
             .check(matches(hasMinimumChildCount(1)))
     }
@@ -69,9 +68,13 @@ class PerformerDetailE2ETest {
     @Test
     fun e2e_hu04_05_artistaDetalle_clickEnAlbum_navegaAlDetalleDelAlbum() {
         onView(withId(R.id.rvAlbums))
-            .perform(scrollTo())
-            .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-        Thread.sleep(5000)
+            .perform(
+                RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+                    0,
+                    click()
+                )
+            )
+
         onView(withId(R.id.albumName))
             .check(matches(isDisplayed()))
     }
