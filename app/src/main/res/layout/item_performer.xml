@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/space_screen"
+    android:layout_marginEnd="@dimen/space_screen"
+    android:layout_marginTop="@dimen/space_s"
+    android:layout_marginBottom="@dimen/space_s"
+    app:cardBackgroundColor="@color/vin_surface"
+    app:cardCornerRadius="@dimen/radius_l"
+    app:cardUseCompatPadding="true"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/space_m">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivPerformerImage"
+            android:layout_width="@dimen/performer_avatar_size"
+            android:layout_height="@dimen/performer_avatar_size"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Vinilos.Circle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:src="@tools:sample/backgrounds/scenic" />
+
+        <TextView
+            android:id="@+id/tvPerformerName"
+            style="@style/TextAppearance.Vinilos.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_m"
+            app:layout_constraintStart_toEndOf="@id/ivPerformerImage"
+            app:layout_constraintTop_toTopOf="@id/ivPerformerImage"
+            app:layout_constraintEnd_toStartOf="@id/ivChevron"
+            tools:text="Sarah Jenkins" />
+
+        <TextView
+            android:id="@+id/tvPerformerAlbumsCount"
+            style="@style/TextAppearance.Vinilos.Meta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_m"
+            android:layout_marginTop="@dimen/space_xs"
+            app:layout_constraintStart_toEndOf="@id/ivPerformerImage"
+            app:layout_constraintTop_toBottomOf="@id/tvPerformerName"
+            app:layout_constraintEnd_toStartOf="@id/ivChevron"
+            tools:text="3 albums" />
+
+        <ImageView
+            android:id="@+id/ivChevron"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/ic_media_next"
+            app:tint="@color/vin_on_surface_muted"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

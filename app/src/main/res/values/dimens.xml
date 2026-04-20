@@ -1,0 +1,21 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Spacing -->
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_s">8dp</dimen>
+    <dimen name="space_m">16dp</dimen>
+    <dimen name="space_l">24dp</dimen>
+    <dimen name="space_xl">32dp</dimen>
+    <dimen name="space_screen">20dp</dimen>
+
+    <!-- Radius -->
+    <dimen name="radius_m">12dp</dimen>
+    <dimen name="radius_l">16dp</dimen>
+
+    <!-- Sizes -->
+    <dimen name="album_cover_grid_height">120dp</dimen>
+    <dimen name="album_cover_grid_height_compact">96dp</dimen>
+    <dimen name="performer_avatar_size">44dp</dimen>
+    <dimen name="header_height">200dp</dimen>
+</resources>

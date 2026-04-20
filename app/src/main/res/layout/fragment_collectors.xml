@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/space_screen"
+    android:paddingEnd="@dimen/space_screen"
+    android:paddingTop="@dimen/space_screen"
+    android:background="@color/vin_bg"
+    tools:context=".ui.collectors.CollectorsFragment">
+
+    <TextView
+        android:id="@+id/tvCollectorsTitle"
+        style="@style/TextAppearance.Vinilos.ScreenTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Collectors"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvCollectorsPlaceholder"
+        style="@style/TextAppearance.Vinilos.Body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_m"
+        android:text="Próximamente"
+        android:textColor="@color/vin_on_surface_muted"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCollectorsTitle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
