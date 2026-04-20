@@ -15,6 +15,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.misw.vinilos.MainActivity
 import com.misw.vinilos.R
+import com.misw.vinilos.utils.EspressoWaits
 import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.FixMethodOrder
@@ -32,10 +33,12 @@ class AlbumDetailE2ETest {
 
     @Before
     fun navegarAlDetalle() {
-        Thread.sleep(8000)
+        onView(withId(R.id.rvAlbums))
+            .perform(EspressoWaits.waitForRecyclerViewItemCount(minItemCount = 1))
         onView(withId(R.id.rvAlbums))
             .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-        Thread.sleep(5000)
+        onView(withId(R.id.albumName))
+            .check(matches(isDisplayed()))
     }
 
     @Test

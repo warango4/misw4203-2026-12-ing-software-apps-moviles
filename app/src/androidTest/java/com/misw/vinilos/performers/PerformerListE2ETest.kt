@@ -12,6 +12,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.misw.vinilos.MainActivity
 import com.misw.vinilos.R
+import com.misw.vinilos.utils.EspressoWaits
 import org.junit.Before
 import org.junit.FixMethodOrder
 import org.junit.Rule
@@ -28,9 +29,9 @@ class PerformerListE2ETest {
 
     @Before
     fun navegarALaPestanaArtistas() {
-        Thread.sleep(3000)
         onView(withId(R.id.PerformerListFragment)).perform(click())
-        Thread.sleep(8000)
+        onView(withId(R.id.rvPerformers))
+            .perform(EspressoWaits.waitForRecyclerViewItemCount(minItemCount = 1))
     }
 
     @Test

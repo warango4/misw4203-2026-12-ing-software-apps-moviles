@@ -14,6 +14,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.misw.vinilos.MainActivity
 import com.misw.vinilos.R
+import com.misw.vinilos.utils.EspressoWaits
 import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.FixMethodOrder
@@ -31,12 +32,13 @@ class PerformerDetailE2ETest {
 
     @Before
     fun navegarAlDetalleDeArtista() {
-        Thread.sleep(3000)
         onView(withId(R.id.PerformerListFragment)).perform(click())
-        Thread.sleep(8000)
+        onView(withId(R.id.rvPerformers))
+            .perform(EspressoWaits.waitForRecyclerViewItemCount(minItemCount = 1))
         onView(withId(R.id.rvPerformers))
             .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-        Thread.sleep(5000)
+        onView(withId(R.id.performerName))
+            .check(matches(isDisplayed()))
     }
 
     @Test
@@ -70,8 +72,8 @@ class PerformerDetailE2ETest {
     fun e2e_hu04_05_artistaDetalle_clickEnAlbum_navegaAlDetalleDelAlbum() {
         onView(withId(R.id.rvAlbums))
             .perform(scrollTo())
+            .perform(EspressoWaits.waitForRecyclerViewItemCount(minItemCount = 1))
             .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-        Thread.sleep(5000)
         onView(withId(R.id.albumName))
             .check(matches(isDisplayed()))
     }

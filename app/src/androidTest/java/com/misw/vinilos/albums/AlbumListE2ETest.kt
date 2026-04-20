@@ -9,6 +9,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.misw.vinilos.MainActivity
 import com.misw.vinilos.R
+import com.misw.vinilos.utils.EspressoWaits
 import com.misw.vinilos.utils.RecyclerViewMatcher
 import org.junit.Before
 import org.junit.FixMethodOrder
@@ -26,7 +27,8 @@ class AlbumListE2ETest {
 
     @Before
     fun esperarCargaInicial() {
-        Thread.sleep(8000)
+        onView(withId(R.id.rvAlbums))
+            .perform(EspressoWaits.waitForRecyclerViewItemCount(minItemCount = 1))
     }
 
     @Test
