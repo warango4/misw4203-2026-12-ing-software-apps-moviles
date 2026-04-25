@@ -1,3 +1,5 @@
+import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.misw.vinilos"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.misw.vinilos"
-        minSdk = 24
-        targetSdk = 35
+        minSdk = 21
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -21,6 +23,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableUnitTestCoverage = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -42,7 +47,48 @@ android {
     }
     testOptions {
         unitTests.isIncludeAndroidResources = true
+        unitTests.all {
+            it.extensions.configure<JacocoTaskExtension> {
+                isIncludeNoLocationClasses = true
+                excludes = listOf("jdk.internal.*")
+            }
+        }
     }
+}
+
+tasks.register<JacocoReport>("jacocoUnitTestReport") {
+    dependsOn("testDebugUnitTest")
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+
+    classDirectories.setFrom(
+        fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+            include(
+                "**/data/repository/*.class",
+                "**/ui/albums/AlbumViewModel.class",
+                "**/ui/albums/AlbumViewModel\$*.class",
+                "**/ui/albums/AlbumViewModelFactory.class",
+                "**/ui/albums/AlbumViewModelFactory\$*.class",
+                "**/ui/albumdetail/AlbumDetailViewModel.class",
+                "**/ui/albumdetail/AlbumDetailViewModel\$*.class",
+                "**/ui/performers/PerformerViewModel.class",
+                "**/ui/performers/PerformerViewModel\$*.class",
+                "**/ui/performers/PerformerDetailViewModel.class",
+                "**/ui/performers/PerformerDetailViewModel\$*.class",
+            )
+        }
+    )
+
+    sourceDirectories.setFrom(files("${projectDir}/src/main/java"))
+
+    executionData.setFrom(
+        fileTree(layout.buildDirectory.get()) {
+            include("outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+        }
+    )
 }
 
 dependencies {
