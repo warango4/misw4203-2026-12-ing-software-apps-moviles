@@ -26,7 +26,6 @@ class AlbumDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Evita que el toolbar quede sin título mientras carga la data
         requireActivity().title = ""
 
         val albumId = arguments?.getInt("albumId") ?: throw IllegalArgumentException("albumId required")
@@ -37,16 +36,13 @@ class AlbumDetailFragment : Fragment() {
         val trackAdapter = TrackAdapter()
         binding.tracksRecyclerView.adapter = trackAdapter
         viewModel.album.observe(viewLifecycleOwner) { album ->
-            Log.d("AlbumDetailFragment", "Displaying album: ${album.name}")
-
-            // Título dinámico en el toolbar (reemplaza el label fijo del nav_graph)
+            Log.d("AlbumDetailFragment", "render: albumId=${album.id}, name=${album.name}")
             requireActivity().title = album.name
 
             binding.albumName.text = album.name
             binding.albumGenre.text = album.genre
             binding.albumDescription.text = album.description
 
-            // UI requirement: show "Artist - Year" (same row). If artist not available, fall back to year/date.
             val artistName = album.performers?.firstOrNull()?.name
             val year = album.releaseDate
                 ?.trim()
@@ -71,7 +67,7 @@ class AlbumDetailFragment : Fragment() {
         }
         viewModel.error.observe(viewLifecycleOwner) { errorMsg ->
             if (errorMsg.isNotEmpty()) {
-                Log.e("AlbumDetailFragment", "Error observed from ViewModel: $errorMsg")
+                Log.e("AlbumDetailFragment", "render: error message=$errorMsg")
                 Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
             }
         }

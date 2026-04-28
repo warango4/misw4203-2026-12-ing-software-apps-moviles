@@ -9,7 +9,7 @@ import kotlinx.coroutines.coroutineScope
 class PerformerRepository(private val api: VinilosApiService) {
     suspend fun getPerformers(): List<Performer> = coroutineScope {
         try {
-            Log.d("PerformerRepository", "Calling API to get musicians and bands concurrently")
+            Log.d("PerformerRepository", "getPerformers: request started (musicians + bands)")
             val musiciansDeferred = async { api.getMusicians() }
             val bandsDeferred = async { api.getBands() }
 
@@ -17,27 +17,27 @@ class PerformerRepository(private val api: VinilosApiService) {
             val bands = bandsDeferred.await()
 
             val allPerformers = musicians + bands
-            Log.d("PerformerRepository", "API returned ${allPerformers.size} combined performers")
+            Log.d("PerformerRepository", "getPerformers: success count=${allPerformers.size}")
 
             allPerformers.sortedBy { it.name }
         } catch (e: Exception) {
-            Log.e("PerformerRepository", "Error fetching performers: ${e.message}", e)
+            Log.e("PerformerRepository", "getPerformers: failure message=${e.message}", e)
             throw e
         }
     }
 
     suspend fun getPerformer(id: Int, isBand: Boolean): Performer {
         try {
-            Log.d("PerformerRepository", "Calling API to get performer $id (isBand=$isBand)")
+            Log.d("PerformerRepository", "getPerformer: request started performerId=$id isBand=$isBand")
             val response = if (isBand) {
                 api.getBand(id)
             } else {
                 api.getMusician(id)
             }
-            Log.d("PerformerRepository", "API returned performer ${response.name}")
+            Log.d("PerformerRepository", "getPerformer: success performerId=$id name=${response.name}")
             return response
         } catch (e: Exception) {
-            Log.e("PerformerRepository", "Error fetching performer $id: ${e.message}", e)
+            Log.e("PerformerRepository", "getPerformer: failure performerId=$id message=${e.message}", e)
             throw e
         }
     }

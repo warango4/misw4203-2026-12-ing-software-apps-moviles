@@ -26,12 +26,12 @@ class PerformerDetailViewModel(
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                Log.d("PerformerDetailVM", "Fetching performer $performerId, isBand: $isBand")
+                Log.d("PerformerDetailViewModel", "fetchPerformer: request started performerId=$performerId isBand=$isBand")
                 val response = repository.getPerformer(performerId, isBand)
                 _performer.value = response
                 _error.value = null
             } catch (e: Exception) {
-                Log.e("PerformerDetailVM", "Error fetching performer $performerId", e)
+                Log.e("PerformerDetailViewModel", "fetchPerformer: failure performerId=$performerId message=${e.message}", e)
                 _error.value = "Error al obtener el detalle del artista"
             } finally {
                 _isLoading.value = false

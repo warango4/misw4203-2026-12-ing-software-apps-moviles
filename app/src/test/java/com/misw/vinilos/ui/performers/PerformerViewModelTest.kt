@@ -1,5 +1,6 @@
 package com.misw.vinilos.ui.performers
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.models.Performer
 import com.misw.vinilos.data.models.Album
 import com.misw.vinilos.data.network.VinilosApiService
@@ -38,6 +39,7 @@ class PerformerViewModelTest {
             override suspend fun getBands(): List<Performer> = listOf(expectedPerformer)
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
+            override suspend fun getCollectors(): List<Collector> = emptyList()
         }
         val repository = PerformerRepository(fakeApiService)
         val viewModel = PerformerViewModel(repository)
@@ -58,6 +60,7 @@ class PerformerViewModelTest {
             override suspend fun getBands(): List<Performer> = emptyList()
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
+            override suspend fun getCollectors(): List<Collector> = emptyList()
         }
         val repository = PerformerRepository(fakeApiService)
 
@@ -83,6 +86,7 @@ class PerformerViewModelTest {
             override suspend fun getBands(): List<Performer> = listOf(band)
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
+            override suspend fun getCollectors(): List<Collector> = emptyList()
         }
         val repository = PerformerRepository(fakeApiService)
         val viewModel = PerformerViewModel(repository)
@@ -105,6 +109,7 @@ class PerformerViewModelTest {
             override suspend fun getBands(): List<Performer> = emptyList()
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
+            override suspend fun getCollectors(): List<Collector> = emptyList()
         }
         val repository = PerformerRepository(fakeApiService)
 

@@ -1,6 +1,7 @@
 package com.misw.vinilos.data.network
 
 import com.misw.vinilos.data.models.Album
+import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.models.Performer
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -23,4 +24,7 @@ interface VinilosApiService {
 
     @GET("bands/{id}")
     suspend fun getBand(@Path("id") id: Int): Performer
+
+    @GET("collectors")
+    suspend fun getCollectors(): List<Collector>
 }

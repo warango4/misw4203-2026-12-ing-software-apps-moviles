@@ -2,6 +2,7 @@ package com.misw.vinilos.ui.albums
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.misw.vinilos.data.models.Album
+import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.network.VinilosApiService
 import com.misw.vinilos.data.repository.AlbumRepository
 import com.misw.vinilos.testutils.MainDispatcherRule
@@ -94,5 +95,6 @@ class AlbumViewModelTest {
         override suspend fun getBands() = emptyList<com.misw.vinilos.data.models.Performer>()
         override suspend fun getMusician(id: Int) = throw NotImplementedError()
         override suspend fun getBand(id: Int) = throw NotImplementedError()
+        override suspend fun getCollectors(): List<Collector> = emptyList()
     }
 }

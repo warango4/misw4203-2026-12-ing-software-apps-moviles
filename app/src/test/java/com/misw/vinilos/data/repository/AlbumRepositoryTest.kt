@@ -1,6 +1,7 @@
 package com.misw.vinilos.data.repository
 
 import com.misw.vinilos.data.models.Album
+import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.network.VinilosApiService
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -98,5 +99,6 @@ class AlbumRepositoryTest {
         override suspend fun getBands(): List<com.misw.vinilos.data.models.Performer> = emptyList()
         override suspend fun getMusician(id: Int): com.misw.vinilos.data.models.Performer = throw NotImplementedError()
         override suspend fun getBand(id: Int): com.misw.vinilos.data.models.Performer = throw NotImplementedError()
+        override suspend fun getCollectors(): List<Collector> = emptyList()
     }
 }
