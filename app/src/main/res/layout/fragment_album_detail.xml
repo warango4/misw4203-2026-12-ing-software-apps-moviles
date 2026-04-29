@@ -124,7 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_l"
-                android:text="Tracks"
+                android:text="@string/title_tracks"
                 app:layout_constraintTop_toBottomOf="@id/albumDescription"
                 app:layout_constraintStart_toStartOf="parent" />
 

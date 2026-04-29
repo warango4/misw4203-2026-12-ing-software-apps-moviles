@@ -7,6 +7,24 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <!-- Collectors (HU06) -->
+    <string name="collector_detail_title">Collector</string>
+    <string name="collector_comments">Comments</string>
+    <string name="collector_favorite_performers">Favorite performers</string>
+    <string name="collector_albums">Albums</string>
+    <string name="collector_comment_title">Comment</string>
+    <string name="collector_album_title_format">Album #%1$d</string>
+    <string name="collector_rating_format">Rating: %1$d</string>
+
+    <!-- Accesibilidad / genéricos -->
+    <string name="album_cover_content_description">Album cover</string>
+
+    <!-- Existing hardcoded UI texts (normalize to strings/en) -->
+    <string name="title_collectors">Collectors</string>
+    <string name="title_albums">Albums</string>
+    <string name="title_tracks">Tracks</string>
+    <string name="collectors_empty">No collectors to show</string>
+
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus

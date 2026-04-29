@@ -69,5 +69,8 @@
         <argument
             android:name="collectorId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_CollectorDetailFragment_to_AlbumDetailFragment"
+            app:destination="@id/AlbumDetailFragment" />
     </fragment>
 </navigation>

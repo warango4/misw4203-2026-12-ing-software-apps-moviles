@@ -36,7 +36,7 @@ class PerformerDetailFragment : Fragment() {
         val repository = PerformerRepository(apiService)
         val factory = PerformerDetailViewModelFactory(repository, performerId, isBand)
         val viewModel: PerformerDetailViewModel by viewModels { factory }
-        albumAdapter = AlbumAdapter(emptyList()) { album ->
+        albumAdapter = AlbumAdapter { album ->
             try {
                 Log.d("PerformerDetailFragment", "navigate: albumDetail albumId=${album.id}, name=${album.name}")
                 val bundle = Bundle().apply { putInt("albumId", album.id) }
@@ -56,16 +56,7 @@ class PerformerDetailFragment : Fragment() {
                 .load(performer.image)
                 .into(binding.performerImage)
             performer.albums?.let { albums ->
-                albumAdapter = AlbumAdapter(albums) { album ->
-                    try {
-                        Log.d("PerformerDetailFragment", "navigate: albumDetail albumId=${album.id}, name=${album.name}")
-                        val bundle = Bundle().apply { putInt("albumId", album.id) }
-                        findNavController().navigate(R.id.action_PerformerDetailFragment_to_AlbumDetailFragment, bundle)
-                    } catch (e: Exception) {
-                        Log.e("PerformerDetailFragment", "Issue routing to album detail", e)
-                    }
-                }
-                binding.rvAlbums.adapter = albumAdapter
+                albumAdapter.submitList(albums)
             }
         }
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->

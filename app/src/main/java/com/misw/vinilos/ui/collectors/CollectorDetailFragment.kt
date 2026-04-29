@@ -6,7 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.misw.vinilos.data.repository.AlbumRepository
+import com.misw.vinilos.data.network.VinilosServiceAdapter
+import com.misw.vinilos.data.repository.CollectorRepository
 import com.misw.vinilos.databinding.FragmentCollectorDetailBinding
+import com.misw.vinilos.ui.albums.AlbumAdapter
+import com.misw.vinilos.R
 
 class CollectorDetailFragment : Fragment() {
 
@@ -24,9 +32,96 @@ class CollectorDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().title = ""
+
         val collectorId = arguments?.getInt("collectorId") ?: -1
-        Log.d("CollectorDetailFragment", "render: collectorId=$collectorId")
-        binding.tvCollectorDetailTitle.text = "Collector #$collectorId"
+        Log.d("CollectorDetailFragment", "onViewCreated: collectorId=$collectorId")
+
+        // La navegación de regreso se maneja desde el botón Up del toolbar (MainActivity).
+
+        val apiService = VinilosServiceAdapter.createApiService()
+        val repository = CollectorRepository(apiService)
+        val albumRepository = AlbumRepository(apiService)
+        val factory = CollectorDetailViewModelFactory(repository, albumRepository, collectorId)
+        val viewModel: CollectorDetailViewModel by viewModels { factory }
+
+        // HU06: por ahora la lista de favoritos NO es navegable.
+        val favoriteAdapter = com.misw.vinilos.ui.performers.PerformerAdapter { _ ->
+            // no-op
+        }
+        binding.rvFavoritePerformers.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvFavoritePerformers.adapter = favoriteAdapter
+        binding.rvFavoritePerformers.isEnabled = false
+
+        val commentAdapter = CollectorCommentAdapter()
+        binding.rvCollectorComments.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvCollectorComments.adapter = commentAdapter
+
+        val albumAdapter = AlbumAdapter { album ->
+            // Navegar al detalle de álbum (igual que otras pantallas)
+            try {
+                val args = Bundle().apply { putInt("albumId", album.id) }
+                findNavController().navigate(R.id.action_PerformerDetailFragment_to_AlbumDetailFragment, args)
+            } catch (_: Exception) {
+                // no-op
+            }
+        }
+        binding.rvCollectorAlbums.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvCollectorAlbums.adapter = albumAdapter
+
+        viewModel.collector.observe(viewLifecycleOwner) { collector ->
+            if (collector != null) {
+                Log.d("CollectorDetailFragment", "render: id=${collector.id} name=${collector.name}")
+                requireActivity().title = collector.name
+
+                binding.tvCollectorDetailTitle.text = collector.name
+                binding.tvCollectorDetailTelephone.text = collector.telephone
+                binding.tvCollectorDetailEmail.text = collector.email
+
+                // HU06: secciones opcionales
+                val favorites = collector.favoritePerformers.orEmpty()
+                val showFavorites = favorites.isNotEmpty()
+                binding.tvFavoritePerformersLabel.visibility = if (showFavorites) View.VISIBLE else View.GONE
+                binding.rvFavoritePerformers.visibility = if (showFavorites) View.VISIBLE else View.GONE
+                if (showFavorites) {
+                    favoriteAdapter.submitList(favorites)
+                }
+
+                val comments = collector.comments.orEmpty()
+                val showComments = comments.isNotEmpty()
+                binding.tvCollectorCommentsLabel.visibility = if (showComments) View.VISIBLE else View.GONE
+                binding.rvCollectorComments.visibility = if (showComments) View.VISIBLE else View.GONE
+                if (showComments) {
+                    commentAdapter.submitList(comments)
+                }
+
+                val albums = collector.collectorAlbums.orEmpty()
+                val showAlbums = albums.isNotEmpty()
+                binding.tvCollectorAlbumsLabel.visibility = if (showAlbums) View.VISIBLE else View.GONE
+                binding.rvCollectorAlbums.visibility = if (showAlbums) View.VISIBLE else View.GONE
+                // El contenido real de los álbumes se observa desde viewModel.albums
+            }
+        }
+
+        viewModel.albums.observe(viewLifecycleOwner) { albums ->
+            val showAlbums = albums.isNotEmpty()
+            binding.tvCollectorAlbumsLabel.visibility = if (showAlbums) View.VISIBLE else View.GONE
+            binding.rvCollectorAlbums.visibility = if (showAlbums) View.VISIBLE else View.GONE
+            albumAdapter.submitList(albums)
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.pbCollectorDetail.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { message ->
+            val showError = !message.isNullOrBlank()
+            binding.tvCollectorDetailError.visibility = if (showError) View.VISIBLE else View.GONE
+            binding.tvCollectorDetailError.text = message.orEmpty()
+        }
+
+        viewModel.fetchCollector()
     }
 
     override fun onDestroyView() {
