@@ -20,17 +20,43 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/pbCollectors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tvCollectorsTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
-        android:id="@+id/tvCollectorsPlaceholder"
+        android:id="@+id/tvCollectorsEmpty"
         style="@style/TextAppearance.Vinilos.Body"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_m"
-        android:text="Próximamente"
-        android:textColor="@color/vin_on_surface_muted"
+        android:gravity="center"
+        android:paddingTop="@dimen/space_l"
+        android:text="No hay coleccionistas para mostrar"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tvCollectorsTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCollectors"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/space_l"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/space_l"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/tvCollectorsTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvCollectorsTitle" />
+        tools:listitem="@layout/item_collector" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

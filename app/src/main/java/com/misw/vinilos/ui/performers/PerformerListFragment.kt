@@ -23,17 +23,17 @@ class PerformerListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Log.d("PerformerListFragment", "onCreateView called")
+        Log.d("PerformerListFragment", "onCreateView")
         _binding = FragmentPerformerListBinding.inflate(inflater, container, false)
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("PerformerListFragment", "onViewCreated called")
+        Log.d("PerformerListFragment", "onViewCreated")
 
         val adapter = PerformerAdapter { performer ->
             try {
-                Log.d("PerformerListFragment", "Navigate to Detail for performer: ${performer.name}")
+                Log.d("PerformerListFragment", "navigate: performerDetail performerId=${performer.id} name=${performer.name}")
                 val isBand = performer.creationDate != null
                 val bundle = android.os.Bundle().apply {
                     putInt("performerId", performer.id)
@@ -41,13 +41,13 @@ class PerformerListFragment : Fragment() {
                 }
                 findNavController().navigate(com.misw.vinilos.R.id.action_PerformerListFragment_to_PerformerDetailFragment, bundle)
             } catch (e: Exception) {
-                Log.e("PerformerListFragment", "Navigation error to performer detail ${e.message}", e)
+                Log.e("PerformerListFragment", "navigate: performerDetail failure message=${e.message}", e)
             }
         }
         binding.rvPerformers.adapter = adapter
 
         viewModel.performers.observe(viewLifecycleOwner) { performers ->
-            Log.d("PerformerListFragment", "Performers observed: ${performers.size}")
+            Log.d("PerformerListFragment", "render: list count=${performers.size}")
             adapter.submitList(performers)
         }
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -55,16 +55,16 @@ class PerformerListFragment : Fragment() {
         }
         viewModel.error.observe(viewLifecycleOwner) { errorMsg ->
             if (!errorMsg.isNullOrEmpty()) {
-                Log.e("PerformerListFragment", "Error observed: $errorMsg")
+                Log.e("PerformerListFragment", "render: error message=$errorMsg")
                 Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_SHORT).show()
             }
         }
-        Log.d("PerformerListFragment", "Calling fetchPerformers on ViewModel")
+        Log.d("PerformerListFragment", "fetchPerformers: requesting data")
         viewModel.fetchPerformers()
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("PerformerListFragment", "onDestroyView called")
+        Log.d("PerformerListFragment", "onDestroyView")
         _binding = null
     }
 }

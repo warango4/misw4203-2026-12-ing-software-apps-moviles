@@ -13,24 +13,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("MainActivity", "onCreate started")
+        Log.d("MainActivity", "onCreate: initializing UI")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
-        // Top-level destinations para BottomNavigation (sin botón Up)
         appBarConfiguration = AppBarConfiguration(
             setOf(R.id.AlbumListFragment, R.id.PerformerListFragment, R.id.CollectorsFragment)
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-        // Conectar bottom nav con el NavController
         binding.bottomNavigation.setupWithNavController(navController)
-        Log.d("MainActivity", "onCreate finished setting up Navigation")
+        Log.d("MainActivity", "onCreate: navigation configured")
     }
     override fun onSupportNavigateUp(): Boolean {
-        Log.d("MainActivity", "onSupportNavigateUp called")
+        Log.d("MainActivity", "onSupportNavigateUp")
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }

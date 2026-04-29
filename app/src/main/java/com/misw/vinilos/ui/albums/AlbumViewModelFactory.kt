@@ -8,12 +8,12 @@ import androidx.lifecycle.ViewModelProvider
 
 class AlbumViewModelFactory(private val repository: AlbumRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        Log.d("AlbumViewModelFactory", "Creating ViewModel block with class: ${modelClass.simpleName}")
+        Log.d("AlbumViewModelFactory", "create: modelClass=${modelClass.simpleName}")
         if (modelClass.isAssignableFrom(AlbumViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return AlbumViewModel(repository) as T
         }
-        Log.e("AlbumViewModelFactory", "Unknown ViewModel class")
+        Log.w("AlbumViewModelFactory", "create: unsupported modelClass=${modelClass.simpleName}")
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

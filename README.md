@@ -50,6 +50,14 @@ Para generar un Release y validar todo el proyecto estructuralmente:
 ./gradlew build
 ```
 
+### Verificación rápida de compilación (tipo "clean + build")
+
+Si quieres validar que **todo compila desde cero** (APK debug + unit tests + androidTest), ejecuta:
+
+```bash
+./gradlew clean assembleDebug assembleDebugUnitTest assembleDebugAndroidTest
+```
+
 ---
 
 ## 3. Cómo ejecutar todos los tests
@@ -62,8 +70,42 @@ Para ejecutar todo el set de pruebas, procesar los resultados y verificar el cor
 ./gradlew test
 ```
 
+### Unit tests (debug)
+
+Para correr únicamente los unit tests del módulo `app` en Debug:
+
+```bash
+./gradlew :app:testDebugUnitTest
+```
+
 Los reportes HTML detallados de las pruebas se generarán internamente en:
 `app/build/reports/tests/testDebugUnitTest/index.html`
+
+### Coverage (JaCoCo) - Unit tests
+
+El proyecto cuenta con un task de JaCoCo para generar el reporte de cobertura de **unit tests**:
+
+```bash
+./gradlew :app:jacocoUnitTestReport
+```
+
+El reporte HTML se genera en:
+
+`app/build/reports/jacoco/jacocoUnitTestReport/html/index.html`
+
+### Tests de UI (Espresso)
+
+Para compilar/ensamblar el APK de instrumentation tests (sin ejecutarlos):
+
+```bash
+./gradlew assembleDebugAndroidTest
+```
+
+Para **ejecutar** los tests de Espresso se requiere un emulador o dispositivo conectado:
+
+```bash
+./gradlew :app:connectedDebugAndroidTest
+```
 
 ---
 

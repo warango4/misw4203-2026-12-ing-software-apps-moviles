@@ -1,5 +1,4 @@
 package com.misw.vinilos.ui.performers
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -26,7 +25,6 @@ class PerformerAdapter(private val onClick: (Performer) -> Unit) :
                 .load(performer.image)
                 .into(binding.ivPerformerImage)
             binding.root.setOnClickListener {
-                Log.d("PerformerAdapter", "Performer clicked: ${performer.name}")
                 onClick(performer)
             }
         }

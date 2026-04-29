@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/vin_bg"
+    android:paddingStart="@dimen/space_screen"
+    android:paddingTop="@dimen/space_screen"
+    android:paddingEnd="@dimen/space_screen"
+    tools:context=".ui.collectors.CollectorDetailFragment">
+
+    <TextView
+        android:id="@+id/tvCollectorDetailTitle"
+        style="@style/TextAppearance.Vinilos.ScreenTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Collector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvCollectorDetailSubtitle"
+        style="@style/TextAppearance.Vinilos.Body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_m"
+        android:text="Detalle en construcción"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvCollectorDetailTitle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -28,7 +28,6 @@ class PerformerDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Evita que el toolbar quede sin título mientras carga la data
         requireActivity().title = ""
 
         val performerId = arguments?.getInt("performerId") ?: throw IllegalArgumentException("performerId required")
@@ -39,7 +38,7 @@ class PerformerDetailFragment : Fragment() {
         val viewModel: PerformerDetailViewModel by viewModels { factory }
         albumAdapter = AlbumAdapter(emptyList()) { album ->
             try {
-                Log.d("PerformerDetailFragment", "Navegando a detalle de Album ${album.name}")
+                Log.d("PerformerDetailFragment", "navigate: albumDetail albumId=${album.id}, name=${album.name}")
                 val bundle = Bundle().apply { putInt("albumId", album.id) }
                 findNavController().navigate(R.id.action_PerformerDetailFragment_to_AlbumDetailFragment, bundle)
             } catch (e: Exception) {
@@ -48,9 +47,7 @@ class PerformerDetailFragment : Fragment() {
         }
         binding.rvAlbums.adapter = albumAdapter
         viewModel.performer.observe(viewLifecycleOwner) { performer ->
-            Log.d("PerformerDetailFragment", "Cargando detalle de: ${performer.name}")
-
-            // Título dinámico en el toolbar (reemplaza el label fijo del nav_graph)
+            Log.d("PerformerDetailFragment", "render: performerId=${performer.id}, name=${performer.name}")
             requireActivity().title = performer.name
 
             binding.performerName.text = performer.name
@@ -61,7 +58,7 @@ class PerformerDetailFragment : Fragment() {
             performer.albums?.let { albums ->
                 albumAdapter = AlbumAdapter(albums) { album ->
                     try {
-                        Log.d("PerformerDetailFragment", "Navegando a detalle de Album ${album.name}")
+                        Log.d("PerformerDetailFragment", "navigate: albumDetail albumId=${album.id}, name=${album.name}")
                         val bundle = Bundle().apply { putInt("albumId", album.id) }
                         findNavController().navigate(R.id.action_PerformerDetailFragment_to_AlbumDetailFragment, bundle)
                     } catch (e: Exception) {
