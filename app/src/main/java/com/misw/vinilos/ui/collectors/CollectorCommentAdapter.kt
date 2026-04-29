@@ -22,7 +22,6 @@ class CollectorCommentAdapter : ListAdapter<CollectorComment, CollectorCommentAd
 
     class VH(private val binding: ItemCollectorCommentBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CollectorComment) {
-            // El backend real no trae el álbum embebido; mostramos un título genérico.
             val ctx = binding.root.context
             binding.tvCommentAlbum.text = ctx.getString(R.string.collector_comment_title)
             binding.tvCommentRating.text = ctx.getString(R.string.collector_rating_format, item.rating)

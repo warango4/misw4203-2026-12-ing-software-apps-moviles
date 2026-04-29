@@ -17,6 +17,10 @@ class CollectorDetailViewModel(
     private val collectorId: Int
 ) : ViewModel() {
 
+    private companion object {
+        private const val TAG = "CollectorDetailVM"
+    }
+
     private val _collector = MutableLiveData<Collector?>(null)
     val collector: LiveData<Collector?> = _collector
 
@@ -41,7 +45,7 @@ class CollectorDetailViewModel(
 
         viewModelScope.launch {
             try {
-                Log.d("CollectorDetailViewModel", "fetchCollector: id=$collectorId")
+                Log.i(TAG, "fetchCollector start id=$collectorId")
                 val detail = repository.getCollector(collectorId)
                 _collector.value = detail
 
@@ -50,10 +54,7 @@ class CollectorDetailViewModel(
                     .mapNotNull { it.album }
 
                 if (embeddedAlbums.isNotEmpty()) {
-                    Log.d(
-                        "CollectorDetailViewModel",
-                        "fetchCollector: embedded albums count=${embeddedAlbums.size}"
-                    )
+                    Log.i(TAG, "fetchCollector embeddedAlbums count=${embeddedAlbums.size}")
                     _albums.value = embeddedAlbums
                 } else {
                     val albumIds = detail.collectorAlbums
@@ -64,19 +65,12 @@ class CollectorDetailViewModel(
                     if (albumIds.isEmpty()) {
                         _albums.value = emptyList()
                     } else {
-                        Log.d(
-                            "CollectorDetailViewModel",
-                            "fetchCollector: embedded albums missing, fallback fetch ids=${albumIds.size}"
-                        )
+                        Log.i(TAG, "fetchCollector fallbackAlbumsFetch idsCount=${albumIds.size}")
                         val albumDetails = albumIds.mapNotNull { id ->
                             try {
                                 albumRepository.getAlbum(id)
                             } catch (e: Exception) {
-                                Log.e(
-                                    "CollectorDetailViewModel",
-                                    "fetchCollector: album fetch failure albumId=$id message=${e.message}",
-                                    e
-                                )
+                                Log.w(TAG, "fetchCollector albumFetchFailure albumId=$id message=${e.message}")
                                 null
                             }
                         }
@@ -84,7 +78,7 @@ class CollectorDetailViewModel(
                     }
                 }
             } catch (e: Exception) {
-                Log.e("CollectorDetailViewModel", "fetchCollector: failure message=${e.message}", e)
+                Log.e(TAG, "fetchCollector failure message=${e.message}", e)
                 _error.value = "No fue posible cargar el detalle del coleccionista"
             } finally {
                 _isLoading.value = false

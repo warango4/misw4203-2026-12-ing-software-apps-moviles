@@ -70,6 +70,17 @@ Para ejecutar todo el set de pruebas, procesar los resultados y verificar el cor
 ./gradlew test
 ```
 
+### Comandos de verificación (orden recomendado)
+
+Para validar el proyecto exactamente en el orden usado en CI/local, ejecuta:
+
+```bash
+./gradlew clean :app:testDebugUnitTest
+./gradlew test
+./gradlew :app:assembleDebugUnitTest :app:assembleDebugAndroidTest
+./gradlew :app:jacocoUnitTestReport
+```
+
 ### Unit tests (debug)
 
 Para correr únicamente los unit tests del módulo `app` en Debug:
@@ -92,6 +103,10 @@ El proyecto cuenta con un task de JaCoCo para generar el reporte de cobertura de
 El reporte HTML se genera en:
 
 `app/build/reports/jacoco/jacocoUnitTestReport/html/index.html`
+
+El XML (útil para CI/sonar) se genera en:
+
+`app/build/reports/jacoco/jacocoUnitTestReport/jacocoUnitTestReport.xml`
 
 ### Tests de UI (Espresso)
 

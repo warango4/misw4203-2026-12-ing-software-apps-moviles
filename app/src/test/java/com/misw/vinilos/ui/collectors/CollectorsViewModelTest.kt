@@ -153,7 +153,6 @@ class CollectorsViewModelTest {
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> {
                 calls++
-                // Keep the first request in-flight so _isLoading remains true
                 delay(50)
                 return emptyList()
             }
@@ -163,11 +162,8 @@ class CollectorsViewModelTest {
         val vm = CollectorsViewModel(CollectorRepository(api))
         vm.isLoading.observeForever { }
 
-        // Force loading true before calling
-        // (guard clause should return before launching any coroutine)
         vm.fetchCollectors()
         runCurrent()
-        // after first call, it will set loading true synchronously; second call should be ignored
         vm.fetchCollectors()
         advanceUntilIdle()
 

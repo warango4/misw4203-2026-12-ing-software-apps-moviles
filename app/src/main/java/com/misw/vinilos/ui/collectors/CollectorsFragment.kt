@@ -16,6 +16,11 @@ import com.misw.vinilos.databinding.FragmentCollectorsBinding
 
 class CollectorsFragment : Fragment() {
 
+    private companion object {
+        private const val TAG = "CollectorsFragment"
+        private const val ARG_COLLECTOR_ID = "collectorId"
+    }
+
     private var _binding: FragmentCollectorsBinding? = null
     private val binding get() = _binding!!
 
@@ -37,16 +42,16 @@ class CollectorsFragment : Fragment() {
 
         adapter = CollectorAdapter(
             onClick = {
-                Log.d("CollectorsFragment", "navigate: collectorDetail collectorId=${it.id}")
+                Log.i(TAG, "navigate to collectorDetail collectorId=${it.id}")
                 try {
-                    val args = Bundle().apply { putInt("collectorId", it.id) }
+                    val args = Bundle().apply { putInt(ARG_COLLECTOR_ID, it.id) }
                     findNavController().navigate(
                         com.misw.vinilos.R.id.action_CollectorsFragment_to_CollectorDetailFragment,
                         args
                     )
                 } catch (e: Exception) {
                     Toast.makeText(requireContext(), "No fue posible abrir el detalle", Toast.LENGTH_SHORT).show()
-                    Log.e("CollectorsFragment", "navigate: collectorDetail failure message=${e.message}", e)
+                    Log.e(TAG, "navigate to collectorDetail failure message=${e.message}", e)
                 }
             }
         )

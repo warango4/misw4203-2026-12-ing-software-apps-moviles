@@ -18,6 +18,12 @@ import com.misw.vinilos.R
 
 class CollectorDetailFragment : Fragment() {
 
+    private companion object {
+        private const val TAG = "CollectorDetailFragment"
+        private const val ARG_COLLECTOR_ID = "collectorId"
+        private const val ARG_ALBUM_ID = "albumId"
+    }
+
     private var _binding: FragmentCollectorDetailBinding? = null
     private val binding get() = _binding!!
 
@@ -35,14 +41,14 @@ class CollectorDetailFragment : Fragment() {
 
         requireActivity().title = ""
 
-        val collectorId = arguments?.getInt("collectorId") ?: -1
-        Log.d("CollectorDetailFragment", "onViewCreated: collectorId=$collectorId")
+        val collectorId = arguments?.getInt(ARG_COLLECTOR_ID) ?: -1
+        Log.i(TAG, "onViewCreated collectorId=$collectorId")
 
         binding.btnCollectorBack.setOnClickListener {
             try {
                 findNavController().navigateUp()
             } catch (e: Exception) {
-                Log.e("CollectorDetailFragment", "navigateUp: failure message=${e.message}", e)
+                Log.e(TAG, "navigateUp failure message=${e.message}", e)
             }
         }
 
@@ -64,10 +70,10 @@ class CollectorDetailFragment : Fragment() {
 
         val albumAdapter = AlbumAdapter { album ->
             try {
-                val args = Bundle().apply { putInt("albumId", album.id) }
+                val args = Bundle().apply { putInt(ARG_ALBUM_ID, album.id) }
                 findNavController().navigate(R.id.action_CollectorDetailFragment_to_AlbumDetailFragment, args)
             } catch (e: Exception) {
-                Log.e("CollectorDetailFragment", "navigate: albumDetail failure message=${e.message}", e)
+                Log.e(TAG, "navigate to albumDetail failure message=${e.message}", e)
             }
         }
         binding.rvCollectorAlbums.layoutManager = LinearLayoutManager(requireContext())
@@ -75,7 +81,7 @@ class CollectorDetailFragment : Fragment() {
 
         viewModel.collector.observe(viewLifecycleOwner) { collector ->
             if (collector != null) {
-                Log.d("CollectorDetailFragment", "render: id=${collector.id} name=${collector.name}")
+                Log.i(TAG, "render collector loaded id=${collector.id}")
                 requireActivity().title = collector.name
 
                 binding.tvCollectorDetailTitle.text = collector.name
@@ -86,6 +92,7 @@ class CollectorDetailFragment : Fragment() {
                 val showFavorites = favorites.isNotEmpty()
                 binding.tvFavoritePerformersLabel.visibility = if (showFavorites) View.VISIBLE else View.GONE
                 binding.rvFavoritePerformers.visibility = if (showFavorites) View.VISIBLE else View.GONE
+                binding.tvFavoritePerformersEmpty.visibility = if (!showFavorites) View.VISIBLE else View.GONE
                 if (showFavorites) {
                     favoriteAdapter.submitList(favorites)
                 }
@@ -94,14 +101,10 @@ class CollectorDetailFragment : Fragment() {
                 val showComments = comments.isNotEmpty()
                 binding.tvCollectorCommentsLabel.visibility = if (showComments) View.VISIBLE else View.GONE
                 binding.rvCollectorComments.visibility = if (showComments) View.VISIBLE else View.GONE
+                binding.tvCollectorCommentsEmpty.visibility = if (!showComments) View.VISIBLE else View.GONE
                 if (showComments) {
                     commentAdapter.submitList(comments)
                 }
-
-                val albums = collector.collectorAlbums.orEmpty()
-                val showAlbums = albums.isNotEmpty()
-                binding.tvCollectorAlbumsLabel.visibility = if (showAlbums) View.VISIBLE else View.GONE
-                binding.rvCollectorAlbums.visibility = if (showAlbums) View.VISIBLE else View.GONE
             }
         }
 
@@ -109,6 +112,7 @@ class CollectorDetailFragment : Fragment() {
             val showAlbums = albums.isNotEmpty()
             binding.tvCollectorAlbumsLabel.visibility = if (showAlbums) View.VISIBLE else View.GONE
             binding.rvCollectorAlbums.visibility = if (showAlbums) View.VISIBLE else View.GONE
+            binding.tvCollectorAlbumsEmpty.visibility = if (!showAlbums) View.VISIBLE else View.GONE
             albumAdapter.submitList(albums)
         }
 

@@ -109,8 +109,6 @@
             app:layout_constraintTop_toBottomOf="@id/tvCollectorDetailEmail"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Comentarios -->
         <TextView
             android:id="@+id/tvCollectorCommentsLabel"
             style="@style/TextAppearance.Vinilos.Title"
@@ -124,6 +122,20 @@
             app:layout_constraintTop_toBottomOf="@id/tvCollectorDetailError"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <TextView
+            android:id="@+id/tvCollectorCommentsEmpty"
+            style="@style/TextAppearance.Vinilos.Body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_screen"
+            android:layout_marginEnd="@dimen/space_screen"
+            android:layout_marginTop="@dimen/space_s"
+            android:text="@string/collector_comments_empty"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tvCollectorCommentsLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCollectorComments"
             android:layout_width="0dp"
@@ -134,12 +146,11 @@
             android:nestedScrollingEnabled="false"
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/tvCollectorCommentsLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvCollectorCommentsEmpty"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:listitem="@layout/item_collector_comment" />
 
-        <!-- Favoritos -->
         <TextView
             android:id="@+id/tvFavoritePerformersLabel"
             style="@style/TextAppearance.Vinilos.Title"
@@ -153,6 +164,20 @@
             app:layout_constraintTop_toBottomOf="@id/rvCollectorComments"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <TextView
+            android:id="@+id/tvFavoritePerformersEmpty"
+            style="@style/TextAppearance.Vinilos.Body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_screen"
+            android:layout_marginEnd="@dimen/space_screen"
+            android:layout_marginTop="@dimen/space_s"
+            android:text="@string/collector_favorite_performers_empty"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tvFavoritePerformersLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFavoritePerformers"
             android:layout_width="0dp"
@@ -163,12 +188,11 @@
             android:nestedScrollingEnabled="false"
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/tvFavoritePerformersLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvFavoritePerformersEmpty"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:listitem="@layout/item_performer" />
 
-        <!-- Álbumes asociados -->
         <TextView
             android:id="@+id/tvCollectorAlbumsLabel"
             style="@style/TextAppearance.Vinilos.Title"
@@ -182,6 +206,20 @@
             app:layout_constraintTop_toBottomOf="@id/rvFavoritePerformers"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <TextView
+            android:id="@+id/tvCollectorAlbumsEmpty"
+            style="@style/TextAppearance.Vinilos.Body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_screen"
+            android:layout_marginEnd="@dimen/space_screen"
+            android:layout_marginTop="@dimen/space_s"
+            android:text="@string/collector_albums_empty"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/tvCollectorAlbumsLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCollectorAlbums"
             android:layout_width="0dp"
@@ -192,7 +230,7 @@
             android:nestedScrollingEnabled="false"
             android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/tvCollectorAlbumsLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvCollectorAlbumsEmpty"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

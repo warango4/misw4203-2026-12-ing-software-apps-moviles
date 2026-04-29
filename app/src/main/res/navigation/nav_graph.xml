@@ -50,7 +50,6 @@
             app:destination="@id/AlbumDetailFragment" />
     </fragment>
 
-    <!-- Placeholder para Collectors (se implementará más adelante) -->
     <fragment
         android:id="@+id/CollectorsFragment"
         android:name="com.misw.vinilos.ui.collectors.CollectorsFragment"
