@@ -77,4 +77,11 @@ class AlbumDetailE2ETest {
         onView(withId(R.id.rvAlbums))
             .check(matches(isDisplayed()))
     }
+
+    @Test
+    fun e2e_hu02_06_reseleccionarTabAlbumes_desdeDetalle_regresaALista() {
+        // Estando en el detalle, re-seleccionar el tab de Álbumes debe volver a la lista.
+        onView(withId(R.id.AlbumListFragment)).perform(click())
+        onView(withId(R.id.rvAlbums)).check(matches(isDisplayed()))
+    }
 }

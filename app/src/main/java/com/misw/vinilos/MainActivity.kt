@@ -2,10 +2,10 @@ package com.misw.vinilos
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.misw.vinilos.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
@@ -23,7 +23,32 @@ class MainActivity : AppCompatActivity() {
             setOf(R.id.AlbumListFragment, R.id.PerformerListFragment, R.id.CollectorsFragment)
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.bottomNavigation.setupWithNavController(navController)
+
+        // BottomNavigation: al tocar un tab, SIEMPRE volver a su lista (root).
+        // Esto evita quedar "atrapado" en un detalle al re-seleccionar el tab.
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            val destId = item.itemId
+
+            val options = NavOptions.Builder()
+                .setPopUpTo(destId, inclusive = false)
+                .setLaunchSingleTop(true)
+                .build()
+
+            navController.navigate(destId, null, options)
+            true
+        }
+
+        // Mantener el tab seleccionado coherente cuando se navega a detalles u otras pantallas.
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val topLevel = setOf(
+                R.id.AlbumListFragment,
+                R.id.PerformerListFragment,
+                R.id.CollectorsFragment
+            )
+            if (destination.id in topLevel) {
+                binding.bottomNavigation.menu.findItem(destination.id)?.isChecked = true
+            }
+        }
         Log.d("MainActivity", "onCreate: navigation configured")
     }
     override fun onSupportNavigateUp(): Boolean {
