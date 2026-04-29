@@ -40,6 +40,7 @@ class PerformerViewModelTest {
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = emptyList()
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
         val repository = PerformerRepository(fakeApiService)
         val viewModel = PerformerViewModel(repository)
@@ -61,6 +62,7 @@ class PerformerViewModelTest {
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = emptyList()
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
         val repository = PerformerRepository(fakeApiService)
 
@@ -87,6 +89,7 @@ class PerformerViewModelTest {
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = emptyList()
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
         val repository = PerformerRepository(fakeApiService)
         val viewModel = PerformerViewModel(repository)
@@ -110,6 +113,7 @@ class PerformerViewModelTest {
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = emptyList()
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
         val repository = PerformerRepository(fakeApiService)
 

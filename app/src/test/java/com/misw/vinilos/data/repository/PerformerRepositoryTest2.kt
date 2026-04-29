@@ -57,5 +57,6 @@ class PerformerRepositoryTest2 {
             return bandResult ?: throw NotImplementedError()
         }
         override suspend fun getCollectors(): List<Collector> = emptyList()
+        override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
     }
 }

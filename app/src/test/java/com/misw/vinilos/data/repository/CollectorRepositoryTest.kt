@@ -33,6 +33,7 @@ class CollectorRepositoryTest {
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = expected
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
 
         val repo = CollectorRepository(api)
@@ -54,6 +55,7 @@ class CollectorRepositoryTest {
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = expected
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
 
         val repo = CollectorRepository(api)
@@ -72,6 +74,7 @@ class CollectorRepositoryTest {
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = throw RuntimeException("API Error")
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
 
         val repo = CollectorRepository(api)

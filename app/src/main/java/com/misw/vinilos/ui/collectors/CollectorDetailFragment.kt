@@ -38,7 +38,13 @@ class CollectorDetailFragment : Fragment() {
         val collectorId = arguments?.getInt("collectorId") ?: -1
         Log.d("CollectorDetailFragment", "onViewCreated: collectorId=$collectorId")
 
-        // La navegación de regreso se maneja desde el botón Up del toolbar (MainActivity).
+        binding.btnCollectorBack.setOnClickListener {
+            try {
+                findNavController().navigateUp()
+            } catch (e: Exception) {
+                Log.e("CollectorDetailFragment", "navigateUp: failure message=${e.message}", e)
+            }
+        }
 
         val apiService = VinilosServiceAdapter.createApiService()
         val repository = CollectorRepository(apiService)
@@ -46,9 +52,7 @@ class CollectorDetailFragment : Fragment() {
         val factory = CollectorDetailViewModelFactory(repository, albumRepository, collectorId)
         val viewModel: CollectorDetailViewModel by viewModels { factory }
 
-        // HU06: por ahora la lista de favoritos NO es navegable.
         val favoriteAdapter = com.misw.vinilos.ui.performers.PerformerAdapter { _ ->
-            // no-op
         }
         binding.rvFavoritePerformers.layoutManager = LinearLayoutManager(requireContext())
         binding.rvFavoritePerformers.adapter = favoriteAdapter
@@ -59,12 +63,11 @@ class CollectorDetailFragment : Fragment() {
         binding.rvCollectorComments.adapter = commentAdapter
 
         val albumAdapter = AlbumAdapter { album ->
-            // Navegar al detalle de álbum (igual que otras pantallas)
             try {
                 val args = Bundle().apply { putInt("albumId", album.id) }
-                findNavController().navigate(R.id.action_PerformerDetailFragment_to_AlbumDetailFragment, args)
-            } catch (_: Exception) {
-                // no-op
+                findNavController().navigate(R.id.action_CollectorDetailFragment_to_AlbumDetailFragment, args)
+            } catch (e: Exception) {
+                Log.e("CollectorDetailFragment", "navigate: albumDetail failure message=${e.message}", e)
             }
         }
         binding.rvCollectorAlbums.layoutManager = LinearLayoutManager(requireContext())
@@ -79,7 +82,6 @@ class CollectorDetailFragment : Fragment() {
                 binding.tvCollectorDetailTelephone.text = collector.telephone
                 binding.tvCollectorDetailEmail.text = collector.email
 
-                // HU06: secciones opcionales
                 val favorites = collector.favoritePerformers.orEmpty()
                 val showFavorites = favorites.isNotEmpty()
                 binding.tvFavoritePerformersLabel.visibility = if (showFavorites) View.VISIBLE else View.GONE
@@ -100,7 +102,6 @@ class CollectorDetailFragment : Fragment() {
                 val showAlbums = albums.isNotEmpty()
                 binding.tvCollectorAlbumsLabel.visibility = if (showAlbums) View.VISIBLE else View.GONE
                 binding.rvCollectorAlbums.visibility = if (showAlbums) View.VISIBLE else View.GONE
-                // El contenido real de los álbumes se observa desde viewModel.albums
             }
         }
 

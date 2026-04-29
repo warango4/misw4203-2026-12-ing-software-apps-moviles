@@ -21,7 +21,8 @@ class AlbumAdapterTest {
             Album(1, "Album 1", "", "Rock"),
             Album(2, "Album 2", "", "Pop")
         )
-        val adapter = AlbumAdapter(albums) { }
+        val adapter = AlbumAdapter { }
+        adapter.submitList(albums)
 
         assertEquals(2, adapter.itemCount)
     }
@@ -30,7 +31,8 @@ class AlbumAdapterTest {
     fun onBindViewHolder_muestraNombreGeneroYEjecutaClick() {
         val album = Album(1, "Revolver", "", "Rock")
         var clickedAlbum: Album? = null
-        val adapter = AlbumAdapter(listOf(album)) { clickedAlbum = it }
+        val adapter = AlbumAdapter { clickedAlbum = it }
+        adapter.submitList(listOf(album))
         val themedContext = ContextThemeWrapper(RuntimeEnvironment.getApplication(), R.style.Theme_Vinilos)
         val parent = FrameLayout(themedContext)
 

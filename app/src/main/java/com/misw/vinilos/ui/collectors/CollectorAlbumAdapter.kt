@@ -27,13 +27,10 @@ class CollectorAlbumAdapter(
         private val onClick: (CollectorAlbum) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CollectorAlbum) {
-            // Backend real: collectorAlbums no trae el álbum embebido.
-            val ctx = binding.root.context
-            binding.tvAlbumName.text = ctx.getString(R.string.collector_album_title_format, item.id)
-            // Reutilizamos el campo de género como subtítulo (status/precio) para evitar nuevo layout.
+           val ctx = binding.root.context
+            binding.tvAlbumName.text = ctx.getString(R.string.collector_album_title_format, item.albumId)
             val price = item.price?.let { "$it" }
             binding.tvAlbumGenre.text = listOfNotNull(item.status, price).joinToString(" · ")
-            // cover en este endpoint no está garantizado; dejamos placeholder (ItemAlbumBinding trae ImageView).
             binding.root.setOnClickListener { onClick(item) }
         }
     }
@@ -41,7 +38,7 @@ class CollectorAlbumAdapter(
     private companion object {
         val DiffCallback = object : DiffUtil.ItemCallback<CollectorAlbum>() {
             override fun areItemsTheSame(oldItem: CollectorAlbum, newItem: CollectorAlbum): Boolean =
-                oldItem.id == newItem.id
+                oldItem.albumId == newItem.albumId
 
             override fun areContentsTheSame(oldItem: CollectorAlbum, newItem: CollectorAlbum): Boolean =
                 oldItem == newItem

@@ -111,7 +111,9 @@ Para **ejecutar** los tests de Espresso se requiere un emulador o dispositivo co
 
 ## 4. Ejemplos de cURL (Historias de Usuario)
 
-Para verificar y reproducir las respuestas del servidor que utilizamos para construir las funcionalidades, a continuación exponemos ejemplos rápidos en Bash consumiendo la [API pública](https://back-vynils-heroku.herokuapp.com/).
+Para verificar y reproducir las respuestas del servidor que utilizamos para construir las funcionalidades, a continuación exponemos ejemplos rápidos en Bash.
+
+La aplicación consume el backend definido en `BuildConfig.BASE_URL`.
 
 ### HU01 - Consultar Catálogo de Álbumes
 Muestra el listado de álbumes disponibles.
@@ -198,6 +200,15 @@ curl -X GET "https://back-vynils-heroku.herokuapp.com/bands" \
 ### HU04 - Consultar Información Detallada de un Artista
 Detalle individual que trae la relación con sus álbumes y premios.
 * **Paths:** `GET /musicians/{id}`  ó  `GET /bands/{id}`
+
+### HU06 - Consultar la información detallada de un coleccionista
+Como usuario visitante quiero ver el detalle de un coleccionista para conocer sus gustos musicales.
+* **Path:** `GET /collectors/{id}`
+
+```bash
+curl -X GET "https://vinyls-backend-miso-01cdf4b5b598.herokuapp.com/collectors/1" \
+     -H "Accept: application/json"
+```
 
 ```bash
 curl -X GET "https://back-vynils-heroku.herokuapp.com/bands/2" \

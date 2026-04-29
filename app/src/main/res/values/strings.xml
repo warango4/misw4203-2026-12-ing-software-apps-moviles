@@ -18,6 +18,7 @@
 
     <!-- Accesibilidad / genéricos -->
     <string name="album_cover_content_description">Album cover</string>
+    <string name="back">Back</string>
 
     <!-- Existing hardcoded UI texts (normalize to strings/en) -->
     <string name="title_collectors">Collectors</string>

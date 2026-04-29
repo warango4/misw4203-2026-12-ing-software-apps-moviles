@@ -46,6 +46,7 @@ class CollectorsViewModelTest {
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = listOf(c1, c2)
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
 
         val vm = CollectorsViewModel(CollectorRepository(api))
@@ -71,6 +72,7 @@ class CollectorsViewModelTest {
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = emptyList()
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
 
         val vm = CollectorsViewModel(CollectorRepository(api))
@@ -94,6 +96,7 @@ class CollectorsViewModelTest {
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = throw Exception("Boom")
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
 
         val vm = CollectorsViewModel(CollectorRepository(api))
@@ -121,6 +124,7 @@ class CollectorsViewModelTest {
                 if (shouldFail) throw Exception("fail")
                 return emptyList()
             }
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
 
         val vm = CollectorsViewModel(CollectorRepository(api))
@@ -153,6 +157,7 @@ class CollectorsViewModelTest {
                 delay(50)
                 return emptyList()
             }
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
 
         val vm = CollectorsViewModel(CollectorRepository(api))
@@ -179,6 +184,7 @@ class CollectorsViewModelTest {
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = emptyList()
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
 
         val vm = CollectorsViewModel(CollectorRepository(api))
@@ -206,6 +212,7 @@ class CollectorsViewModelTest {
                 if (shouldFail) throw Exception("fail")
                 return initial
             }
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
 
         val vm = CollectorsViewModel(CollectorRepository(api))
@@ -232,6 +239,7 @@ class CollectorsViewModelTest {
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = emptyList()
+            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         }
 
         val vm = CollectorsViewModel(CollectorRepository(api))

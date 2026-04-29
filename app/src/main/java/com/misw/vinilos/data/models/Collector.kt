@@ -29,6 +29,7 @@ data class CollectorAlbum(
     @SerializedName("id")
     val albumId: Int,
     val price: Double? = null,
-    val status: String? = null
+    val status: String? = null,
+    val album: Album? = null
 )
 

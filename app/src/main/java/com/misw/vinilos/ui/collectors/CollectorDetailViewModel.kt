@@ -45,21 +45,44 @@ class CollectorDetailViewModel(
                 val detail = repository.getCollector(collectorId)
                 _collector.value = detail
 
-                // HU06: collectorAlbums trae solo ids de álbum. Consultamos cada álbum para mostrar cards reales.
-                val albumIds = detail.collectorAlbums
+                val embeddedAlbums = detail.collectorAlbums
                     .orEmpty()
-                    .map { it.albumId }
-                    .distinct()
+                    .mapNotNull { it.album }
 
-                val albumDetails = albumIds.mapNotNull { id ->
-                    try {
-                        albumRepository.getAlbum(id)
-                    } catch (e: Exception) {
-                        Log.e("CollectorDetailViewModel", "fetchCollector: album fetch failure albumId=$id", e)
-                        null
+                if (embeddedAlbums.isNotEmpty()) {
+                    Log.d(
+                        "CollectorDetailViewModel",
+                        "fetchCollector: embedded albums count=${embeddedAlbums.size}"
+                    )
+                    _albums.value = embeddedAlbums
+                } else {
+                    val albumIds = detail.collectorAlbums
+                        .orEmpty()
+                        .map { it.albumId }
+                        .distinct()
+
+                    if (albumIds.isEmpty()) {
+                        _albums.value = emptyList()
+                    } else {
+                        Log.d(
+                            "CollectorDetailViewModel",
+                            "fetchCollector: embedded albums missing, fallback fetch ids=${albumIds.size}"
+                        )
+                        val albumDetails = albumIds.mapNotNull { id ->
+                            try {
+                                albumRepository.getAlbum(id)
+                            } catch (e: Exception) {
+                                Log.e(
+                                    "CollectorDetailViewModel",
+                                    "fetchCollector: album fetch failure albumId=$id message=${e.message}",
+                                    e
+                                )
+                                null
+                            }
+                        }
+                        _albums.value = albumDetails
                     }
                 }
-                _albums.value = albumDetails
             } catch (e: Exception) {
                 Log.e("CollectorDetailViewModel", "fetchCollector: failure message=${e.message}", e)
                 _error.value = "No fue posible cargar el detalle del coleccionista"
