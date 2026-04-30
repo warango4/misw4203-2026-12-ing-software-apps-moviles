@@ -16,14 +16,11 @@ import org.robolectric.annotation.Config
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class CollectorRepositoryTest {
+class CollectorRepositoryGetCollectorTest {
 
     @Test
-    fun getCollectors_success_returnsListFromApi() = runTest {
-        val expected = listOf(
-            Collector(id = 1, name = "Ana", telephone = "1", email = "a@a.com"),
-            Collector(id = 2, name = "Beto", telephone = "2", email = "b@b.com")
-        )
+    fun getCollector_success_returnsCollectorFromApi() = runTest {
+        val expected = Collector(id = 7, name = "Carlos", telephone = "123", email = "c@a.com")
 
         val api = object : VinilosApiService {
             override suspend fun getAlbums(): List<Album> = emptyList()
@@ -32,20 +29,23 @@ class CollectorRepositoryTest {
             override suspend fun getBands(): List<Performer> = emptyList()
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
-            override suspend fun getCollectors(): List<Collector> = expected
-            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
+            override suspend fun getCollectors(): List<Collector> = emptyList()
+            override suspend fun getCollector(id: Int): Collector {
+                assertEquals(7, id)
+                return expected
+            }
         }
 
         val repo = CollectorRepository(api)
-        val result = repo.getCollectors()
+        val result = repo.getCollector(7)
 
-        assertEquals(2, result.size)
-        assertEquals("Ana", result[0].name)
+        assertEquals(7, result.id)
+        assertEquals("Carlos", result.name)
     }
 
     @Test
-    fun getCollectors_success_returnsSameInstanceToAvoidUnneededCopies() = runTest {
-        val expected = emptyList<Collector>()
+    fun getCollector_success_returnsSameInstanceToAvoidUnneededCopies() = runTest {
+        val expected = Collector(id = 1, name = "Ana", telephone = "1", email = "a@a.com")
 
         val api = object : VinilosApiService {
             override suspend fun getAlbums(): List<Album> = emptyList()
@@ -54,18 +54,18 @@ class CollectorRepositoryTest {
             override suspend fun getBands(): List<Performer> = emptyList()
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
-            override suspend fun getCollectors(): List<Collector> = expected
-            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
+            override suspend fun getCollectors(): List<Collector> = emptyList()
+            override suspend fun getCollector(id: Int): Collector = expected
         }
 
         val repo = CollectorRepository(api)
-        val result = repo.getCollectors()
+        val result = repo.getCollector(99)
 
         assertSame(expected, result)
     }
 
     @Test(expected = RuntimeException::class)
-    fun getCollectors_error_rethrowsException() = runTest {
+    fun getCollector_error_rethrowsException() = runTest {
         val api = object : VinilosApiService {
             override suspend fun getAlbums(): List<Album> = emptyList()
             override suspend fun getAlbum(id: Int): Album = throw NotImplementedError()
@@ -73,12 +73,12 @@ class CollectorRepositoryTest {
             override suspend fun getBands(): List<Performer> = emptyList()
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
-            override suspend fun getCollectors(): List<Collector> = throw RuntimeException("API Error")
-            override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
+            override suspend fun getCollectors(): List<Collector> = emptyList()
+            override suspend fun getCollector(id: Int): Collector = throw RuntimeException("API Error")
         }
 
         val repo = CollectorRepository(api)
-        repo.getCollectors()
+        repo.getCollector(1)
     }
 }
 

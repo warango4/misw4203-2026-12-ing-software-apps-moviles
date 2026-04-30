@@ -1,4 +1,5 @@
 package com.misw.vinilos.ui.performers
+
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +15,13 @@ import com.misw.vinilos.data.network.VinilosServiceAdapter
 import com.misw.vinilos.data.repository.PerformerRepository
 import com.misw.vinilos.databinding.FragmentPerformerDetailBinding
 import com.misw.vinilos.ui.albums.AlbumAdapter
+
 class PerformerDetailFragment : Fragment() {
+
+    private companion object {
+        private const val TAG = "PerformerDetailUI"
+    }
+
     private var _binding: FragmentPerformerDetailBinding? = null
     private val binding get() = _binding!!
     private lateinit var albumAdapter: AlbumAdapter
@@ -36,18 +43,20 @@ class PerformerDetailFragment : Fragment() {
         val repository = PerformerRepository(apiService)
         val factory = PerformerDetailViewModelFactory(repository, performerId, isBand)
         val viewModel: PerformerDetailViewModel by viewModels { factory }
-        albumAdapter = AlbumAdapter(emptyList()) { album ->
+        albumAdapter = AlbumAdapter { album ->
             try {
-                Log.d("PerformerDetailFragment", "navigate: albumDetail albumId=${album.id}, name=${album.name}")
+                Log.d(TAG, "navigate: albumDetail albumId=${album.id}, name=${album.name}")
                 val bundle = Bundle().apply { putInt("albumId", album.id) }
                 findNavController().navigate(R.id.action_PerformerDetailFragment_to_AlbumDetailFragment, bundle)
             } catch (e: Exception) {
-                Log.e("PerformerDetailFragment", "Issue routing to album detail", e)
+                Log.e(TAG, "Issue routing to album detail", e)
             }
         }
         binding.rvAlbums.adapter = albumAdapter
         viewModel.performer.observe(viewLifecycleOwner) { performer ->
-            Log.d("PerformerDetailFragment", "render: performerId=${performer.id}, name=${performer.name}")
+            if (performer == null) return@observe
+
+            Log.d(TAG, "render: performerId=${performer.id}, name=${performer.name}")
             requireActivity().title = performer.name
 
             binding.performerName.text = performer.name
@@ -56,16 +65,7 @@ class PerformerDetailFragment : Fragment() {
                 .load(performer.image)
                 .into(binding.performerImage)
             performer.albums?.let { albums ->
-                albumAdapter = AlbumAdapter(albums) { album ->
-                    try {
-                        Log.d("PerformerDetailFragment", "navigate: albumDetail albumId=${album.id}, name=${album.name}")
-                        val bundle = Bundle().apply { putInt("albumId", album.id) }
-                        findNavController().navigate(R.id.action_PerformerDetailFragment_to_AlbumDetailFragment, bundle)
-                    } catch (e: Exception) {
-                        Log.e("PerformerDetailFragment", "Issue routing to album detail", e)
-                    }
-                }
-                binding.rvAlbums.adapter = albumAdapter
+                albumAdapter.submitList(albums)
             }
         }
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
@@ -73,7 +73,7 @@ class PerformerDetailFragment : Fragment() {
         }
         viewModel.error.observe(viewLifecycleOwner) { errorMsg ->
             if (!errorMsg.isNullOrEmpty()) {
-                Log.e("PerformerDetailFragment", "Error UI observer: $errorMsg")
+                Log.e(TAG, "Error UI observer: $errorMsg")
                 Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
             }
         }

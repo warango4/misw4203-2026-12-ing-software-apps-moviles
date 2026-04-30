@@ -16,5 +16,17 @@ class CollectorRepository(private val api: VinilosApiService) {
             throw e
         }
     }
+
+    suspend fun getCollector(id: Int): Collector {
+        try {
+            Log.d("CollectorRepository", "getCollector: request started id=$id")
+            val result = api.getCollector(id)
+            Log.d("CollectorRepository", "getCollector: success id=${result.id} name=${result.name}")
+            return result
+        } catch (e: Exception) {
+            Log.e("CollectorRepository", "getCollector: failure id=$id message=${e.message}", e)
+            throw e
+        }
+    }
 }
 

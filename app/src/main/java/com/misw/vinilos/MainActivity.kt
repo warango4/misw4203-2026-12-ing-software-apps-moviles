@@ -24,8 +24,6 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        // BottomNavigation: al tocar un tab, SIEMPRE volver a su lista (root).
-        // Esto evita quedar "atrapado" en un detalle al re-seleccionar el tab.
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             val destId = item.itemId
 
@@ -38,7 +36,6 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        // Mantener el tab seleccionado coherente cuando se navega a detalles u otras pantallas.
         navController.addOnDestinationChangedListener { _, destination, _ ->
             val topLevel = setOf(
                 R.id.AlbumListFragment,

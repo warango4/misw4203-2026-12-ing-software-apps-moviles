@@ -15,7 +15,7 @@
         style="@style/TextAppearance.Vinilos.ScreenTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Collectors"
+        android:text="@string/title_collectors"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingTop="@dimen/space_l"
-        android:text="No hay coleccionistas para mostrar"
+        android:text="@string/collectors_empty"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/tvCollectorsTitle"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,13 +1,17 @@
 package com.misw.vinilos.collectors
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.Visibility
 import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import org.hamcrest.Matchers.not
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.misw.vinilos.MainActivity
@@ -66,7 +70,29 @@ class CollectorDetailE2ETest {
             onView(withId(R.id.rvCollectors)).perform(
                 RecyclerViewActions.actionOnItemAtPosition<CollectorAdapter.CollectorViewHolder>(0, click())
             )
+            // HU06: el detalle debe mostrar al menos nombre, teléfono y correo.
             onView(withId(R.id.tvCollectorDetailTitle)).check(matches(isDisplayed()))
+            onView(withId(R.id.tvCollectorDetailTelephone)).check(matches(isDisplayed()))
+            onView(withId(R.id.tvCollectorDetailEmail)).check(matches(isDisplayed()))
+
+            // Validación básica de contenido no-vacío (evita pasar si queda en blanco por render asíncrono)
+            Thread.sleep(1500)
+            onView(withId(R.id.tvCollectorDetailTitle)).check(matches(not(withText(""))))
+
+            // Nueva sección: Favorite performers (puede venir con datos o vacío según backend)
+            onView(withId(R.id.tvCollectorFavoritePerformersLabel))
+                .perform(scrollTo())
+            try {
+                onView(withId(R.id.cgCollectorFavoritePerformers)).check(matches(isDisplayed()))
+            } catch (t2: Throwable) {
+                onView(withId(R.id.tvCollectorFavoritePerformersEmpty)).check(matches(isDisplayed()))
+            }
+
+            // Navegar atrás sin depender de botón custom (fue eliminado)
+            pressBack()
+
+            // Debe volver al listado
+            onView(withId(R.id.rvCollectors)).check(matches(isDisplayed()))
         } catch (t: Throwable) {
             onView(withId(R.id.tvCollectorsEmpty)).check(matches(isDisplayed()))
             onView(withId(R.id.pbCollectors)).check(matches(withEffectiveVisibility(Visibility.GONE)))

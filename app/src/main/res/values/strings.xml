@@ -1,11 +1,32 @@
 <resources>
     <string name="app_name">Vinilos</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+
+    <string name="collector_detail_title">Collector</string>
+    <string name="collector_comments">Comments</string>
+    <string name="collector_comments_empty">No comments available</string>
+    <string name="collector_favorite_performers">Favorite performers</string>
+    <string name="collector_favorite_performers_empty">No favorite performers available</string>
+    <string name="collector_albums">Albums</string>
+    <string name="collector_albums_empty">No albums available</string>
+    <string name="collector_comment_title">Comment</string>
+    <string name="collector_album_title_format">Album #%1$d</string>
+    <string name="collector_rating_format">Rating: %1$d</string>
+
+    <string name="album_cover_content_description">Album cover</string>
+    <string name="back">Back</string>
+
+    <string name="email">Email</string>
+    <string name="telephone">Telephone</string>
+
+    <string name="title_collectors">Collectors</string>
+    <string name="title_albums">Albums</string>
+    <string name="title_tracks">Tracks</string>
+    <string name="collectors_empty">No collectors to show</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
