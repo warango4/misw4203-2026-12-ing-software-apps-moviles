@@ -12,24 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/btnCollectorBack"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/space_screen"
-            android:layout_marginTop="@dimen/space_screen"
-            android:text="@string/back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/ivCollectorHeader"
             android:layout_width="0dp"
             android:layout_height="@dimen/header_height"
             android:scaleType="centerCrop"
             android:src="@drawable/bg_header_overlay"
-            app:layout_constraintTop_toBottomOf="@id/btnCollectorBack"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="ContentDescription" />
@@ -43,6 +32,26 @@
             app:layout_constraintStart_toStartOf="@id/ivCollectorHeader"
             app:layout_constraintEnd_toEndOf="@id/ivCollectorHeader" />
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cvCollectorInitial"
+            style="@style/Widget.Vinilos.AvatarCircle"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="@dimen/space_m"
+            app:layout_constraintBottom_toBottomOf="@id/ivCollectorHeader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/tvCollectorInitial"
+                style="@style/TextAppearance.Vinilos.ScreenTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text=""
+                tools:text="A" />
+        </com.google.android.material.card.MaterialCardView>
+
         <TextView
             android:id="@+id/tvCollectorDetailTitle"
             style="@style/TextAppearance.Vinilos.ScreenTitle"
@@ -50,41 +59,79 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_screen"
             android:layout_marginEnd="@dimen/space_screen"
-            android:layout_marginBottom="@dimen/space_m"
+            android:layout_marginTop="@dimen/space_m"
             android:text="@string/collector_detail_title"
-            android:shadowColor="@android:color/black"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:shadowRadius="1.2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/ivCollectorHeader" />
+            app:layout_constraintTop_toBottomOf="@id/ivCollectorHeader" />
 
-        <TextView
-            android:id="@+id/tvCollectorDetailTelephone"
-            style="@style/TextAppearance.Vinilos.Body"
+        <!-- Contact: Email (icon + value) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rowCollectorEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_screen"
             android:layout_marginEnd="@dimen/space_screen"
             android:layout_marginTop="@dimen/space_m"
-            android:text=""
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivCollectorHeader" />
+            app:layout_constraintTop_toBottomOf="@id/tvCollectorDetailTitle">
 
-        <TextView
-            android:id="@+id/tvCollectorDetailEmail"
-            style="@style/TextAppearance.Vinilos.Body"
+            <ImageView
+                android:id="@+id/ivCollectorEmailIcon"
+                style="@style/Widget.Vinilos.ContactIcon"
+                android:src="@drawable/ic_email"
+                android:contentDescription="@string/email"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCollectorDetailEmail"
+                style="@style/TextAppearance.Vinilos.Body"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_s"
+                android:text=""
+                app:layout_constraintStart_toEndOf="@id/ivCollectorEmailIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Contact: Phone (icon + value) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rowCollectorTelephone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_screen"
             android:layout_marginEnd="@dimen/space_screen"
             android:layout_marginTop="@dimen/space_xs"
-            android:text=""
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvCollectorDetailTelephone" />
+            app:layout_constraintTop_toBottomOf="@id/rowCollectorEmail">
+
+            <ImageView
+                android:id="@+id/ivCollectorTelephoneIcon"
+                style="@style/Widget.Vinilos.ContactIcon"
+                android:src="@drawable/ic_phone"
+                android:contentDescription="@string/telephone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCollectorDetailTelephone"
+                style="@style/TextAppearance.Vinilos.Body"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_s"
+                android:text=""
+                app:layout_constraintStart_toEndOf="@id/ivCollectorTelephoneIcon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ProgressBar
             android:id="@+id/pbCollectorDetail"
@@ -92,7 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_l"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/tvCollectorDetailEmail"
+            app:layout_constraintTop_toBottomOf="@id/rowCollectorTelephone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -106,12 +153,12 @@
             android:layout_marginTop="@dimen/space_m"
             android:text=""
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/tvCollectorDetailEmail"
+            app:layout_constraintTop_toBottomOf="@id/rowCollectorTelephone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
         <TextView
             android:id="@+id/tvCollectorCommentsLabel"
-            style="@style/TextAppearance.Vinilos.Title"
+            style="@style/TextAppearance.Vinilos.SectionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_screen"
@@ -152,8 +199,8 @@
             tools:listitem="@layout/item_collector_comment" />
 
         <TextView
-            android:id="@+id/tvFavoritePerformersLabel"
-            style="@style/TextAppearance.Vinilos.Title"
+            android:id="@+id/tvCollectorFavoritePerformersLabel"
+            style="@style/TextAppearance.Vinilos.SectionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_screen"
@@ -165,7 +212,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/tvFavoritePerformersEmpty"
+            android:id="@+id/tvCollectorFavoritePerformersEmpty"
             style="@style/TextAppearance.Vinilos.Body"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -174,28 +221,28 @@
             android:layout_marginTop="@dimen/space_s"
             android:text="@string/collector_favorite_performers_empty"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/tvFavoritePerformersLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvCollectorFavoritePerformersLabel"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvFavoritePerformers"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/cgCollectorFavoritePerformers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/space_s"
             android:layout_marginStart="@dimen/space_screen"
             android:layout_marginEnd="@dimen/space_screen"
-            android:nestedScrollingEnabled="false"
+            android:layout_marginTop="@dimen/space_s"
             android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/tvFavoritePerformersEmpty"
+            app:singleLine="false"
+            app:chipSpacingHorizontal="@dimen/space_s"
+            app:chipSpacingVertical="@dimen/space_s"
+            app:layout_constraintTop_toBottomOf="@id/tvCollectorFavoritePerformersEmpty"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:listitem="@layout/item_performer" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/tvCollectorAlbumsLabel"
-            style="@style/TextAppearance.Vinilos.Title"
+            style="@style/TextAppearance.Vinilos.SectionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_screen"
@@ -203,7 +250,7 @@
             android:layout_marginTop="@dimen/space_l"
             android:text="@string/collector_albums"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/rvFavoritePerformers"
+            app:layout_constraintTop_toBottomOf="@id/cgCollectorFavoritePerformers"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView

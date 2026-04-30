@@ -1,7 +1,9 @@
 package com.misw.vinilos.collectors
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.Visibility
@@ -76,7 +78,18 @@ class CollectorDetailE2ETest {
             // Validación básica de contenido no-vacío (evita pasar si queda en blanco por render asíncrono)
             Thread.sleep(1500)
             onView(withId(R.id.tvCollectorDetailTitle)).check(matches(not(withText(""))))
-            onView(withId(R.id.btnCollectorBack)).perform(click())
+
+            // Nueva sección: Favorite performers (puede venir con datos o vacío según backend)
+            onView(withId(R.id.tvCollectorFavoritePerformersLabel))
+                .perform(scrollTo())
+            try {
+                onView(withId(R.id.cgCollectorFavoritePerformers)).check(matches(isDisplayed()))
+            } catch (t2: Throwable) {
+                onView(withId(R.id.tvCollectorFavoritePerformersEmpty)).check(matches(isDisplayed()))
+            }
+
+            // Navegar atrás sin depender de botón custom (fue eliminado)
+            pressBack()
 
             // Debe volver al listado
             onView(withId(R.id.rvCollectors)).check(matches(isDisplayed()))

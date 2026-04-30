@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.material.chip.Chip
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -44,25 +45,11 @@ class CollectorDetailFragment : Fragment() {
         val collectorId = arguments?.getInt(ARG_COLLECTOR_ID) ?: -1
         Log.i(TAG, "onViewCreated collectorId=$collectorId")
 
-        binding.btnCollectorBack.setOnClickListener {
-            try {
-                findNavController().navigateUp()
-            } catch (e: Exception) {
-                Log.e(TAG, "navigateUp failure message=${e.message}", e)
-            }
-        }
-
         val apiService = VinilosServiceAdapter.createApiService()
         val repository = CollectorRepository(apiService)
         val albumRepository = AlbumRepository(apiService)
         val factory = CollectorDetailViewModelFactory(repository, albumRepository, collectorId)
         val viewModel: CollectorDetailViewModel by viewModels { factory }
-
-        val favoriteAdapter = com.misw.vinilos.ui.performers.PerformerAdapter { _ ->
-        }
-        binding.rvFavoritePerformers.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvFavoritePerformers.adapter = favoriteAdapter
-        binding.rvFavoritePerformers.isEnabled = false
 
         val commentAdapter = CollectorCommentAdapter()
         binding.rvCollectorComments.layoutManager = LinearLayoutManager(requireContext())
@@ -85,17 +72,44 @@ class CollectorDetailFragment : Fragment() {
                 requireActivity().title = collector.name
 
                 binding.tvCollectorDetailTitle.text = collector.name
+                binding.tvCollectorInitial.text = collector.name
+                    .trim()
+                    .firstOrNull()
+                    ?.uppercase()
+                    .orEmpty()
                 binding.tvCollectorDetailTelephone.text = collector.telephone
                 binding.tvCollectorDetailEmail.text = collector.email
 
-                val favorites = collector.favoritePerformers.orEmpty()
-                val showFavorites = favorites.isNotEmpty()
-                binding.tvFavoritePerformersLabel.visibility = if (showFavorites) View.VISIBLE else View.GONE
-                binding.rvFavoritePerformers.visibility = if (showFavorites) View.VISIBLE else View.GONE
-                binding.tvFavoritePerformersEmpty.visibility = if (!showFavorites) View.VISIBLE else View.GONE
-                if (showFavorites) {
-                    favoriteAdapter.submitList(favorites)
+
+                val performers = collector.favoritePerformers.orEmpty()
+                val showPerformers = performers.isNotEmpty()
+                binding.tvCollectorFavoritePerformersLabel.visibility = if (showPerformers) View.VISIBLE else View.GONE
+                binding.cgCollectorFavoritePerformers.visibility = if (showPerformers) View.VISIBLE else View.GONE
+                binding.tvCollectorFavoritePerformersEmpty.visibility = if (!showPerformers) View.VISIBLE else View.GONE
+
+                if (showPerformers) {
+                    binding.cgCollectorFavoritePerformers.removeAllViews()
+                    performers
+                        .mapNotNull { it.name?.trim() }
+                        .filter { it.isNotBlank() }
+                        .forEach { name ->
+                            val chip = Chip(requireContext()).apply {
+                                text = name
+                                isClickable = false
+                                isCheckable = false
+                                setTextAppearanceResource(R.style.TextAppearance_Vinilos_Genre)
+                                setTextColor(resources.getColor(R.color.vin_bg, null))
+                                setChipBackgroundColorResource(R.color.vin_secondary)
+                            }
+                            // Para mantener el estilo de óvalo exacto del género (drawable), forzamos 
+                            // el background si el tipo de Chip lo permite.
+                            chip.setEnsureMinTouchTargetSize(false)
+                            chip.setChipStartPaddingResource(R.dimen.space_s)
+                            chip.setChipEndPaddingResource(R.dimen.space_s)
+                            binding.cgCollectorFavoritePerformers.addView(chip)
+                        }
                 }
+
 
                 val comments = collector.comments.orEmpty()
                 val showComments = comments.isNotEmpty()

@@ -20,6 +20,9 @@
     <string name="album_cover_content_description">Album cover</string>
     <string name="back">Back</string>
 
+    <string name="email">Email</string>
+    <string name="telephone">Telephone</string>
+
     <string name="title_collectors">Collectors</string>
     <string name="title_albums">Albums</string>
     <string name="title_tracks">Tracks</string>
