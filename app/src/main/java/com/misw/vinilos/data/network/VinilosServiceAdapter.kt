@@ -57,19 +57,5 @@ object VinilosServiceAdapter {
             .build()
             .create(VinilosApiService::class.java)
     }
-
-    /**
-     * Compatibilidad hacia atrás.
-     *
-     * Mantiene el API previo para no romper tests/unidades, pero NO habilita la caché
-     * (no tenemos acceso seguro a un cacheDir sin Context).
-     */
-    fun createApiService(): VinilosApiService {
-        return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(VinilosApiService::class.java)
-    }
 }
 
