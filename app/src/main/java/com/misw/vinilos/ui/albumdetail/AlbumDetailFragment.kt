@@ -29,7 +29,7 @@ class AlbumDetailFragment : Fragment() {
         requireActivity().title = ""
 
         val albumId = arguments?.getInt("albumId") ?: throw IllegalArgumentException("albumId required")
-        val apiService = VinilosServiceAdapter.createApiService()
+        val apiService = VinilosServiceAdapter.createApiService(requireContext())
         val repository = AlbumRepository(apiService)
         val factory = AlbumDetailViewModelFactory(repository, albumId)
         val viewModel: AlbumDetailViewModel by viewModels { factory }

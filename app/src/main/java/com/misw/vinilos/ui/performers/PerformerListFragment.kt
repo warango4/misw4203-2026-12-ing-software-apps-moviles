@@ -16,7 +16,9 @@ class PerformerListFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: PerformerViewModel by viewModels(
         factoryProducer = {
-            PerformerViewModelFactory(PerformerRepository(VinilosServiceAdapter.createApiService()))
+            PerformerViewModelFactory(
+                PerformerRepository(VinilosServiceAdapter.createApiService(requireContext()))
+            )
         }
     )
     override fun onCreateView(
