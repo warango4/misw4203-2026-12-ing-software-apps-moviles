@@ -35,7 +35,7 @@ class CollectorsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val api = VinilosServiceAdapter.createApiService()
+        val api = VinilosServiceAdapter.createApiService(requireContext())
         val repository = CollectorRepository(api)
         val factory = CollectorsViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[CollectorsViewModel::class.java]

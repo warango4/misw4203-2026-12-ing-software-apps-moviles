@@ -15,13 +15,25 @@ object VinilosServiceAdapter {
     private const val CACHE_DIR_NAME = "http_cache"
     private const val CACHE_SIZE_BYTES: Long = 10L * 1024L * 1024L // 10MB
 
+    // Singleton del servicio con caché. Se inicializa una sola vez con el ApplicationContext
+    // para evitar múltiples instancias de Cache sobre el mismo directorio de disco.
+    @Volatile
+    private var cachedService: VinilosApiService? = null
+
     /**
-     * Crea el ApiService usando un OkHttpClient con caché.
+     * Devuelve (o crea) el ApiService singleton con OkHttpClient y caché en disco.
      *
-     * Preferir esta sobrecarga desde el código de UI/ViewModels para habilitar la caché.
+     * Usa el ApplicationContext internamente para que la instancia sobreviva rotaciones
+     * de pantalla sin riesgo de memory leaks ni conflictos de DiskLruCache.
      */
     fun createApiService(context: Context): VinilosApiService {
-        val cacheDir = File(context.cacheDir, CACHE_DIR_NAME)
+        return cachedService ?: synchronized(this) {
+            cachedService ?: buildService(context.applicationContext).also { cachedService = it }
+        }
+    }
+
+    private fun buildService(appContext: Context): VinilosApiService {
+        val cacheDir = File(appContext.cacheDir, CACHE_DIR_NAME)
         val cache = Cache(cacheDir, CACHE_SIZE_BYTES)
 
         val logging = HttpLoggingInterceptor().apply {
