@@ -45,7 +45,7 @@ class CollectorDetailFragment : Fragment() {
         val collectorId = arguments?.getInt(ARG_COLLECTOR_ID) ?: -1
         Log.i(TAG, "onViewCreated collectorId=$collectorId")
 
-        val apiService = VinilosServiceAdapter.createApiService()
+        val apiService = VinilosServiceAdapter.createApiService(requireContext())
         val repository = CollectorRepository(apiService)
         val albumRepository = AlbumRepository(apiService)
         val factory = CollectorDetailViewModelFactory(repository, albumRepository, collectorId)

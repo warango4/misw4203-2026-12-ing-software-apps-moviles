@@ -39,7 +39,7 @@ class PerformerDetailFragment : Fragment() {
 
         val performerId = arguments?.getInt("performerId") ?: throw IllegalArgumentException("performerId required")
         val isBand = arguments?.getBoolean("isBand") ?: throw IllegalArgumentException("isBand flag required")
-        val apiService = VinilosServiceAdapter.createApiService()
+        val apiService = VinilosServiceAdapter.createApiService(requireContext())
         val repository = PerformerRepository(apiService)
         val factory = PerformerDetailViewModelFactory(repository, performerId, isBand)
         val viewModel: PerformerDetailViewModel by viewModels { factory }

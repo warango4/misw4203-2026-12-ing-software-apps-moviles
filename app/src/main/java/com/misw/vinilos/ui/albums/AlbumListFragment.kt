@@ -22,7 +22,9 @@ class AlbumListFragment : Fragment() {
 
     private val viewModel: AlbumViewModel by viewModels(
         factoryProducer = {
-            AlbumViewModelFactory(AlbumRepository(VinilosServiceAdapter.createApiService()))
+            AlbumViewModelFactory(
+                AlbumRepository(VinilosServiceAdapter.createApiService(requireContext()))
+            )
         }
     )
 
