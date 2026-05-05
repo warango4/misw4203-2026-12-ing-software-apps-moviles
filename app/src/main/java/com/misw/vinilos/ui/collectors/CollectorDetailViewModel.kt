@@ -9,6 +9,9 @@ import com.misw.vinilos.data.models.Album
 import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.repository.AlbumRepository
 import com.misw.vinilos.data.repository.CollectorRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class CollectorDetailViewModel(
@@ -66,13 +69,17 @@ class CollectorDetailViewModel(
                         _albums.value = emptyList()
                     } else {
                         Log.i(TAG, "fetchCollector fallbackAlbumsFetch idsCount=${albumIds.size}")
-                        val albumDetails = albumIds.mapNotNull { id ->
-                            try {
-                                albumRepository.getAlbum(id)
-                            } catch (e: Exception) {
-                                Log.w(TAG, "fetchCollector albumFetchFailure albumId=$id message=${e.message}")
-                                null
-                            }
+                        val albumDetails = coroutineScope {
+                            albumIds.map { id ->
+                                async {
+                                    try {
+                                        albumRepository.getAlbum(id)
+                                    } catch (e: Exception) {
+                                        Log.w(TAG, "fetchCollector albumFetchFailure albumId=$id message=${e.message}")
+                                        null
+                                    }
+                                }
+                            }.awaitAll().filterNotNull()
                         }
                         _albums.value = albumDetails
                     }
