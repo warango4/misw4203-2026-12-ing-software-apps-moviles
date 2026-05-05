@@ -78,6 +78,10 @@ tasks.register<JacocoReport>("jacocoUnitTestReport") {
                 "**/ui/performers/PerformerViewModel\$*.class",
                 "**/ui/performers/PerformerDetailViewModel.class",
                 "**/ui/performers/PerformerDetailViewModel\$*.class",
+                "**/ui/collectors/CollectorsViewModel.class",
+                "**/ui/collectors/CollectorsViewModel\$*.class",
+                "**/ui/collectors/CollectorDetailViewModel.class",
+                "**/ui/collectors/CollectorDetailViewModel\$*.class",
             )
         }
     )

@@ -15,6 +15,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.misw.vinilos.MainActivity
 import com.misw.vinilos.R
+import com.misw.vinilos.testutils.EspressoIdlingRule
 import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.FixMethodOrder
@@ -30,12 +31,13 @@ class AlbumDetailE2ETest {
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
+    @get:Rule
+    val idlingRule = EspressoIdlingRule()
+
     @Before
     fun navegarAlDetalle() {
-        Thread.sleep(8000)
         onView(withId(R.id.rvAlbums))
             .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-        Thread.sleep(5000)
     }
 
     @Test

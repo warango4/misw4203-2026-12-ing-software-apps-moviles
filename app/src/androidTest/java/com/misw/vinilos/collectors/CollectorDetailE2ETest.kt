@@ -17,6 +17,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.misw.vinilos.MainActivity
 import com.misw.vinilos.R
 import com.misw.vinilos.ui.collectors.CollectorAdapter
+import com.misw.vinilos.testutils.EspressoIdlingRule
 import org.junit.Before
 import org.junit.FixMethodOrder
 import org.junit.Rule
@@ -31,20 +32,18 @@ class CollectorDetailE2ETest {
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
+    @get:Rule
+    val idlingRule = EspressoIdlingRule()
+
     @Before
     fun esperarCargaInicial() {
-        // Tests existentes usan sleep; mantenemos consistencia.
-        Thread.sleep(8000)
+        // Sin esperas activas: Espresso sincroniza con red vía IdlingResource.
     }
 
     @Test
     fun e2e_hu05_01_collectorsList_seVisualizaAlAbrirTab() {
         onView(withId(R.id.bottomNavigation)).check(matches(isDisplayed()))
         onView(withId(R.id.CollectorsFragment)).perform(click())
-
-        // La pantalla puede mostrar loader y luego lista o empty state dependiendo del backend.
-        // Esperamos (de forma simple, consistente con el resto de E2E) a que termine la carga.
-        Thread.sleep(6000)
 
         // Debe mostrarse la lista o el empty state; con cualquiera el tab se considera correcto.
         // Si hay lista, rvCollectors será visible.
@@ -60,9 +59,6 @@ class CollectorDetailE2ETest {
     fun e2e_hu05_02_clickCollector_navegaADetalle() {
         onView(withId(R.id.CollectorsFragment)).perform(click())
 
-        // Esperar carga
-        Thread.sleep(6000)
-
         // Este test aplica sólo si hay al menos un collector. Si no hay datos (empty state),
         // validamos que el empty state sea visible y no intentamos hacer click.
         try {
@@ -76,7 +72,6 @@ class CollectorDetailE2ETest {
             onView(withId(R.id.tvCollectorDetailEmail)).check(matches(isDisplayed()))
 
             // Validación básica de contenido no-vacío (evita pasar si queda en blanco por render asíncrono)
-            Thread.sleep(1500)
             onView(withId(R.id.tvCollectorDetailTitle)).check(matches(not(withText(""))))
 
             // Nueva sección: Favorite performers (puede venir con datos o vacío según backend)

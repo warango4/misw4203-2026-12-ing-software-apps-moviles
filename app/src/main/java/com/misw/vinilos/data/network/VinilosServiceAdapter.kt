@@ -45,6 +45,8 @@ object VinilosServiceAdapter {
         val okHttpClient = OkHttpClient.Builder()
             .cache(cache)
             .addNetworkInterceptor(CacheControlInterceptor(maxAgeSeconds = 60))
+            // Sincroniza Espresso con las llamadas de red (en release es no-op)
+            .addInterceptor(EspressoIdlingInterceptor())
             .addInterceptor(logging)
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)

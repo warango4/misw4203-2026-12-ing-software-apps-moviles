@@ -11,6 +11,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.misw.vinilos.MainActivity
 import com.misw.vinilos.R
+import com.misw.vinilos.testutils.EspressoIdlingRule
 import org.junit.Before
 import org.junit.FixMethodOrder
 import org.junit.Rule
@@ -25,15 +26,17 @@ class CollectorsEmptyStateE2ETest {
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
+    @get:Rule
+    val idlingRule = EspressoIdlingRule()
+
     @Before
     fun esperarCargaInicial() {
-        Thread.sleep(8000)
+        // Sin esperas activas: Espresso sincroniza con red vía IdlingResource.
     }
 
     @Test
     fun e2e_hu05_03_emptyState_noDebeVerseSiHayLista() {
         onView(withId(R.id.CollectorsFragment)).perform(click())
-        Thread.sleep(3000)
 
         // En ambiente real normalmente hay coleccionistas; entonces el empty state debe estar oculto.
         // Si el backend devolviera vacío en algún momento, este test podría fallar (es un E2E).

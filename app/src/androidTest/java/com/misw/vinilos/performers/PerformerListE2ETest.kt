@@ -12,6 +12,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.misw.vinilos.MainActivity
 import com.misw.vinilos.R
+import com.misw.vinilos.testutils.EspressoIdlingRule
 import org.junit.Before
 import org.junit.FixMethodOrder
 import org.junit.Rule
@@ -26,11 +27,12 @@ class PerformerListE2ETest {
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
+    @get:Rule
+    val idlingRule = EspressoIdlingRule()
+
     @Before
     fun navegarALaPestanaArtistas() {
-        Thread.sleep(3000)
         onView(withId(R.id.PerformerListFragment)).perform(click())
-        Thread.sleep(8000)
     }
 
     @Test
