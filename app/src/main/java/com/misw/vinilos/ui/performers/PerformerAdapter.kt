@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.misw.vinilos.R
 import com.misw.vinilos.data.models.Performer
 import com.misw.vinilos.databinding.ItemPerformerBinding
 class PerformerAdapter(private val onClick: (Performer) -> Unit) :
@@ -20,7 +21,10 @@ class PerformerAdapter(private val onClick: (Performer) -> Unit) :
         fun bind(performer: Performer) {
             binding.tvPerformerName.text = performer.name
             val count = performer.albums?.size ?: 0
-            binding.tvPerformerAlbumsCount.text = "$count Albums"
+            binding.tvPerformerAlbumsCount.text = binding.root.context.getString(
+                R.string.performer_albums_count_format,
+                count
+            )
             Glide.with(binding.root.context)
                 .load(performer.image)
                 .into(binding.ivPerformerImage)

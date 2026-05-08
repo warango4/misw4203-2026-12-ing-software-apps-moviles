@@ -23,8 +23,11 @@
     <string name="email">Email</string>
     <string name="telephone">Telephone</string>
 
+    <string name="performer_albums_count_format">%1$d Albums</string>
+
     <string name="title_collectors">Collectors</string>
     <string name="title_albums">Albums</string>
+    <string name="title_artists">Artists</string>
     <string name="title_tracks">Tracks</string>
     <string name="collectors_empty">No collectors to show</string>
 

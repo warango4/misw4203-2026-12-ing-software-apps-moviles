@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.chip.Chip
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -98,7 +99,7 @@ class CollectorDetailFragment : Fragment() {
                                 isClickable = false
                                 isCheckable = false
                                 setTextAppearanceResource(R.style.TextAppearance_Vinilos_Genre)
-                                setTextColor(resources.getColor(R.color.vin_bg, null))
+                                setTextColor(ContextCompat.getColor(requireContext(), R.color.vin_bg))
                                 setChipBackgroundColorResource(R.color.vin_secondary)
                             }
                             // Para mantener el estilo de óvalo exacto del género (drawable), forzamos 
