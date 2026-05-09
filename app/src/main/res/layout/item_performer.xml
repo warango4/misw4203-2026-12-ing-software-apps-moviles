@@ -57,6 +57,7 @@
             android:id="@+id/ivChevron"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:contentDescription="@null"
             android:src="@android:drawable/ic_media_next"
             app:tint="@color/vin_on_surface_muted"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="@dimen/space_m">
+
+    <TextView
+        android:id="@+id/tvCollectorName"
+        style="@style/TextAppearance.Vinilos.Title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/vin_on_surface"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Manolo Bellon" />
+
+    <ImageView
+        android:id="@+id/ivCollectorTelephoneIcon"
+        style="@style/Widget.Vinilos.ContactIcon"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="@dimen/space_xs"
+        android:src="@drawable/ic_phone"
+        android:contentDescription="@string/telephone"
+        app:layout_constraintStart_toStartOf="@id/tvCollectorName"
+        app:layout_constraintTop_toBottomOf="@id/tvCollectorName" />
+
+    <TextView
+        android:id="@+id/tvCollectorTelephone"
+        style="@style/TextAppearance.Vinilos.Body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xs"
+        android:textColor="@color/vin_on_surface_muted"
+        android:layout_marginStart="@dimen/space_s"
+        app:layout_constraintStart_toEndOf="@id/ivCollectorTelephoneIcon"
+        app:layout_constraintEnd_toEndOf="@id/tvCollectorName"
+        app:layout_constraintTop_toTopOf="@id/ivCollectorTelephoneIcon"
+        app:layout_constraintBottom_toBottomOf="@id/ivCollectorTelephoneIcon"
+        tools:text="3502457896" />
+
+    <ImageView
+        android:id="@+id/ivCollectorEmailIcon"
+        style="@style/Widget.Vinilos.ContactIcon"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="@dimen/space_xs"
+        android:src="@drawable/ic_email"
+        android:contentDescription="@string/email"
+        app:layout_constraintStart_toStartOf="@id/tvCollectorName"
+        app:layout_constraintTop_toBottomOf="@id/ivCollectorTelephoneIcon" />
+
+    <TextView
+        android:id="@+id/tvCollectorEmail"
+        style="@style/TextAppearance.Vinilos.Body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xs"
+        android:textColor="@color/vin_on_surface_muted"
+        android:layout_marginStart="@dimen/space_s"
+        app:layout_constraintStart_toEndOf="@id/ivCollectorEmailIcon"
+        app:layout_constraintEnd_toEndOf="@id/tvCollectorName"
+        app:layout_constraintTop_toTopOf="@id/ivCollectorEmailIcon"
+        app:layout_constraintBottom_toBottomOf="@id/ivCollectorEmailIcon"
+        tools:text="manollo@caracol.com.co" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

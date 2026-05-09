@@ -19,15 +19,14 @@ class AlbumViewModel(private val repository: AlbumRepository) : ViewModel() {
     val error: LiveData<String> get() = _error
 
     fun fetchAlbums() {
-        Log.d("AlbumViewModel", "fetchAlbums called")
+        Log.d("AlbumViewModel", "fetchAlbums: request started")
         viewModelScope.launch {
             try {
-                Log.d("AlbumViewModel", "Fetching albums from repository")
                 val result = repository.getAlbums()
-                Log.d("AlbumViewModel", "Successfully fetched ${result.size} albums")
+                Log.d("AlbumViewModel", "fetchAlbums: success count=${result.size}")
                 _albums.value = result
             } catch (e: Exception) {
-                Log.e("AlbumViewModel", "Error fetching albums: ${e.message}", e)
+                Log.e("AlbumViewModel", "fetchAlbums: failure message=${e.message}", e)
                 _error.value = e.message
             }
         }

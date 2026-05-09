@@ -16,5 +16,8 @@
     <color name="vin_primary">#FFB58CFF</color>
     <color name="vin_secondary">#FFFFC44D</color>
 
+    <!-- Red accent for collector detail UI -->
+    <color name="vin_red">#FFFF3B30</color>
+
     <!-- Selector para bottom nav (en res/color) -->
 </resources>

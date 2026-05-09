@@ -17,6 +17,7 @@
             android:id="@+id/albumCover"
             android:layout_width="0dp"
             android:layout_height="@dimen/header_height"
+            android:contentDescription="@string/album_cover_content_description"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_l"
-                android:text="Tracks"
+                android:text="@string/title_tracks"
                 app:layout_constraintTop_toBottomOf="@id/albumDescription"
                 app:layout_constraintStart_toStartOf="parent" />
 

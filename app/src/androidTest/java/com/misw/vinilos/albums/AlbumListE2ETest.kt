@@ -9,8 +9,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.misw.vinilos.MainActivity
 import com.misw.vinilos.R
+import com.misw.vinilos.testutils.EspressoIdlingRule
 import com.misw.vinilos.utils.RecyclerViewMatcher
-import org.junit.Before
 import org.junit.FixMethodOrder
 import org.junit.Rule
 import org.junit.Test
@@ -24,10 +24,8 @@ class AlbumListE2ETest {
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
-    @Before
-    fun esperarCargaInicial() {
-        Thread.sleep(8000)
-    }
+    @get:Rule
+    val idlingRule = EspressoIdlingRule()
 
     @Test
     fun e2e_hu01_01_albumList_seVisualizaAlAbrir() {

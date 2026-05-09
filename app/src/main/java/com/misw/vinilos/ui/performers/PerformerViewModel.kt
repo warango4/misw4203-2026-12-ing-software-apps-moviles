@@ -19,12 +19,12 @@ class PerformerViewModel(private val repository: PerformerRepository) : ViewMode
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                Log.d("PerformerViewModel", "Fetching performers")
+                Log.d("PerformerViewModel", "fetchPerformers: request started")
                 val response = repository.getPerformers()
                 _performers.value = response
                 _error.value = null
             } catch (e: Exception) {
-                Log.e("PerformerViewModel", "Error fetching performers", e)
+                Log.e("PerformerViewModel", "fetchPerformers: failure message=${e.message}", e)
                 _error.value = "Error al obtener el listado de artistas"
             } finally {
                 _isLoading.value = false

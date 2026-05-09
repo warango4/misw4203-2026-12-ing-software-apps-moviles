@@ -22,7 +22,9 @@ class AlbumListFragment : Fragment() {
 
     private val viewModel: AlbumViewModel by viewModels(
         factoryProducer = {
-            AlbumViewModelFactory(AlbumRepository(VinilosServiceAdapter.createApiService()))
+            AlbumViewModelFactory(
+                AlbumRepository(VinilosServiceAdapter.createApiService(requireContext()))
+            )
         }
     )
 
@@ -36,10 +38,9 @@ class AlbumListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("AlbumListFragment", "onViewCreated called")
 
-        // Mockup: grid de 2 columnas
         binding.rvAlbums.layoutManager = GridLayoutManager(requireContext(), 2)
         observeAlbums()
-        Log.d("AlbumListFragment", "Calling fetchAlbums on ViewModel")
+        Log.d("AlbumListFragment", "fetchAlbums: requesting data")
         viewModel.fetchAlbums()
     }
 
@@ -47,15 +48,18 @@ class AlbumListFragment : Fragment() {
         Log.d("AlbumListFragment", "observeAlbums started")
         viewModel.albums.observe(viewLifecycleOwner) { albums ->
             Log.d("AlbumListFragment", "Albums observed, size: ${albums.size}")
-            binding.rvAlbums.adapter = AlbumAdapter(albums) { album ->
-                try {
-                    Log.d("AlbumListFragment", "Navigate to Detail for album: ${album.name}")
-                    val bundle = android.os.Bundle().apply { putInt("albumId", album.id) }
-                    findNavController().navigate(com.misw.vinilos.R.id.action_AlbumListFragment_to_AlbumDetailFragment, bundle)
-                } catch (e: Exception) {
-                    Log.e("AlbumListFragment", "Navigation error: ${e.message}", e)
-                }
-            }
+            val adapter = (binding.rvAlbums.adapter as? AlbumAdapter)
+                ?: AlbumAdapter { album ->
+                    try {
+                        Log.d("AlbumListFragment", "Navigate to Detail for album: ${album.name}")
+                        val bundle = android.os.Bundle().apply { putInt("albumId", album.id) }
+                        findNavController().navigate(com.misw.vinilos.R.id.action_AlbumListFragment_to_AlbumDetailFragment, bundle)
+                    } catch (e: Exception) {
+                        Log.e("AlbumListFragment", "Navigation error: ${e.message}", e)
+                    }
+                }.also { binding.rvAlbums.adapter = it }
+
+            adapter.submitList(albums)
         }
         viewModel.error.observe(viewLifecycleOwner) { message ->
             Log.e("AlbumListFragment", "Error observed from ViewModel: $message")

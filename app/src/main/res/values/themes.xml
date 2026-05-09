@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Vinilos" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Mockup: Dark theme tokens -->
+    <style name="Base.Theme" parent="Theme.MaterialComponents.DayNight.NoActionBar" />
+
+    <style name="Base.Theme.Vinilos" parent="Base.Theme">
         <item name="colorPrimary">@color/vin_primary</item>
         <item name="colorSecondary">@color/vin_secondary</item>
         <item name="android:colorBackground">@color/vin_bg</item>
@@ -11,8 +11,8 @@
 
         <item name="android:statusBarColor">@color/vin_bg</item>
         <item name="android:navigationBarColor">@color/vin_bg</item>
-        <item name="android:windowLightStatusBar">false</item>
     </style>
+
 
     <style name="Theme.Vinilos" parent="Base.Theme.Vinilos" />
 

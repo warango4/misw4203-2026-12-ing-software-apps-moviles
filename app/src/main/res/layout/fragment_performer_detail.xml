@@ -13,6 +13,7 @@
             android:id="@+id/performerImage"
             android:layout_width="0dp"
             android:layout_height="@dimen/header_height"
+            android:contentDescription="@null"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +67,7 @@
             android:layout_marginStart="@dimen/space_screen"
             android:layout_marginEnd="@dimen/space_screen"
             android:layout_marginTop="@dimen/space_l"
-            android:text="Álbumes"
+            android:text="@string/title_albums"
             style="@style/TextAppearance.Vinilos.Title"
             app:layout_constraintTop_toBottomOf="@id/performerDescription"
             app:layout_constraintStart_toStartOf="parent" />

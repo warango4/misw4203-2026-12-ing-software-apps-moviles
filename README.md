@@ -50,6 +50,14 @@ Para generar un Release y validar todo el proyecto estructuralmente:
 ./gradlew build
 ```
 
+### Verificación rápida de compilación (tipo "clean + build")
+
+Si quieres validar que **todo compila desde cero** (APK debug + unit tests + androidTest), ejecuta:
+
+```bash
+./gradlew clean assembleDebug assembleDebugUnitTest assembleDebugAndroidTest
+```
+
 ---
 
 ## 3. Cómo ejecutar todos los tests
@@ -62,14 +70,65 @@ Para ejecutar todo el set de pruebas, procesar los resultados y verificar el cor
 ./gradlew test
 ```
 
+### Comandos de verificación (orden recomendado)
+
+Para validar el proyecto exactamente en el orden usado en CI/local, ejecuta:
+
+```bash
+./gradlew clean :app:testDebugUnitTest
+./gradlew test
+./gradlew :app:assembleDebugUnitTest :app:assembleDebugAndroidTest
+./gradlew :app:jacocoUnitTestReport
+```
+
+### Unit tests (debug)
+
+Para correr únicamente los unit tests del módulo `app` en Debug:
+
+```bash
+./gradlew :app:testDebugUnitTest
+```
+
 Los reportes HTML detallados de las pruebas se generarán internamente en:
 `app/build/reports/tests/testDebugUnitTest/index.html`
+
+### Coverage (JaCoCo) - Unit tests
+
+El proyecto cuenta con un task de JaCoCo para generar el reporte de cobertura de **unit tests**:
+
+```bash
+./gradlew :app:jacocoUnitTestReport
+```
+
+El reporte HTML se genera en:
+
+`app/build/reports/jacoco/jacocoUnitTestReport/html/index.html`
+
+El XML (útil para CI/sonar) se genera en:
+
+`app/build/reports/jacoco/jacocoUnitTestReport/jacocoUnitTestReport.xml`
+
+### Tests de UI (Espresso)
+
+Para compilar/ensamblar el APK de instrumentation tests (sin ejecutarlos):
+
+```bash
+./gradlew assembleDebugAndroidTest
+```
+
+Para **ejecutar** los tests de Espresso se requiere un emulador o dispositivo conectado:
+
+```bash
+./gradlew :app:connectedDebugAndroidTest
+```
 
 ---
 
 ## 4. Ejemplos de cURL (Historias de Usuario)
 
-Para verificar y reproducir las respuestas del servidor que utilizamos para construir las funcionalidades, a continuación exponemos ejemplos rápidos en Bash consumiendo la [API pública](https://back-vynils-heroku.herokuapp.com/).
+Para verificar y reproducir las respuestas del servidor que utilizamos para construir las funcionalidades, a continuación exponemos ejemplos rápidos en Bash.
+
+La aplicación consume el backend definido en `BuildConfig.BASE_URL`.
 
 ### HU01 - Consultar Catálogo de Álbumes
 Muestra el listado de álbumes disponibles.
@@ -156,6 +215,15 @@ curl -X GET "https://back-vynils-heroku.herokuapp.com/bands" \
 ### HU04 - Consultar Información Detallada de un Artista
 Detalle individual que trae la relación con sus álbumes y premios.
 * **Paths:** `GET /musicians/{id}`  ó  `GET /bands/{id}`
+
+### HU06 - Consultar la información detallada de un coleccionista
+Como usuario visitante quiero ver el detalle de un coleccionista para conocer sus gustos musicales.
+* **Path:** `GET /collectors/{id}`
+
+```bash
+curl -X GET "https://vinyls-backend-miso-01cdf4b5b598.herokuapp.com/collectors/1" \
+     -H "Accept: application/json"
+```
 
 ```bash
 curl -X GET "https://back-vynils-heroku.herokuapp.com/bands/2" \

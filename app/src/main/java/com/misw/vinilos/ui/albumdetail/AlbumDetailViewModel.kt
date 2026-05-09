@@ -22,12 +22,12 @@ class AlbumDetailViewModel(private val repository: AlbumRepository, private val 
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                Log.d("AlbumDetailViewModel", "Fetching album $albumId")
+                Log.d("AlbumDetailViewModel", "fetchAlbum: request started albumId=$albumId")
                 val response = repository.getAlbum(albumId)
                 _album.value = response
-                Log.d("AlbumDetailViewModel", "Album fetched: ${response.name}")
+                Log.d("AlbumDetailViewModel", "fetchAlbum: success albumId=$albumId name=${response.name}")
             } catch (e: Exception) {
-                Log.e("AlbumDetailViewModel", "Error fetching album", e)
+                Log.e("AlbumDetailViewModel", "fetchAlbum: failure albumId=$albumId message=${e.message}", e)
                 _error.value = "Error al obtener el detalle del álbum"
             } finally {
                 _isLoading.value = false

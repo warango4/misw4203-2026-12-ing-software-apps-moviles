@@ -1,4 +1,5 @@
 package com.misw.vinilos.data.repository
+import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.models.Performer
 import com.misw.vinilos.data.models.Album
 import com.misw.vinilos.data.network.VinilosApiService
@@ -55,5 +56,7 @@ class PerformerRepositoryTest2 {
             error?.let { throw it }
             return bandResult ?: throw NotImplementedError()
         }
+        override suspend fun getCollectors(): List<Collector> = emptyList()
+        override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
     }
 }
