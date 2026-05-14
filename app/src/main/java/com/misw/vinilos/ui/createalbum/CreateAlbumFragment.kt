@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.misw.vinilos.R
 import com.misw.vinilos.data.network.VinilosServiceAdapter
 import com.misw.vinilos.data.repository.AlbumRepository
+import com.misw.vinilos.data.session.UserSession
 import com.misw.vinilos.databinding.FragmentCreateAlbumBinding
 import java.util.Calendar
 
@@ -36,6 +37,12 @@ class CreateAlbumFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (!UserSession.isCollector(requireContext())) {
+            findNavController().popBackStack()
+            return
+        }
+
         setupGenreDropdown()
         setupRecordLabelDropdown()
         setupDatePicker()

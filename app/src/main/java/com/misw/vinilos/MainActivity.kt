@@ -23,6 +23,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.misw.vinilos.data.session.UserSession
 import com.misw.vinilos.databinding.ActivityMainBinding
+import com.misw.vinilos.ui.albumdetail.AlbumDetailFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -64,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             if (destination.id in topLevel) {
                 binding.bottomNavigation.menu.findItem(destination.id)?.isChecked = true
             }
-            updateFab(destination.id)
+            updateFab()
         }
 
         binding.fabCreateAlbum.setOnClickListener {
@@ -132,11 +133,19 @@ class MainActivity : AppCompatActivity() {
         popup.showAsDropDown(anchor, anchor.width - popupWidthPx, 8)
     }
 
-    private fun updateFab(currentDestId: Int? = null) {
-        val destId = currentDestId
-            ?: findNavController(R.id.nav_host_fragment_content_main).currentDestination?.id
-        val show = destId == R.id.AlbumListFragment && UserSession.isCollector(this)
-        binding.fabCreateAlbum.visibility = if (show) View.VISIBLE else View.GONE
+    fun updateFab() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main)
+        val currentFragment = navHostFragment?.childFragmentManager?.fragments?.firstOrNull()
+
+        val destId = findNavController(R.id.nav_host_fragment_content_main).currentDestination?.id
+        val isCollector = UserSession.isCollector(this)
+
+        val showMainFab = destId == R.id.AlbumListFragment && isCollector
+        binding.fabCreateAlbum.visibility = if (showMainFab) View.VISIBLE else View.GONE
+
+        if (currentFragment is AlbumDetailFragment) {
+            currentFragment.updateFabVisibility()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

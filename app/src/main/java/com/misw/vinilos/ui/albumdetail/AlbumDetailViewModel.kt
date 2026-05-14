@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.misw.vinilos.data.models.Album
+import com.misw.vinilos.data.models.Track
 import com.misw.vinilos.data.repository.AlbumRepository
 import kotlinx.coroutines.launch
 class AlbumDetailViewModel(private val repository: AlbumRepository, private val albumId: Int) : ViewModel() {
@@ -18,12 +19,17 @@ class AlbumDetailViewModel(private val repository: AlbumRepository, private val 
     init {
         fetchAlbum()
     }
-    private fun fetchAlbum() {
+    fun appendTrack(track: Track) {
+        val current = _album.value ?: return
+        _album.value = current.copy(tracks = current.tracks.orEmpty() + track)
+    }
+
+    fun fetchAlbum(refresh: Boolean = false) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                Log.d("AlbumDetailViewModel", "fetchAlbum: request started albumId=$albumId")
-                val response = repository.getAlbum(albumId)
+                Log.d("AlbumDetailViewModel", "fetchAlbum: request started albumId=$albumId refresh=$refresh")
+                val response = repository.getAlbum(albumId, refresh)
                 _album.value = response
                 Log.d("AlbumDetailViewModel", "fetchAlbum: success albumId=$albumId name=${response.name}")
             } catch (e: Exception) {

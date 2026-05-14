@@ -89,7 +89,7 @@ class AlbumRepositoryTest {
             return result
         }
 
-        override suspend fun getAlbum(id: Int): Album {
+        override suspend fun getAlbum(id: Int, cacheControl: String?): Album {
             calls += 1
             error?.let { throw it }
             return singleResult ?: throw NotImplementedError()
@@ -102,5 +102,6 @@ class AlbumRepositoryTest {
         override suspend fun getCollectors(): List<Collector> = emptyList()
         override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
+        override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
     }
 }

@@ -45,7 +45,7 @@ class PerformerRepositoryTest2 {
         private val error: Exception? = null
     ) : VinilosApiService {
         override suspend fun getAlbums(): List<Album> = emptyList()
-        override suspend fun getAlbum(id: Int): Album = throw NotImplementedError()
+        override suspend fun getAlbum(id: Int, cacheControl: String?): Album = throw NotImplementedError()
         override suspend fun getMusicians(): List<Performer> = emptyList()
         override suspend fun getBands(): List<Performer> = emptyList()
         override suspend fun getMusician(id: Int): Performer {
@@ -59,5 +59,6 @@ class PerformerRepositoryTest2 {
         override suspend fun getCollectors(): List<Collector> = emptyList()
         override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
         override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
+        override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
     }
 }
