@@ -294,6 +294,8 @@ class CollectorDetailViewModelTest {
         override suspend fun getCollectors(): List<Collector> = emptyList()
 
         override suspend fun getCollector(id: Int): Collector = collectorById(id)
+
+        override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
     }
 }
 

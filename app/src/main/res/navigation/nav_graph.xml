@@ -12,7 +12,16 @@
         <action
             android:id="@+id/action_AlbumListFragment_to_AlbumDetailFragment"
             app:destination="@id/AlbumDetailFragment" />
+        <action
+            android:id="@+id/action_AlbumListFragment_to_CreateAlbumFragment"
+            app:destination="@id/CreateAlbumFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/CreateAlbumFragment"
+        android:name="com.misw.vinilos.ui.createalbum.CreateAlbumFragment"
+        android:label="@string/create_album_title"
+        tools:layout="@layout/fragment_create_album" />
 
     <fragment
         android:id="@+id/AlbumDetailFragment"

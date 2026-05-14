@@ -34,6 +34,7 @@ class CollectorRepositoryGetCollectorTest {
                 assertEquals(7, id)
                 return expected
             }
+            override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
         }
 
         val repo = CollectorRepository(api)
@@ -56,6 +57,7 @@ class CollectorRepositoryGetCollectorTest {
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = emptyList()
             override suspend fun getCollector(id: Int): Collector = expected
+            override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
         }
 
         val repo = CollectorRepository(api)
@@ -75,6 +77,7 @@ class CollectorRepositoryGetCollectorTest {
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = emptyList()
             override suspend fun getCollector(id: Int): Collector = throw RuntimeException("API Error")
+            override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
         }
 
         val repo = CollectorRepository(api)

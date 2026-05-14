@@ -97,5 +97,6 @@ class AlbumViewModelTest {
         override suspend fun getBand(id: Int) = throw NotImplementedError()
         override suspend fun getCollectors(): List<Collector> = emptyList()
         override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
+        override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
     }
 }

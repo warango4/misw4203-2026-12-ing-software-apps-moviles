@@ -2,6 +2,7 @@ package com.misw.vinilos.data.repository
 
 import android.util.Log
 import com.misw.vinilos.data.models.Album
+import com.misw.vinilos.data.models.AlbumRequest
 import com.misw.vinilos.data.network.VinilosApiService
 
 class AlbumRepository(private val api: VinilosApiService) {
@@ -25,6 +26,18 @@ class AlbumRepository(private val api: VinilosApiService) {
             return result
         } catch (e: Exception) {
             Log.e("AlbumRepository", "getAlbum: failure albumId=$id message=${e.message}", e)
+            throw e
+        }
+    }
+
+    suspend fun createAlbum(request: AlbumRequest): Album {
+        try {
+            Log.d("AlbumRepository", "createAlbum: request started name=${request.name}")
+            val result = api.createAlbum(request)
+            Log.d("AlbumRepository", "createAlbum: success id=${result.id}")
+            return result
+        } catch (e: Exception) {
+            Log.e("AlbumRepository", "createAlbum: failure message=${e.message}", e)
             throw e
         }
     }
