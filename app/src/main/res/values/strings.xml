@@ -96,4 +96,11 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="show_genre_dropdown">Mostrar menú de géneros</string>
+    <string name="show_record_label_dropdown">Mostrar menú de sellos discográficos</string>
+    <string name="view_album_detail">Ver detalle del álbum</string>
+    <string name="view_performer_detail">Ver detalle del artista</string>
+    <string name="view_collector_detail">Ver detalle del coleccionista</string>
+    <string name="album_release_date_label">Fecha de lanzamiento: %1$s</string>
+    <string name="select_album_release_date">Seleccionar fecha de lanzamiento</string>
 </resources>

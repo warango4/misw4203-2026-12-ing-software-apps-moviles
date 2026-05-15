@@ -12,7 +12,8 @@
     app:cardCornerRadius="@dimen/radius_l"
     app:cardUseCompatPadding="true"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:contentDescription="@string/view_performer_detail">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

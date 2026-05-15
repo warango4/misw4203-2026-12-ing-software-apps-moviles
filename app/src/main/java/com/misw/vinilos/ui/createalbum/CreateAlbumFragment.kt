@@ -79,7 +79,7 @@ class CreateAlbumFragment : Fragment() {
     private fun setupDatePicker() {
         val listener = View.OnClickListener {
             val calendar = Calendar.getInstance()
-            DatePickerDialog(
+            val datePickerDialog = DatePickerDialog(
                 requireContext(),
                 { _, year, month, dayOfMonth ->
                     binding.etAlbumReleaseDate.setText(
@@ -90,7 +90,9 @@ class CreateAlbumFragment : Fragment() {
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
-            ).show()
+            )
+            datePickerDialog.setTitle(getString(R.string.select_album_release_date))
+            datePickerDialog.show()
         }
         binding.etAlbumReleaseDate.setOnClickListener(listener)
         binding.tilAlbumReleaseDate.setOnClickListener(listener)

@@ -68,6 +68,7 @@ class AlbumDetailFragment : Fragment() {
                 !year.isNullOrBlank() -> year
                 else -> album.releaseDate.orEmpty()
             }
+            binding.albumReleaseDate.contentDescription = getString(R.string.album_release_date_label, binding.albumReleaseDate.text)
 
             binding.albumRecordLabel.text = album.recordLabel
             Glide.with(this).load(album.cover).into(binding.albumCover)
