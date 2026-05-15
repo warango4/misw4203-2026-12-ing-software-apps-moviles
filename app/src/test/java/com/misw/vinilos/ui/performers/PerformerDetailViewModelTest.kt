@@ -30,7 +30,7 @@ class PerformerDetailViewModelTest {
         val expectedBand = Performer(id = 10, name = "Queen", image = "url", description = "Rock")
         val fakeApiService = object : VinilosApiService {
             override suspend fun getAlbums(): List<Album> = emptyList()
-            override suspend fun getAlbum(id: Int): Album = throw NotImplementedError()
+            override suspend fun getAlbum(id: Int, cacheControl: String?): Album = throw NotImplementedError()
             override suspend fun getMusicians(): List<Performer> = emptyList()
             override suspend fun getBands(): List<Performer> = emptyList()
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
@@ -40,6 +40,7 @@ class PerformerDetailViewModelTest {
             override suspend fun getCollectors(): List<Collector> = emptyList()
             override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
+        override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
         val repository = PerformerRepository(fakeApiService)
         val viewModel = PerformerDetailViewModel(repository, performerId = 10, isBand = true)
@@ -53,7 +54,7 @@ class PerformerDetailViewModelTest {
     fun fetchPerformerDetail_musician_error_updatesErrorLiveData() = runTest {
         val fakeApiService = object : VinilosApiService {
             override suspend fun getAlbums(): List<Album> = emptyList()
-            override suspend fun getAlbum(id: Int): Album = throw NotImplementedError()
+            override suspend fun getAlbum(id: Int, cacheControl: String?): Album = throw NotImplementedError()
             override suspend fun getMusicians(): List<Performer> = emptyList()
             override suspend fun getBands(): List<Performer> = emptyList()
             override suspend fun getMusician(id: Int): Performer = throw Exception("API Musician Error")
@@ -61,6 +62,7 @@ class PerformerDetailViewModelTest {
             override suspend fun getCollectors(): List<Collector> = emptyList()
             override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
+        override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
         val repository = PerformerRepository(fakeApiService)
         val viewModel = PerformerDetailViewModel(repository, performerId = 15, isBand = false)
@@ -76,7 +78,7 @@ class PerformerDetailViewModelTest {
         val expectedMusician = Performer(id = 15, name = "Ruben Blades", image = "url", description = "Salsa")
         val fakeApiService = object : VinilosApiService {
             override suspend fun getAlbums(): List<Album> = emptyList()
-            override suspend fun getAlbum(id: Int): Album = throw NotImplementedError()
+            override suspend fun getAlbum(id: Int, cacheControl: String?): Album = throw NotImplementedError()
             override suspend fun getMusicians(): List<Performer> = emptyList()
             override suspend fun getBands(): List<Performer> = emptyList()
             override suspend fun getMusician(id: Int): Performer = expectedMusician
@@ -84,6 +86,7 @@ class PerformerDetailViewModelTest {
             override suspend fun getCollectors(): List<Collector> = emptyList()
             override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
+        override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
         val repository = PerformerRepository(fakeApiService)
         val viewModel = PerformerDetailViewModel(repository, performerId = 15, isBand = false)
@@ -99,7 +102,7 @@ class PerformerDetailViewModelTest {
         val expectedBand = Performer(id = 5, name = "Soda Stereo", image = "url", description = "Rock")
         val fakeApiService = object : VinilosApiService {
             override suspend fun getAlbums(): List<Album> = emptyList()
-            override suspend fun getAlbum(id: Int): Album = throw NotImplementedError()
+            override suspend fun getAlbum(id: Int, cacheControl: String?): Album = throw NotImplementedError()
             override suspend fun getMusicians(): List<Performer> = emptyList()
             override suspend fun getBands(): List<Performer> = emptyList()
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
@@ -107,6 +110,7 @@ class PerformerDetailViewModelTest {
             override suspend fun getCollectors(): List<Collector> = emptyList()
             override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
+        override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
         val repository = PerformerRepository(fakeApiService)
         val viewModel = PerformerDetailViewModel(repository, performerId = 5, isBand = true)
@@ -121,7 +125,7 @@ class PerformerDetailViewModelTest {
     fun fetchPerformerDetail_band_error_updatesErrorLiveData() = runTest {
         val fakeApiService = object : VinilosApiService {
             override suspend fun getAlbums(): List<Album> = emptyList()
-            override suspend fun getAlbum(id: Int): Album = throw NotImplementedError()
+            override suspend fun getAlbum(id: Int, cacheControl: String?): Album = throw NotImplementedError()
             override suspend fun getMusicians(): List<Performer> = emptyList()
             override suspend fun getBands(): List<Performer> = emptyList()
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
@@ -129,6 +133,7 @@ class PerformerDetailViewModelTest {
             override suspend fun getCollectors(): List<Collector> = emptyList()
             override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
+        override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
         val repository = PerformerRepository(fakeApiService)
         val viewModel = PerformerDetailViewModel(repository, performerId = 20, isBand = true)

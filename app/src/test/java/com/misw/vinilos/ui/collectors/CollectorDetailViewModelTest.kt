@@ -281,7 +281,7 @@ class CollectorDetailViewModelTest {
 
         override suspend fun getAlbums(): List<Album> = emptyList()
 
-        override suspend fun getAlbum(id: Int): Album = albumById(id)
+        override suspend fun getAlbum(id: Int, cacheControl: String?): Album = albumById(id)
 
         override suspend fun getMusicians(): List<Performer> = emptyList()
 
@@ -296,6 +296,7 @@ class CollectorDetailViewModelTest {
         override suspend fun getCollector(id: Int): Collector = collectorById(id)
 
         override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
+        override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
     }
 }
 

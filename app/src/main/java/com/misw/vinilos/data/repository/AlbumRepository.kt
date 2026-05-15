@@ -3,6 +3,8 @@ package com.misw.vinilos.data.repository
 import android.util.Log
 import com.misw.vinilos.data.models.Album
 import com.misw.vinilos.data.models.AlbumRequest
+import com.misw.vinilos.data.models.Track
+import com.misw.vinilos.data.models.TrackRequest
 import com.misw.vinilos.data.network.VinilosApiService
 
 class AlbumRepository(private val api: VinilosApiService) {
@@ -18,10 +20,11 @@ class AlbumRepository(private val api: VinilosApiService) {
         }
     }
 
-    suspend fun getAlbum(id: Int): Album {
+    suspend fun getAlbum(id: Int, refresh: Boolean = false): Album {
         try {
-            Log.d("AlbumRepository", "getAlbum: request started albumId=$id")
-            val result = api.getAlbum(id)
+            Log.d("AlbumRepository", "getAlbum: request started albumId=$id refresh=$refresh")
+            val cacheControl = if (refresh) "no-cache" else null
+            val result = api.getAlbum(id, cacheControl)
             Log.d("AlbumRepository", "getAlbum: success albumId=$id name=${result.name}")
             return result
         } catch (e: Exception) {
@@ -38,6 +41,18 @@ class AlbumRepository(private val api: VinilosApiService) {
             return result
         } catch (e: Exception) {
             Log.e("AlbumRepository", "createAlbum: failure message=${e.message}", e)
+            throw e
+        }
+    }
+
+    suspend fun addTrack(albumId: Int, request: TrackRequest): Track {
+        try {
+            Log.d("AlbumRepository", "addTrack: request started albumId=$albumId name=${request.name}")
+            val result = api.addTrack(albumId, request)
+            Log.d("AlbumRepository", "addTrack: success id=${result.id}")
+            return result
+        } catch (e: Exception) {
+            Log.e("AlbumRepository", "addTrack: failure message=${e.message}", e)
             throw e
         }
     }

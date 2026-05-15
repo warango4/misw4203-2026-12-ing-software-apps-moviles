@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.misw.vinilos.MainActivity
 import com.misw.vinilos.R
 import com.misw.vinilos.data.network.VinilosServiceAdapter
 import com.misw.vinilos.data.repository.AlbumRepository
@@ -41,6 +42,16 @@ class AlbumListFragment : Fragment() {
         observeAlbums()
         Log.d("AlbumListFragment", "fetchAlbums: requesting data")
         viewModel.fetchAlbums()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as MainActivity).updateFab()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as MainActivity).updateFab()
     }
 
     private fun observeAlbums() {
