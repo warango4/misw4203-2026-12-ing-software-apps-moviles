@@ -1,5 +1,6 @@
 package com.misw.vinilos.integration
 
+import com.misw.vinilos.data.models.AlbumRequest
 import com.misw.vinilos.data.network.VinilosApiService
 import com.misw.vinilos.data.repository.AlbumRepository
 import kotlinx.coroutines.test.runTest
@@ -180,5 +181,83 @@ class AlbumIntegrationTest {
 
         assertEquals("Single Track Album", album.name)
         assertTrue(album.tracks.isNullOrEmpty())
+    }
+
+    // El repositorio retorna el álbum creado con los datos del servidor
+    @Test
+    fun createAlbum_repositorioRetornaElAlbumCreado() = runTest {
+        mockWebServer.enqueue(
+            MockResponse().setResponseCode(201).setBody(
+                """{"id":10,"name":"Abbey Road","cover":"https://cover.jpg","genre":"Rock",
+                   "description":"Classic album","recordLabel":"Apple Records",
+                   "releaseDate":"1969-09-26T00:00:00.000Z"}"""
+            )
+        )
+        val request = AlbumRequest("Abbey Road", "https://cover.jpg", "1969-09-26T00:00:00.000Z", "Classic album", "Rock", "Apple Records")
+
+        val result = repository.createAlbum(request)
+
+        assertEquals(10, result.id)
+        assertEquals("Abbey Road", result.name)
+        assertEquals("Rock", result.genre)
+    }
+
+    // El repositorio parsea correctamente todos los campos del álbum creado
+    @Test
+    fun createAlbum_repositorioParseaTodosLosCamposDelAlbumCreado() = runTest {
+        mockWebServer.enqueue(
+            MockResponse().setResponseCode(201).setBody(
+                """{"id":15,"name":"Kind of Blue","cover":"https://cover.jpg","genre":"Jazz",
+                   "description":"Jazz masterpiece","recordLabel":"Columbia",
+                   "releaseDate":"1959-08-17T00:00:00.000Z"}"""
+            )
+        )
+        val request = AlbumRequest("Kind of Blue", "https://cover.jpg", "1959-08-17T00:00:00.000Z", "Jazz masterpiece", "Jazz", "Columbia")
+
+        val result = repository.createAlbum(request)
+
+        assertEquals(15, result.id)
+        assertEquals("Kind of Blue", result.name)
+        assertEquals("Jazz", result.genre)
+        assertEquals("Jazz masterpiece", result.description)
+        assertEquals("Columbia", result.recordLabel)
+        assertEquals("1959-08-17T00:00:00.000Z", result.releaseDate)
+    }
+
+    // Al recibir HTTP 500 en createAlbum, el repositorio lanza excepción
+    @Test
+    fun createAlbum_errorHttp500_repositorioLanzaExcepcion() = runTest {
+        mockWebServer.enqueue(MockResponse().setResponseCode(500))
+        val request = AlbumRequest("Abbey Road", "https://cover.jpg", "1969-09-26T00:00:00.000Z", "Classic album", "Rock", "Apple Records")
+
+        var exceptionThrown = false
+        try {
+            repository.createAlbum(request)
+        } catch (e: Exception) {
+            exceptionThrown = true
+        }
+
+        assertTrue("Se esperaba excepción al recibir HTTP 500", exceptionThrown)
+    }
+
+    // El repositorio envía los datos correctos al servidor en el body de la petición
+    @Test
+    fun createAlbum_enviaLosDatosCorrectosAlServidor() = runTest {
+        mockWebServer.enqueue(
+            MockResponse().setResponseCode(201).setBody(
+                """{"id":20,"name":"Thriller","cover":"https://cover.jpg","genre":"Pop"}"""
+            )
+        )
+        val request = AlbumRequest("Thriller", "https://cover.jpg", "1982-11-30T00:00:00.000Z", "Pop masterpiece", "Pop", "Epic Records")
+
+        repository.createAlbum(request)
+
+        val recorded = mockWebServer.takeRequest()
+        assertEquals("POST", recorded.method)
+        assertTrue(recorded.path!!.endsWith("/albums"))
+        val body = recorded.body.readUtf8()
+        assertTrue(body.contains("\"name\":\"Thriller\""))
+        assertTrue(body.contains("\"genre\":\"Pop\""))
+        assertTrue(body.contains("\"recordLabel\":\"Epic Records\""))
     }
 }
