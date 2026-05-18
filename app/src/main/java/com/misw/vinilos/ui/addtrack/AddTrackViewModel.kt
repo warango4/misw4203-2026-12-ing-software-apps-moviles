@@ -8,14 +8,16 @@ import androidx.lifecycle.viewModelScope
 import com.misw.vinilos.data.models.Track
 import com.misw.vinilos.data.models.TrackRequest
 import com.misw.vinilos.data.repository.AlbumRepository
+import com.misw.vinilos.util.HttpErrorMapper
+import com.misw.vinilos.util.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class AddTrackViewModel(private val repository: AlbumRepository) : ViewModel() {
 
-    private val _trackAdded = MutableLiveData<Track?>()
+    private val _trackAdded = SingleLiveEvent<Track?>()
     val trackAdded: LiveData<Track?> get() = _trackAdded
 
-    private val _error = MutableLiveData<String?>()
+    private val _error = SingleLiveEvent<String?>()
     val error: LiveData<String?> get() = _error
 
     private val _isLoading = MutableLiveData(false)
@@ -23,7 +25,6 @@ class AddTrackViewModel(private val repository: AlbumRepository) : ViewModel() {
 
     fun addTrack(albumId: Int, name: String, duration: String) {
         _isLoading.value = true
-        _error.value = null
         viewModelScope.launch {
             try {
                 val request = TrackRequest(name, duration)
@@ -32,7 +33,7 @@ class AddTrackViewModel(private val repository: AlbumRepository) : ViewModel() {
                 _trackAdded.value = result
             } catch (e: Exception) {
                 Log.e("AddTrackViewModel", "addTrack: failure", e)
-                _error.value = e.message
+                _error.value = HttpErrorMapper.toUserMessage(e)
             } finally {
                 _isLoading.value = false
             }

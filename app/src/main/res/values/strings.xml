@@ -41,6 +41,7 @@
     <string name="create_album_record_label">Sello discográfico *</string>
     <string name="create_album_save">Guardar</string>
     <string name="create_album_field_required">Campo obligatorio</string>
+    <string name="create_album_cover_invalid_url">La URL debe comenzar con http:// o https://</string>
     <string name="create_album_success">Álbum \"%1$s\" creado exitosamente</string>
     <string name="create_album_fab_description">Crear nuevo álbum</string>
 
