@@ -20,6 +20,14 @@ object VinilosServiceAdapter {
     @Volatile
     private var cachedService: VinilosApiService? = null
 
+    private var httpCache: Cache? = null
+
+    // Invalida todo el caché HTTP. Se llama tras mutaciones (POST/PUT/DELETE) para que el próximo
+    // GET lea datos frescos del servidor y no muestre el estado anterior.
+    fun invalidateCache() {
+        httpCache?.evictAll()
+    }
+
     /**
      * Devuelve (o crea) el ApiService singleton con OkHttpClient y caché en disco.
      *
@@ -35,6 +43,7 @@ object VinilosServiceAdapter {
     private fun buildService(appContext: Context): VinilosApiService {
         val cacheDir = File(appContext.cacheDir, CACHE_DIR_NAME)
         val cache = Cache(cacheDir, CACHE_SIZE_BYTES)
+        httpCache = cache
 
         val logging = HttpLoggingInterceptor().apply {
             // En debug, nos ayuda a diagnosticar; en release, deshabilitado.

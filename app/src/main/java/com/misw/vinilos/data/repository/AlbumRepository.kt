@@ -7,7 +7,10 @@ import com.misw.vinilos.data.models.Track
 import com.misw.vinilos.data.models.TrackRequest
 import com.misw.vinilos.data.network.VinilosApiService
 
-class AlbumRepository(private val api: VinilosApiService) {
+class AlbumRepository(
+    private val api: VinilosApiService,
+    private val onMutationSuccess: () -> Unit = {}
+) {
     suspend fun getAlbums(): List<Album> {
         try {
             Log.d("AlbumRepository", "getAlbums: request started")
@@ -38,6 +41,7 @@ class AlbumRepository(private val api: VinilosApiService) {
             Log.d("AlbumRepository", "createAlbum: request started name=${request.name}")
             val result = api.createAlbum(request)
             Log.d("AlbumRepository", "createAlbum: success id=${result.id}")
+            onMutationSuccess()
             return result
         } catch (e: Exception) {
             Log.e("AlbumRepository", "createAlbum: failure message=${e.message}", e)
@@ -50,6 +54,7 @@ class AlbumRepository(private val api: VinilosApiService) {
             Log.d("AlbumRepository", "addTrack: request started albumId=$albumId name=${request.name}")
             val result = api.addTrack(albumId, request)
             Log.d("AlbumRepository", "addTrack: success id=${result.id}")
+            onMutationSuccess()
             return result
         } catch (e: Exception) {
             Log.e("AlbumRepository", "addTrack: failure message=${e.message}", e)
