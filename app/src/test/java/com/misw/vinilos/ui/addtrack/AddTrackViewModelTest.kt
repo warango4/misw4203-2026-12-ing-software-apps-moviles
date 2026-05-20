@@ -55,7 +55,7 @@ class AddTrackViewModelTest {
         viewModel.addTrack(5, "Money", "6:22")
         advanceUntilIdle()
 
-        assertEquals("sin conexion", viewModel.error.value)
+        assertEquals("Ocurrió un error inesperado.", viewModel.error.value)
         assertNull(viewModel.trackAdded.value)
     }
 

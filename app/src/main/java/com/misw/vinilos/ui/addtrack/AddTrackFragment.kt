@@ -21,7 +21,10 @@ class AddTrackFragment : Fragment() {
 
     private val viewModel: AddTrackViewModel by viewModels {
         AddTrackViewModelFactory(
-            AlbumRepository(VinilosServiceAdapter.createApiService(requireContext()))
+            AlbumRepository(
+                VinilosServiceAdapter.createApiService(requireContext()),
+                VinilosServiceAdapter::invalidateCache
+            )
         )
     }
 

@@ -24,7 +24,10 @@ class CreateAlbumFragment : Fragment() {
 
     private val viewModel: CreateAlbumViewModel by viewModels {
         CreateAlbumViewModelFactory(
-            AlbumRepository(VinilosServiceAdapter.createApiService(requireContext()))
+            AlbumRepository(
+                VinilosServiceAdapter.createApiService(requireContext()),
+                VinilosServiceAdapter::invalidateCache
+            )
         )
     }
 
@@ -108,8 +111,12 @@ class CreateAlbumFragment : Fragment() {
             binding.tilAlbumName.error = null
         }
 
-        if (binding.etAlbumCover.text.isNullOrBlank()) {
+        val coverUrl = binding.etAlbumCover.text.toString().trim()
+        if (coverUrl.isBlank()) {
             binding.tilAlbumCover.error = getString(R.string.create_album_field_required)
+            valid = false
+        } else if (!coverUrl.startsWith("http://") && !coverUrl.startsWith("https://")) {
+            binding.tilAlbumCover.error = getString(R.string.create_album_cover_invalid_url)
             valid = false
         } else {
             binding.tilAlbumCover.error = null

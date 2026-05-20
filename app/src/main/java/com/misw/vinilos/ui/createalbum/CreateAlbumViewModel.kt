@@ -8,14 +8,16 @@ import androidx.lifecycle.viewModelScope
 import com.misw.vinilos.data.models.Album
 import com.misw.vinilos.data.models.AlbumRequest
 import com.misw.vinilos.data.repository.AlbumRepository
+import com.misw.vinilos.util.HttpErrorMapper
+import com.misw.vinilos.util.SingleLiveEvent
 import kotlinx.coroutines.launch
 
 class CreateAlbumViewModel(private val repository: AlbumRepository) : ViewModel() {
 
-    private val _albumCreated = MutableLiveData<Album?>()
+    private val _albumCreated = SingleLiveEvent<Album?>()
     val albumCreated: LiveData<Album?> get() = _albumCreated
 
-    private val _error = MutableLiveData<String?>()
+    private val _error = SingleLiveEvent<String?>()
     val error: LiveData<String?> get() = _error
 
     private val _isLoading = MutableLiveData(false)
@@ -30,7 +32,6 @@ class CreateAlbumViewModel(private val repository: AlbumRepository) : ViewModel(
         recordLabel: String
     ) {
         _isLoading.value = true
-        _error.value = null
         viewModelScope.launch {
             try {
                 val request = AlbumRequest(name, cover, releaseDate, description, genre, recordLabel)
@@ -39,7 +40,7 @@ class CreateAlbumViewModel(private val repository: AlbumRepository) : ViewModel(
                 _albumCreated.value = result
             } catch (e: Exception) {
                 Log.e("CreateAlbumViewModel", "createAlbum: failure", e)
-                _error.value = e.message
+                _error.value = HttpErrorMapper.toUserMessage(e)
             } finally {
                 _isLoading.value = false
             }

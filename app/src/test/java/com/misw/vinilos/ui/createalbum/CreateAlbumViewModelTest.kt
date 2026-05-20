@@ -56,7 +56,7 @@ class CreateAlbumViewModelTest {
         viewModel.createAlbum("Abbey Road", "https://cover.jpg", "1969-09-26T00:00:00.000Z", "Classic album", "Rock", "Apple Records")
         advanceUntilIdle()
 
-        assertEquals("sin conexion", viewModel.error.value)
+        assertEquals("Ocurrió un error inesperado.", viewModel.error.value)
         assertNull(viewModel.albumCreated.value)
     }
 
