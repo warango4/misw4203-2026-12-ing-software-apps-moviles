@@ -9,7 +9,9 @@ import com.misw.vinilos.data.models.TrackRequest
 import com.misw.vinilos.data.network.VinilosApiService
 import com.misw.vinilos.data.repository.AlbumRepository
 import com.misw.vinilos.testutils.MainDispatcherRule
+import com.misw.vinilos.testutils.TestDispatcherProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -33,11 +35,13 @@ class CreateAlbumViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    private val testDispatchers = TestDispatcherProvider(UnconfinedTestDispatcher())
+
     @Test
     fun createAlbum_publicaAlbumCuandoElRepositorioRespondeOk() = runTest {
         val expected = Album(1, "Abbey Road", "https://cover.jpg", "Rock")
         val viewModel = CreateAlbumViewModel(
-            AlbumRepository(FakeVinilosApiService(albumResult = expected))
+            AlbumRepository(FakeVinilosApiService(albumResult = expected), testDispatchers)
         )
 
         viewModel.createAlbum("Abbey Road", "https://cover.jpg", "1969-09-26T00:00:00.000Z", "Classic album", "Rock", "Apple Records")
@@ -50,7 +54,7 @@ class CreateAlbumViewModelTest {
     @Test
     fun createAlbum_publicaErrorCuandoElRepositorioFalla() = runTest {
         val viewModel = CreateAlbumViewModel(
-            AlbumRepository(FakeVinilosApiService(error = IllegalStateException("sin conexion")))
+            AlbumRepository(FakeVinilosApiService(error = IllegalStateException("sin conexion")), testDispatchers)
         )
 
         viewModel.createAlbum("Abbey Road", "https://cover.jpg", "1969-09-26T00:00:00.000Z", "Classic album", "Rock", "Apple Records")
@@ -64,7 +68,7 @@ class CreateAlbumViewModelTest {
     fun createAlbum_isLoadingEsTrueDuranteEjecucionYFalseAlTerminar() = runTest {
         val expected = Album(2, "Thriller", "https://cover.jpg", "Pop")
         val viewModel = CreateAlbumViewModel(
-            AlbumRepository(FakeVinilosApiService(albumResult = expected))
+            AlbumRepository(FakeVinilosApiService(albumResult = expected), testDispatchers)
         )
 
         assertFalse(viewModel.isLoading.value!!)
@@ -78,7 +82,7 @@ class CreateAlbumViewModelTest {
     @Test
     fun createAlbum_errorNoPublicaAlbum() = runTest {
         val viewModel = CreateAlbumViewModel(
-            AlbumRepository(FakeVinilosApiService(error = RuntimeException("fallo")))
+            AlbumRepository(FakeVinilosApiService(error = RuntimeException("fallo")), testDispatchers)
         )
         viewModel.albumCreated.observeForever {}
 
@@ -91,7 +95,7 @@ class CreateAlbumViewModelTest {
     @Test
     fun createAlbum_isLoadingEsFalseAlFallar() = runTest {
         val viewModel = CreateAlbumViewModel(
-            AlbumRepository(FakeVinilosApiService(error = RuntimeException("fallo")))
+            AlbumRepository(FakeVinilosApiService(error = RuntimeException("fallo")), testDispatchers)
         )
 
         viewModel.createAlbum("Abbey Road", "https://cover.jpg", "1969-09-26T00:00:00.000Z", "Classic album", "Rock", "Apple Records")
@@ -104,7 +108,7 @@ class CreateAlbumViewModelTest {
     fun createAlbum_publicaAlbumConLosDatosCorrectos() = runTest {
         val expected = Album(7, "Kind of Blue", "https://cover.jpg", "Jazz", "Jazz masterpiece", "Columbia", "1959-08-17T00:00:00.000Z")
         val viewModel = CreateAlbumViewModel(
-            AlbumRepository(FakeVinilosApiService(albumResult = expected))
+            AlbumRepository(FakeVinilosApiService(albumResult = expected), testDispatchers)
         )
 
         viewModel.createAlbum("Kind of Blue", "https://cover.jpg", "1959-08-17T00:00:00.000Z", "Jazz masterpiece", "Jazz", "Columbia")

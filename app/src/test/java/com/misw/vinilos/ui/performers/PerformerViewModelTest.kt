@@ -6,7 +6,9 @@ import com.misw.vinilos.data.models.Album
 import com.misw.vinilos.data.network.VinilosApiService
 import com.misw.vinilos.data.repository.PerformerRepository
 import com.misw.vinilos.testutils.MainDispatcherRule
+import com.misw.vinilos.testutils.TestDispatcherProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -24,6 +26,8 @@ class PerformerViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
+
+    private val testDispatchers = TestDispatcherProvider(UnconfinedTestDispatcher())
     @Test
     fun fetchPerformers_success_updatesLiveData() = runTest {
         val expectedPerformer = Performer(
@@ -44,7 +48,7 @@ class PerformerViewModelTest {
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
-        val repository = PerformerRepository(fakeApiService)
+        val repository = PerformerRepository(fakeApiService, testDispatchers)
         val viewModel = PerformerViewModel(repository)
         viewModel.performers.observeForever {}
         viewModel.isLoading.observeForever {}
@@ -68,7 +72,7 @@ class PerformerViewModelTest {
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
-        val repository = PerformerRepository(fakeApiService)
+        val repository = PerformerRepository(fakeApiService, testDispatchers)
 
         val viewModel = PerformerViewModel(repository)
         viewModel.error.observeForever {}
@@ -97,7 +101,7 @@ class PerformerViewModelTest {
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
-        val repository = PerformerRepository(fakeApiService)
+        val repository = PerformerRepository(fakeApiService, testDispatchers)
         val viewModel = PerformerViewModel(repository)
         viewModel.performers.observeForever {}
 
@@ -123,7 +127,7 @@ class PerformerViewModelTest {
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
-        val repository = PerformerRepository(fakeApiService)
+        val repository = PerformerRepository(fakeApiService, testDispatchers)
 
         val viewModel = PerformerViewModel(repository)
         viewModel.performers.observeForever {}

@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.misw.vinilos.R
+import com.misw.vinilos.data.dispatchers.DefaultDispatcherProvider
 import com.misw.vinilos.data.models.Track
 import com.misw.vinilos.data.network.VinilosServiceAdapter
 import com.misw.vinilos.data.repository.AlbumRepository
@@ -28,7 +29,10 @@ class AlbumDetailFragment : Fragment() {
 
     private val viewModel: AlbumDetailViewModel by viewModels {
         AlbumDetailViewModelFactory(
-            AlbumRepository(VinilosServiceAdapter.createApiService(requireContext())),
+            AlbumRepository(
+                VinilosServiceAdapter.createApiService(requireContext()),
+                DefaultDispatcherProvider()
+            ),
             albumId
         )
     }

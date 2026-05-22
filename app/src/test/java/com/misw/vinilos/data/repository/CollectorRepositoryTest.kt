@@ -4,7 +4,9 @@ import com.misw.vinilos.data.models.Album
 import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.models.Performer
 import com.misw.vinilos.data.network.VinilosApiService
+import com.misw.vinilos.testutils.TestDispatcherProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
@@ -17,6 +19,8 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
 class CollectorRepositoryTest {
+
+    private val testDispatchers = TestDispatcherProvider(UnconfinedTestDispatcher())
 
     @Test
     fun getCollectors_success_returnsListFromApi() = runTest {
@@ -38,7 +42,7 @@ class CollectorRepositoryTest {
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
 
-        val repo = CollectorRepository(api)
+        val repo = CollectorRepository(api, testDispatchers)
         val result = repo.getCollectors()
 
         assertEquals(2, result.size)
@@ -62,7 +66,7 @@ class CollectorRepositoryTest {
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
 
-        val repo = CollectorRepository(api)
+        val repo = CollectorRepository(api, testDispatchers)
         val result = repo.getCollectors()
 
         assertSame(expected, result)
@@ -83,7 +87,7 @@ class CollectorRepositoryTest {
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
 
-        val repo = CollectorRepository(api)
+        val repo = CollectorRepository(api, testDispatchers)
         repo.getCollectors()
     }
 }

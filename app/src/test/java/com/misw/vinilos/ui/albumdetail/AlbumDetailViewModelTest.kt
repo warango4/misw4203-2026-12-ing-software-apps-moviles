@@ -4,7 +4,9 @@ import com.misw.vinilos.data.models.Album
 import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.repository.AlbumRepository
 import com.misw.vinilos.testutils.MainDispatcherRule
+import com.misw.vinilos.testutils.TestDispatcherProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -26,6 +28,8 @@ class AlbumDetailViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
+
+    private val testDispatchers = TestDispatcherProvider(UnconfinedTestDispatcher())
 
     @Test
     fun fetchAlbum_success_updatesLiveData() = runTest {
@@ -52,7 +56,7 @@ class AlbumDetailViewModelTest {
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
-        val repository = AlbumRepository(fakeApiService)
+        val repository = AlbumRepository(fakeApiService, testDispatchers)
 
         val viewModel = AlbumDetailViewModel(repository, 100)
 
@@ -79,7 +83,7 @@ class AlbumDetailViewModelTest {
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
-        val repository = AlbumRepository(fakeApiService)
+        val repository = AlbumRepository(fakeApiService, testDispatchers)
 
         val viewModel = AlbumDetailViewModel(repository, 100)
 
@@ -106,7 +110,7 @@ class AlbumDetailViewModelTest {
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
-        val repository = AlbumRepository(fakeApiService)
+        val repository = AlbumRepository(fakeApiService, testDispatchers)
         val viewModel = AlbumDetailViewModel(repository, 999)
 
         viewModel.album.observeForever {}
@@ -134,7 +138,7 @@ class AlbumDetailViewModelTest {
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
-        val repository = AlbumRepository(fakeApiService)
+        val repository = AlbumRepository(fakeApiService, testDispatchers)
         val viewModel = AlbumDetailViewModel(repository, 300)
 
         viewModel.album.observeForever {}
@@ -162,7 +166,7 @@ class AlbumDetailViewModelTest {
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
-        val repository = AlbumRepository(fakeApiService)
+        val repository = AlbumRepository(fakeApiService, testDispatchers)
         val viewModel = AlbumDetailViewModel(repository, 200)
 
         viewModel.album.observeForever {}
@@ -192,7 +196,7 @@ class AlbumDetailViewModelTest {
             override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
-        val repository = AlbumRepository(fakeApiService)
+        val repository = AlbumRepository(fakeApiService, testDispatchers)
 
         val viewModel = AlbumDetailViewModel(repository, 200)
 

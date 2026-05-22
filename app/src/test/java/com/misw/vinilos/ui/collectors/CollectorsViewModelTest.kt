@@ -7,8 +7,10 @@ import com.misw.vinilos.data.models.Performer
 import com.misw.vinilos.data.network.VinilosApiService
 import com.misw.vinilos.data.repository.CollectorRepository
 import com.misw.vinilos.testutils.MainDispatcherRule
+import com.misw.vinilos.testutils.TestDispatcherProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
@@ -33,6 +35,8 @@ class CollectorsViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    private val testDispatchers = TestDispatcherProvider(UnconfinedTestDispatcher())
+
     @Test
     fun fetchCollectors_success_updatesCollectorsSortedAndStopsLoading() = runTest {
         val c1 = Collector(id = 1, name = "Zoe", telephone = "1", email = "z@a.com")
@@ -51,7 +55,7 @@ class CollectorsViewModelTest {
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
 
-        val vm = CollectorsViewModel(CollectorRepository(api))
+        val vm = CollectorsViewModel(CollectorRepository(api, testDispatchers))
         vm.collectors.observeForever { }
         vm.isLoading.observeForever { }
         vm.error.observeForever { }
@@ -79,7 +83,7 @@ class CollectorsViewModelTest {
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
 
-        val vm = CollectorsViewModel(CollectorRepository(api))
+        val vm = CollectorsViewModel(CollectorRepository(api, testDispatchers))
         vm.collectors.observeForever { }
         vm.isLoading.observeForever { }
 
@@ -105,7 +109,7 @@ class CollectorsViewModelTest {
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
 
-        val vm = CollectorsViewModel(CollectorRepository(api))
+        val vm = CollectorsViewModel(CollectorRepository(api, testDispatchers))
         vm.error.observeForever { }
         vm.isLoading.observeForever { }
 
@@ -135,7 +139,7 @@ class CollectorsViewModelTest {
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
 
-        val vm = CollectorsViewModel(CollectorRepository(api))
+        val vm = CollectorsViewModel(CollectorRepository(api, testDispatchers))
         vm.error.observeForever { }
 
         vm.fetchCollectors()
@@ -169,7 +173,7 @@ class CollectorsViewModelTest {
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
 
-        val vm = CollectorsViewModel(CollectorRepository(api))
+        val vm = CollectorsViewModel(CollectorRepository(api, testDispatchers))
         vm.isLoading.observeForever { }
 
         vm.fetchCollectors()
@@ -195,7 +199,7 @@ class CollectorsViewModelTest {
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
 
-        val vm = CollectorsViewModel(CollectorRepository(api))
+        val vm = CollectorsViewModel(CollectorRepository(api, testDispatchers))
         vm.error.observeForever { }
 
         vm.fetchCollectors()
@@ -225,7 +229,7 @@ class CollectorsViewModelTest {
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
 
-        val vm = CollectorsViewModel(CollectorRepository(api))
+        val vm = CollectorsViewModel(CollectorRepository(api, testDispatchers))
         vm.collectors.observeForever { }
 
         vm.fetchCollectors()
@@ -254,7 +258,7 @@ class CollectorsViewModelTest {
         override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
 
-        val vm = CollectorsViewModel(CollectorRepository(api))
+        val vm = CollectorsViewModel(CollectorRepository(api, testDispatchers))
         var sawLoadingTrue = false
         vm.isLoading.observeForever { if (it == true) sawLoadingTrue = true }
 
