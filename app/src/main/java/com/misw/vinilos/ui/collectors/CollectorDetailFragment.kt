@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.misw.vinilos.data.dispatchers.DefaultDispatcherProvider
 import com.misw.vinilos.data.repository.AlbumRepository
 import com.misw.vinilos.data.network.VinilosServiceAdapter
 import com.misw.vinilos.data.repository.CollectorRepository
@@ -47,8 +48,9 @@ class CollectorDetailFragment : Fragment() {
         Log.i(TAG, "onViewCreated collectorId=$collectorId")
 
         val apiService = VinilosServiceAdapter.createApiService(requireContext())
-        val repository = CollectorRepository(apiService)
-        val albumRepository = AlbumRepository(apiService)
+        val dispatchers = DefaultDispatcherProvider()
+        val repository = CollectorRepository(apiService, dispatchers)
+        val albumRepository = AlbumRepository(apiService, dispatchers)
         val factory = CollectorDetailViewModelFactory(repository, albumRepository, collectorId)
         val viewModel: CollectorDetailViewModel by viewModels { factory }
 

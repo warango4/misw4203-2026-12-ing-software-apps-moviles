@@ -6,7 +6,9 @@ import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.network.VinilosApiService
 import com.misw.vinilos.data.repository.AlbumRepository
 import com.misw.vinilos.testutils.MainDispatcherRule
+import com.misw.vinilos.testutils.TestDispatcherProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -28,11 +30,13 @@ class AlbumViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    private val testDispatchers = TestDispatcherProvider(UnconfinedTestDispatcher())
+
     @Test
     fun fetchAlbums_publicaAlbumesCuandoElRepositorioRespondeOk() = runTest {
         val expected = listOf(Album(1, "Kind of Blue", "cover-url", "Jazz"))
         val viewModel = AlbumViewModel(
-            AlbumRepository(FakeVinilosApiService(result = expected))
+            AlbumRepository(FakeVinilosApiService(result = expected), testDispatchers)
         )
 
         viewModel.fetchAlbums()
@@ -45,7 +49,7 @@ class AlbumViewModelTest {
     @Test
     fun fetchAlbums_publicaErrorCuandoElRepositorioFalla() = runTest {
         val viewModel = AlbumViewModel(
-            AlbumRepository(FakeVinilosApiService(error = IllegalStateException("sin conexion")))
+            AlbumRepository(FakeVinilosApiService(error = IllegalStateException("sin conexion")), testDispatchers)
         )
 
         viewModel.fetchAlbums()
@@ -57,7 +61,7 @@ class AlbumViewModelTest {
     @Test
     fun fetchAlbums_listaVacia_publicaListaVacia() = runTest {
         val viewModel = AlbumViewModel(
-            AlbumRepository(FakeVinilosApiService(result = emptyList()))
+            AlbumRepository(FakeVinilosApiService(result = emptyList()), testDispatchers)
         )
 
         viewModel.fetchAlbums()
@@ -70,7 +74,7 @@ class AlbumViewModelTest {
     @Test
     fun fetchAlbums_errorNoPublicaAlbumes() = runTest {
         val viewModel = AlbumViewModel(
-            AlbumRepository(FakeVinilosApiService(error = RuntimeException("fallo")))
+            AlbumRepository(FakeVinilosApiService(error = RuntimeException("fallo")), testDispatchers)
         )
         viewModel.albums.observeForever {}
 
@@ -88,7 +92,7 @@ class AlbumViewModelTest {
             error?.let { throw it }
             return result
         }
-        override suspend fun getAlbum(id: Int): Album {
+        override suspend fun getAlbum(id: Int, cacheControl: String?): Album {
             throw NotImplementedError()
         }
         override suspend fun getMusicians() = emptyList<com.misw.vinilos.data.models.Performer>()
@@ -97,5 +101,7 @@ class AlbumViewModelTest {
         override suspend fun getBand(id: Int) = throw NotImplementedError()
         override suspend fun getCollectors(): List<Collector> = emptyList()
         override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
+        override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
+        override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
     }
 }

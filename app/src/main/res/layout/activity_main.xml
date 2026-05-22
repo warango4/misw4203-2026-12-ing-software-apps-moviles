@@ -15,7 +15,8 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
             style="@style/Widget.Vinilos.Toolbar" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -32,5 +33,18 @@
         app:itemIconTint="@color/vin_bottom_nav_item"
         app:itemTextColor="@color/vin_bottom_nav_item"
         app:labelVisibilityMode="labeled" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCreateAlbum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:contentDescription="@string/create_album_fab_description"
+        android:src="@drawable/ic_add"
+        android:visibility="gone"
+        app:backgroundTint="@color/vin_primary"
+        app:tint="@color/vin_bg"
+        app:layout_anchor="@id/bottomNavigation"
+        app:layout_anchorGravity="top|end" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -4,7 +4,9 @@ import com.misw.vinilos.data.models.Album
 import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.models.Performer
 import com.misw.vinilos.data.network.VinilosApiService
+import com.misw.vinilos.testutils.TestDispatcherProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
@@ -18,6 +20,8 @@ import org.robolectric.annotation.Config
 @Config(sdk = [34])
 class CollectorRepositoryTest {
 
+    private val testDispatchers = TestDispatcherProvider(UnconfinedTestDispatcher())
+
     @Test
     fun getCollectors_success_returnsListFromApi() = runTest {
         val expected = listOf(
@@ -27,16 +31,18 @@ class CollectorRepositoryTest {
 
         val api = object : VinilosApiService {
             override suspend fun getAlbums(): List<Album> = emptyList()
-            override suspend fun getAlbum(id: Int): Album = throw NotImplementedError()
+            override suspend fun getAlbum(id: Int, cacheControl: String?): Album = throw NotImplementedError()
             override suspend fun getMusicians(): List<Performer> = emptyList()
             override suspend fun getBands(): List<Performer> = emptyList()
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = expected
             override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
+            override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
+        override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
 
-        val repo = CollectorRepository(api)
+        val repo = CollectorRepository(api, testDispatchers)
         val result = repo.getCollectors()
 
         assertEquals(2, result.size)
@@ -49,16 +55,18 @@ class CollectorRepositoryTest {
 
         val api = object : VinilosApiService {
             override suspend fun getAlbums(): List<Album> = emptyList()
-            override suspend fun getAlbum(id: Int): Album = throw NotImplementedError()
+            override suspend fun getAlbum(id: Int, cacheControl: String?): Album = throw NotImplementedError()
             override suspend fun getMusicians(): List<Performer> = emptyList()
             override suspend fun getBands(): List<Performer> = emptyList()
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = expected
             override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
+            override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
+        override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
 
-        val repo = CollectorRepository(api)
+        val repo = CollectorRepository(api, testDispatchers)
         val result = repo.getCollectors()
 
         assertSame(expected, result)
@@ -68,16 +76,18 @@ class CollectorRepositoryTest {
     fun getCollectors_error_rethrowsException() = runTest {
         val api = object : VinilosApiService {
             override suspend fun getAlbums(): List<Album> = emptyList()
-            override suspend fun getAlbum(id: Int): Album = throw NotImplementedError()
+            override suspend fun getAlbum(id: Int, cacheControl: String?): Album = throw NotImplementedError()
             override suspend fun getMusicians(): List<Performer> = emptyList()
             override suspend fun getBands(): List<Performer> = emptyList()
             override suspend fun getMusician(id: Int): Performer = throw NotImplementedError()
             override suspend fun getBand(id: Int): Performer = throw NotImplementedError()
             override suspend fun getCollectors(): List<Collector> = throw RuntimeException("API Error")
             override suspend fun getCollector(id: Int): Collector = throw NotImplementedError()
+            override suspend fun createAlbum(album: com.misw.vinilos.data.models.AlbumRequest): Album = throw NotImplementedError()
+        override suspend fun addTrack(albumId: Int, track: com.misw.vinilos.data.models.TrackRequest): com.misw.vinilos.data.models.Track = throw NotImplementedError()
         }
 
-        val repo = CollectorRepository(api)
+        val repo = CollectorRepository(api, testDispatchers)
         repo.getCollectors()
     }
 }

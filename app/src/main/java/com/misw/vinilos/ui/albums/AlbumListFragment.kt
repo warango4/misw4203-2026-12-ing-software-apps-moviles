@@ -1,10 +1,7 @@
 package com.misw.vinilos.ui.albums
 
-import android.util.Log
-import com.misw.vinilos.data.repository.AlbumRepository
-import com.misw.vinilos.data.network.VinilosServiceAdapter
-
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.misw.vinilos.MainActivity
+import com.misw.vinilos.R
+import com.misw.vinilos.data.dispatchers.DefaultDispatcherProvider
+import com.misw.vinilos.data.network.VinilosServiceAdapter
+import com.misw.vinilos.data.repository.AlbumRepository
 import com.misw.vinilos.databinding.FragmentAlbumListBinding
 
 class AlbumListFragment : Fragment() {
@@ -23,7 +25,10 @@ class AlbumListFragment : Fragment() {
     private val viewModel: AlbumViewModel by viewModels(
         factoryProducer = {
             AlbumViewModelFactory(
-                AlbumRepository(VinilosServiceAdapter.createApiService(requireContext()))
+                AlbumRepository(
+                    VinilosServiceAdapter.createApiService(requireContext()),
+                    DefaultDispatcherProvider()
+                )
             )
         }
     )
@@ -37,11 +42,20 @@ class AlbumListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("AlbumListFragment", "onViewCreated called")
-
         binding.rvAlbums.layoutManager = GridLayoutManager(requireContext(), 2)
         observeAlbums()
         Log.d("AlbumListFragment", "fetchAlbums: requesting data")
         viewModel.fetchAlbums()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as MainActivity).updateFab()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        (requireActivity() as MainActivity).updateFab()
     }
 
     private fun observeAlbums() {
@@ -53,12 +67,11 @@ class AlbumListFragment : Fragment() {
                     try {
                         Log.d("AlbumListFragment", "Navigate to Detail for album: ${album.name}")
                         val bundle = android.os.Bundle().apply { putInt("albumId", album.id) }
-                        findNavController().navigate(com.misw.vinilos.R.id.action_AlbumListFragment_to_AlbumDetailFragment, bundle)
+                        findNavController().navigate(R.id.action_AlbumListFragment_to_AlbumDetailFragment, bundle)
                     } catch (e: Exception) {
                         Log.e("AlbumListFragment", "Navigation error: ${e.message}", e)
                     }
                 }.also { binding.rvAlbums.adapter = it }
-
             adapter.submitList(albums)
         }
         viewModel.error.observe(viewLifecycleOwner) { message ->

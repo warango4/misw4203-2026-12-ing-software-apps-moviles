@@ -31,6 +31,36 @@
     <string name="title_tracks">Tracks</string>
     <string name="collectors_empty">No collectors to show</string>
 
+    <!-- Create Album -->
+    <string name="create_album_title">Crear Álbum</string>
+    <string name="create_album_name">Nombre *</string>
+    <string name="create_album_cover">URL de portada *</string>
+    <string name="create_album_release_date">Fecha de lanzamiento *</string>
+    <string name="create_album_genre">Género *</string>
+    <string name="create_album_description">Descripción *</string>
+    <string name="create_album_record_label">Sello discográfico *</string>
+    <string name="create_album_save">Guardar</string>
+    <string name="create_album_field_required">Campo obligatorio</string>
+    <string name="create_album_cover_invalid_url">La URL debe comenzar con http:// o https://</string>
+    <string name="create_album_success">Álbum \"%1$s\" creado exitosamente</string>
+    <string name="create_album_fab_description">Crear nuevo álbum</string>
+
+    <!-- Add Track -->
+    <string name="add_track_title">Agregar Track</string>
+    <string name="add_track_name">Nombre *</string>
+    <string name="add_track_duration">Duración *</string>
+    <string name="add_track_duration_hint">Formato: m:ss (ej. 6:22)</string>
+    <string name="add_track_duration_invalid">Formato inválido. Use m:ss (ej. 6:22)</string>
+    <string name="add_track_success">Track \"%1$s\" agregado exitosamente</string>
+    <string name="add_track_fab_description">Agregar track al álbum</string>
+
+    <!-- Role selection -->
+    <string name="role_switch_header">Cambiar rol</string>
+    <string name="role_collector">Coleccionista</string>
+    <string name="role_guest">Visitante</string>
+    <string name="role_guest_subtitle">Solo navegación</string>
+    <string name="role_collector_subtitle">Crear y administrar</string>
+
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
@@ -67,4 +97,11 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="show_genre_dropdown">Mostrar menú de géneros</string>
+    <string name="show_record_label_dropdown">Mostrar menú de sellos discográficos</string>
+    <string name="view_album_detail">Ver detalle del álbum</string>
+    <string name="view_performer_detail">Ver detalle del artista</string>
+    <string name="view_collector_detail">Ver detalle del coleccionista</string>
+    <string name="album_release_date_label">Fecha de lanzamiento: %1$s</string>
+    <string name="select_album_release_date">Seleccionar fecha de lanzamiento</string>
 </resources>
