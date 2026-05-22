@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.misw.vinilos.R
+import com.misw.vinilos.data.dispatchers.DefaultDispatcherProvider
 import com.misw.vinilos.data.network.VinilosServiceAdapter
 import com.misw.vinilos.data.repository.AlbumRepository
 import com.misw.vinilos.data.session.UserSession
@@ -26,6 +27,7 @@ class CreateAlbumFragment : Fragment() {
         CreateAlbumViewModelFactory(
             AlbumRepository(
                 VinilosServiceAdapter.createApiService(requireContext()),
+                DefaultDispatcherProvider(),
                 VinilosServiceAdapter::invalidateCache
             )
         )

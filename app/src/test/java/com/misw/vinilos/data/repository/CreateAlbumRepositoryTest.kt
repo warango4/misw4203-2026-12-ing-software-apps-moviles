@@ -6,6 +6,8 @@ import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.models.Track
 import com.misw.vinilos.data.models.TrackRequest
 import com.misw.vinilos.data.network.VinilosApiService
+import com.misw.vinilos.testutils.TestDispatcherProvider
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -17,11 +19,13 @@ import org.robolectric.annotation.Config
 @Config(sdk = [34])
 class CreateAlbumRepositoryTest {
 
+    private val testDispatchers = TestDispatcherProvider(UnconfinedTestDispatcher())
+
     @Test
     fun createAlbum_retornaDatosDelApi() = runTest {
         val expected = Album(1, "Abbey Road", "https://cover.jpg", "Rock")
         val api = FakeVinilosApiService(albumResult = expected)
-        val repository = AlbumRepository(api)
+        val repository = AlbumRepository(api, testDispatchers)
 
         val result = repository.createAlbum(AlbumRequest("Abbey Road", "https://cover.jpg", "1969-09-26T00:00:00.000Z", "Classic album", "Rock", "Apple Records"))
 
@@ -32,7 +36,7 @@ class CreateAlbumRepositoryTest {
     @Test
     fun createAlbum_propagaExcepcionDelApi() = runTest {
         val api = FakeVinilosApiService(error = IllegalStateException("fallo api"))
-        val repository = AlbumRepository(api)
+        val repository = AlbumRepository(api, testDispatchers)
 
         try {
             repository.createAlbum(AlbumRequest("Abbey Road", "https://cover.jpg", "1969-09-26T00:00:00.000Z", "Classic album", "Rock", "Apple Records"))
@@ -46,7 +50,7 @@ class CreateAlbumRepositoryTest {
     fun createAlbum_enviaLosParametrosCorrectos() = runTest {
         val expected = Album(2, "Thriller", "https://cover.jpg", "Pop")
         val api = FakeVinilosApiService(albumResult = expected)
-        val repository = AlbumRepository(api)
+        val repository = AlbumRepository(api, testDispatchers)
 
         repository.createAlbum(AlbumRequest("Thriller", "https://cover.jpg", "1982-11-30T00:00:00.000Z", "Pop masterpiece", "Pop", "Epic Records"))
 
@@ -62,7 +66,7 @@ class CreateAlbumRepositoryTest {
     fun createAlbum_retornaElAlbumConIdAsignadoPorElServidor() = runTest {
         val expected = Album(42, "Kind of Blue", "https://cover.jpg", "Jazz")
         val api = FakeVinilosApiService(albumResult = expected)
-        val repository = AlbumRepository(api)
+        val repository = AlbumRepository(api, testDispatchers)
 
         val result = repository.createAlbum(AlbumRequest("Kind of Blue", "https://cover.jpg", "1959-08-17T00:00:00.000Z", "Jazz masterpiece", "Jazz", "Columbia"))
 

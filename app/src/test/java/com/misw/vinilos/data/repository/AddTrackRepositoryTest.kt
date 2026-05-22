@@ -5,6 +5,8 @@ import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.models.Track
 import com.misw.vinilos.data.models.TrackRequest
 import com.misw.vinilos.data.network.VinilosApiService
+import com.misw.vinilos.testutils.TestDispatcherProvider
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -16,11 +18,13 @@ import org.robolectric.annotation.Config
 @Config(sdk = [34])
 class AddTrackRepositoryTest {
 
+    private val testDispatchers = TestDispatcherProvider(UnconfinedTestDispatcher())
+
     @Test
     fun addTrack_retornaDatosDelApi() = runTest {
         val expected = Track(1, "Money", "6:22")
         val api = FakeVinilosApiService(trackResult = expected)
-        val repository = AlbumRepository(api)
+        val repository = AlbumRepository(api, testDispatchers)
 
         val result = repository.addTrack(5, TrackRequest("Money", "6:22"))
 
@@ -31,7 +35,7 @@ class AddTrackRepositoryTest {
     @Test
     fun addTrack_propagaExcepcionDelApi() = runTest {
         val api = FakeVinilosApiService(error = IllegalStateException("fallo api"))
-        val repository = AlbumRepository(api)
+        val repository = AlbumRepository(api, testDispatchers)
 
         try {
             repository.addTrack(5, TrackRequest("Money", "6:22"))
@@ -45,7 +49,7 @@ class AddTrackRepositoryTest {
     fun addTrack_enviaElAlbumIdCorrecto() = runTest {
         val expected = Track(2, "Time", "7:05")
         val api = FakeVinilosApiService(trackResult = expected)
-        val repository = AlbumRepository(api)
+        val repository = AlbumRepository(api, testDispatchers)
 
         repository.addTrack(42, TrackRequest("Time", "7:05"))
 
@@ -56,7 +60,7 @@ class AddTrackRepositoryTest {
     fun addTrack_enviaLosParametrosCorrectos() = runTest {
         val expected = Track(3, "Brain Damage", "3:50")
         val api = FakeVinilosApiService(trackResult = expected)
-        val repository = AlbumRepository(api)
+        val repository = AlbumRepository(api, testDispatchers)
 
         repository.addTrack(1, TrackRequest("Brain Damage", "3:50"))
 

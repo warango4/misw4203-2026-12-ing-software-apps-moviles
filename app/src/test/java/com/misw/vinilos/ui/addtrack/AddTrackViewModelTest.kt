@@ -8,7 +8,9 @@ import com.misw.vinilos.data.models.TrackRequest
 import com.misw.vinilos.data.network.VinilosApiService
 import com.misw.vinilos.data.repository.AlbumRepository
 import com.misw.vinilos.testutils.MainDispatcherRule
+import com.misw.vinilos.testutils.TestDispatcherProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -32,11 +34,13 @@ class AddTrackViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    private val testDispatchers = TestDispatcherProvider(UnconfinedTestDispatcher())
+
     @Test
     fun addTrack_publicaTrackCuandoElRepositorioRespondeOk() = runTest {
         val expected = Track(1, "Money", "6:22")
         val viewModel = AddTrackViewModel(
-            AlbumRepository(FakeVinilosApiService(trackResult = expected))
+            AlbumRepository(FakeVinilosApiService(trackResult = expected), testDispatchers)
         )
 
         viewModel.addTrack(5, "Money", "6:22")
@@ -49,7 +53,7 @@ class AddTrackViewModelTest {
     @Test
     fun addTrack_publicaErrorCuandoElRepositorioFalla() = runTest {
         val viewModel = AddTrackViewModel(
-            AlbumRepository(FakeVinilosApiService(error = IllegalStateException("sin conexion")))
+            AlbumRepository(FakeVinilosApiService(error = IllegalStateException("sin conexion")), testDispatchers)
         )
 
         viewModel.addTrack(5, "Money", "6:22")
@@ -63,7 +67,7 @@ class AddTrackViewModelTest {
     fun addTrack_isLoadingEsTrueduranteEjecucionYFalseAlTerminar() = runTest {
         val expected = Track(1, "Time", "7:05")
         val viewModel = AddTrackViewModel(
-            AlbumRepository(FakeVinilosApiService(trackResult = expected))
+            AlbumRepository(FakeVinilosApiService(trackResult = expected), testDispatchers)
         )
 
         assertFalse(viewModel.isLoading.value!!)
@@ -77,7 +81,7 @@ class AddTrackViewModelTest {
     @Test
     fun addTrack_errorNoPublicaTrack() = runTest {
         val viewModel = AddTrackViewModel(
-            AlbumRepository(FakeVinilosApiService(error = RuntimeException("fallo")))
+            AlbumRepository(FakeVinilosApiService(error = RuntimeException("fallo")), testDispatchers)
         )
         viewModel.trackAdded.observeForever {}
 
@@ -90,7 +94,7 @@ class AddTrackViewModelTest {
     @Test
     fun addTrack_isLoadingEsFalseAlFallar() = runTest {
         val viewModel = AddTrackViewModel(
-            AlbumRepository(FakeVinilosApiService(error = RuntimeException("fallo")))
+            AlbumRepository(FakeVinilosApiService(error = RuntimeException("fallo")), testDispatchers)
         )
 
         viewModel.addTrack(5, "Money", "6:22")
@@ -103,7 +107,7 @@ class AddTrackViewModelTest {
     fun addTrack_publicaTrackConLosDatosCorrectos() = runTest {
         val expected = Track(7, "Brain Damage", "3:50")
         val viewModel = AddTrackViewModel(
-            AlbumRepository(FakeVinilosApiService(trackResult = expected))
+            AlbumRepository(FakeVinilosApiService(trackResult = expected), testDispatchers)
         )
 
         viewModel.addTrack(3, "Brain Damage", "3:50")

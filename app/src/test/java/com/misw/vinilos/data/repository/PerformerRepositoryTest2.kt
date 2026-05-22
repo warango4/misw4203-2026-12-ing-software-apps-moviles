@@ -3,6 +3,8 @@ import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.models.Performer
 import com.misw.vinilos.data.models.Album
 import com.misw.vinilos.data.network.VinilosApiService
+import com.misw.vinilos.testutils.TestDispatcherProvider
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -12,11 +14,13 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
 class PerformerRepositoryTest2 {
+    private val testDispatchers = TestDispatcherProvider(UnconfinedTestDispatcher())
+
     @Test
     fun getPerformer_isBand_callsBandApi() = runTest {
         val expectedBand = Performer(id = 1, name = "Band", image = "url", description = "desc")
         val api = FakePerformerDetailApiService(bandResult = expectedBand)
-        val repository = PerformerRepository(api)
+        val repository = PerformerRepository(api, testDispatchers)
         val result = repository.getPerformer(1, true)
         assertEquals("Band", result.name)
     }
@@ -24,14 +28,14 @@ class PerformerRepositoryTest2 {
     fun getPerformer_isMusician_callsMusicianApi() = runTest {
         val expectedMusician = Performer(id = 2, name = "Musician", image = "url", description = "desc")
         val api = FakePerformerDetailApiService(musicianResult = expectedMusician)
-        val repository = PerformerRepository(api)
+        val repository = PerformerRepository(api, testDispatchers)
         val result = repository.getPerformer(2, false)
         assertEquals("Musician", result.name)
     }
     @Test
     fun getPerformer_apiFails_throwsException() = runTest {
         val api = FakePerformerDetailApiService(error = Exception("Detail Error"))
-        val repository = PerformerRepository(api)
+        val repository = PerformerRepository(api, testDispatchers)
         try {
             repository.getPerformer(1, true)
             org.junit.Assert.fail("Expected exception")

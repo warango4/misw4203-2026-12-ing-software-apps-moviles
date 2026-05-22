@@ -3,6 +3,8 @@ package com.misw.vinilos.data.repository
 import com.misw.vinilos.data.models.Album
 import com.misw.vinilos.data.models.Collector
 import com.misw.vinilos.data.network.VinilosApiService
+import com.misw.vinilos.testutils.TestDispatcherProvider
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -14,11 +16,13 @@ import org.robolectric.annotation.Config
 @Config(sdk = [34])
 class AlbumRepositoryTest {
 
+    private val testDispatchers = TestDispatcherProvider(UnconfinedTestDispatcher())
+
     @Test
     fun getAlbums_retornaDatosDelApi() = runTest {
         val expected = listOf(Album(1, "A Love Supreme", "cover-url", "Jazz"))
         val api = FakeVinilosApiService(result = expected)
-        val repository = AlbumRepository(api)
+        val repository = AlbumRepository(api, testDispatchers)
 
         val result = repository.getAlbums()
 
@@ -29,7 +33,7 @@ class AlbumRepositoryTest {
     @Test
     fun getAlbums_propagaExcepcionDelApi() = runTest {
         val api = FakeVinilosApiService(error = IllegalStateException("fallo api"))
-        val repository = AlbumRepository(api)
+        val repository = AlbumRepository(api, testDispatchers)
 
         try {
             repository.getAlbums()
@@ -43,7 +47,7 @@ class AlbumRepositoryTest {
     fun getAlbum_retornaDatosDelApi() = runTest {
         val expected = Album(1, "A Love Supreme", "cover-url", "Jazz")
         val api = FakeVinilosApiService(singleResult = expected)
-        val repository = AlbumRepository(api)
+        val repository = AlbumRepository(api, testDispatchers)
 
         val result = repository.getAlbum(1)
 
@@ -54,7 +58,7 @@ class AlbumRepositoryTest {
     @Test
     fun getAlbums_listaVacia_retornaListaVacia() = runTest {
         val api = FakeVinilosApiService(result = emptyList())
-        val repository = AlbumRepository(api)
+        val repository = AlbumRepository(api, testDispatchers)
 
         val result = repository.getAlbums()
 
@@ -64,7 +68,7 @@ class AlbumRepositoryTest {
     @Test
     fun getAlbum_propagaExcepcionDelApi() = runTest {
         val api = FakeVinilosApiService(error = IllegalStateException("fallo api detallada"))
-        val repository = AlbumRepository(api)
+        val repository = AlbumRepository(api, testDispatchers)
 
         try {
             repository.getAlbum(1)

@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.misw.vinilos.MainActivity
 import com.misw.vinilos.R
+import com.misw.vinilos.data.dispatchers.DefaultDispatcherProvider
 import com.misw.vinilos.data.network.VinilosServiceAdapter
 import com.misw.vinilos.data.repository.AlbumRepository
 import com.misw.vinilos.databinding.FragmentAlbumListBinding
@@ -24,7 +25,10 @@ class AlbumListFragment : Fragment() {
     private val viewModel: AlbumViewModel by viewModels(
         factoryProducer = {
             AlbumViewModelFactory(
-                AlbumRepository(VinilosServiceAdapter.createApiService(requireContext()))
+                AlbumRepository(
+                    VinilosServiceAdapter.createApiService(requireContext()),
+                    DefaultDispatcherProvider()
+                )
             )
         }
     )

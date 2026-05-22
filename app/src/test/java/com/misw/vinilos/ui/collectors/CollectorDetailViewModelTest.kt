@@ -9,8 +9,10 @@ import com.misw.vinilos.data.network.VinilosApiService
 import com.misw.vinilos.data.repository.AlbumRepository
 import com.misw.vinilos.data.repository.CollectorRepository
 import com.misw.vinilos.testutils.MainDispatcherRule
+import com.misw.vinilos.testutils.TestDispatcherProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
@@ -35,6 +37,8 @@ class CollectorDetailViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    private val testDispatchers = TestDispatcherProvider(UnconfinedTestDispatcher())
+
     @Test
     fun fetchCollector_invalidId_setsErrorAndDoesNotLoad() = runTest {
         val api = FakeApi(
@@ -42,8 +46,8 @@ class CollectorDetailViewModelTest {
         )
 
         val vm = CollectorDetailViewModel(
-            repository = CollectorRepository(api),
-            albumRepository = AlbumRepository(api),
+            repository = CollectorRepository(api, testDispatchers),
+            albumRepository = AlbumRepository(api, testDispatchers),
             collectorId = -1
         )
         vm.error.observeForever { }
@@ -63,7 +67,11 @@ class CollectorDetailViewModelTest {
         val expected = Collector(id = 1, name = "Ana", telephone = "1", email = "a@a.com")
         val api = FakeApi(collectorById = { expected })
 
-        val vm = CollectorDetailViewModel(CollectorRepository(api), AlbumRepository(api), 1)
+        val vm = CollectorDetailViewModel(
+            CollectorRepository(api, testDispatchers),
+            AlbumRepository(api, testDispatchers),
+            1
+        )
         vm.collector.observeForever { }
         vm.isLoading.observeForever { }
         vm.error.observeForever { }
@@ -98,7 +106,7 @@ class CollectorDetailViewModelTest {
             }
         )
 
-        val vm = CollectorDetailViewModel(CollectorRepository(api), AlbumRepository(api), 1)
+        val vm = CollectorDetailViewModel(CollectorRepository(api, testDispatchers), AlbumRepository(api, testDispatchers), 1)
         vm.albums.observeForever { }
 
         vm.fetchCollector()
@@ -131,7 +139,7 @@ class CollectorDetailViewModelTest {
             }
         )
 
-        val vm = CollectorDetailViewModel(CollectorRepository(api), AlbumRepository(api), 1)
+        val vm = CollectorDetailViewModel(CollectorRepository(api, testDispatchers), AlbumRepository(api, testDispatchers), 1)
         vm.albums.observeForever { }
 
         vm.fetchCollector()
@@ -149,7 +157,7 @@ class CollectorDetailViewModelTest {
         val expectedCollector = Collector(id = 1, name = "Ana", telephone = "1", email = "a@a.com", collectorAlbums = emptyList())
         val api = FakeApi(collectorById = { expectedCollector })
 
-        val vm = CollectorDetailViewModel(CollectorRepository(api), AlbumRepository(api), 1)
+        val vm = CollectorDetailViewModel(CollectorRepository(api, testDispatchers), AlbumRepository(api, testDispatchers), 1)
         vm.albums.observeForever { }
 
         vm.fetchCollector()
@@ -162,7 +170,7 @@ class CollectorDetailViewModelTest {
     fun fetchCollector_error_setsUserMessageAndStopsLoading() = runTest {
         val api = FakeApi(collectorById = { throw RuntimeException("boom") })
 
-        val vm = CollectorDetailViewModel(CollectorRepository(api), AlbumRepository(api), 1)
+        val vm = CollectorDetailViewModel(CollectorRepository(api, testDispatchers), AlbumRepository(api, testDispatchers), 1)
         vm.error.observeForever { }
         vm.isLoading.observeForever { }
 
@@ -194,7 +202,7 @@ class CollectorDetailViewModelTest {
             }
         )
 
-        val vm = CollectorDetailViewModel(CollectorRepository(api), AlbumRepository(api), 1)
+        val vm = CollectorDetailViewModel(CollectorRepository(api, testDispatchers), AlbumRepository(api, testDispatchers), 1)
         vm.albums.observeForever { }
 
         vm.fetchCollector()
@@ -216,7 +224,7 @@ class CollectorDetailViewModelTest {
             }
         )
 
-        val vm = CollectorDetailViewModel(CollectorRepository(api), AlbumRepository(api), 1)
+        val vm = CollectorDetailViewModel(CollectorRepository(api, testDispatchers), AlbumRepository(api, testDispatchers), 1)
         vm.isLoading.observeForever { }
 
         vm.fetchCollector()
@@ -237,7 +245,7 @@ class CollectorDetailViewModelTest {
             }
         )
 
-        val vm = CollectorDetailViewModel(CollectorRepository(api), AlbumRepository(api), 1)
+        val vm = CollectorDetailViewModel(CollectorRepository(api, testDispatchers), AlbumRepository(api, testDispatchers), 1)
         vm.error.observeForever { }
 
         vm.fetchCollector()
@@ -264,7 +272,7 @@ class CollectorDetailViewModelTest {
 
         val api = FakeApi(collectorById = { expectedCollector })
 
-        val vm = CollectorDetailViewModel(CollectorRepository(api), AlbumRepository(api), 1)
+        val vm = CollectorDetailViewModel(CollectorRepository(api, testDispatchers), AlbumRepository(api, testDispatchers), 1)
         vm.albums.observeForever { }
 
         vm.fetchCollector()
